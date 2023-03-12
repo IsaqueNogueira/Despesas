@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Despesas</string>
+    <string name="new_expense">Nova despesa</string>
+    <string name="description">Descrição</string>
+    <string name="value">Valor</string>
+    <string name="maturity">Vencimento</string>
+    <string name="no_repeat">Não Repetir</string>
+    <string name="repeat">Repetir</string>
+    <string name="fixed">Fixo</string>
+    <string name="installments">Parcelado</string>
+    <string name="qtdInstallments">Quantidade de parcelas</string>
+    <string name="save">Salvar</string>
 </resources>

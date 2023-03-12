@@ -12,13 +12,21 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun expenseDao(): ExpenseDao
 
     companion object {
-        fun instance(context: Context): AppDatabase {
-            return Room.databaseBuilder(
-                context,
-                AppDatabase::class.java,
-                "expensedb",
-            )
-                .build()
+        @Volatile
+        private var instance: AppDatabase? = null
+        fun getDatabase(context: Context): AppDatabase {
+            return instance ?: synchronized(this) {
+                instance ?: Room.databaseBuilder(
+                    context,
+                    AppDatabase::class.java,
+                    "expensedb",
+                )
+                    .build()
+                    .also {
+                        instance = it
+                    }
+            }
         }
     }
 }
+

@@ -5,8 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseState
+import com.isaquesoft.despesas.presentation.ui.adapter.AdapterExpense
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewModel
@@ -17,7 +21,7 @@ import java.util.*
 class ExpenseFragment : Fragment() {
 
     private lateinit var binding: ExpenseFragmentBinding
-
+    private val controlation by lazy { findNavController() }
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: ExpenseFragmentViewModel by viewModel()
 
@@ -34,6 +38,7 @@ class ExpenseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         estadoAppViewModel.temComponentes = ComponentesVisuais(false, false)
         initViewModel()
+        goToNewExpenseFragment()
         dateText()
     }
 
@@ -58,8 +63,20 @@ class ExpenseFragment : Fragment() {
         ) {
             when (it) {
                 is ExpenseState.DateText -> binding.expenseDateText.text = it.month
-                is ExpenseState.ShowExpenses -> TODO()
+                is ExpenseState.ShowExpenses -> showExpenses(it.expense)
             }
+        }
+    }
+
+    private fun showExpenses(expenses: List<Expense>) {
+        binding.expenseRecyclerview.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.expenseRecyclerview.adapter = AdapterExpense(expenses)
+    }
+
+    private fun goToNewExpenseFragment() {
+        binding.expenseFloating.setOnClickListener {
+            val direction = ExpenseFragmentDirections.actionExpenseFragmentToNewExpenseFragment()
+            controlation.navigate(direction)
         }
     }
 }

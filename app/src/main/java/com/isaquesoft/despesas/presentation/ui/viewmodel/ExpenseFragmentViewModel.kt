@@ -3,11 +3,11 @@ package com.isaquesoft.despesas.presentation.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -37,21 +37,21 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         _expenseState.postValue(ExpenseState.DateText(formatMonth))
     }
 
-    fun getAllExpense(expense: Expense) {
-        GlobalScope.launch(Dispatchers.IO) {
+    fun getAllExpense() {
+        viewModelScope.launch(Dispatchers.IO) {
             val listExpense = expenseRepository.getAllExpense()
             _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
         }
     }
 
     fun deleteExpense(expense: Expense) {
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteExpense(expense)
         }
     }
 
     fun deleteAllExpense(expense: List<Expense>) {
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteAllExpense(expense)
         }
     }

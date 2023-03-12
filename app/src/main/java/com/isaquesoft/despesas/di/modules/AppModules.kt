@@ -10,7 +10,7 @@ import org.koin.dsl.module
 val appModules = module {
 
     single {
-        AppDatabase.instance(get()).expenseDao()
+        AppDatabase.getDatabase(get()).expenseDao()
     }
 
     single { ExpenseRepository(get()) }

@@ -9,5 +9,29 @@
         android:id="@+id/expenseFragment"
         android:name="com.isaquesoft.despesas.presentation.ui.fragment.ExpenseFragment"
         android:label="ExpenseFragment"
-        tools:layout="@layout/expense_fragment"/>
+        tools:layout="@layout/expense_fragment">
+        <action
+            android:id="@+id/action_expenseFragment_to_newExpenseFragment"
+            app:destination="@id/newExpenseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/newExpenseFragment"
+        android:name="com.isaquesoft.despesas.presentation.ui.fragment.NewExpenseFragment"
+        android:label="NewExpenseFragment"
+        tools:layout="@layout/new_expense_fragment">
+        <action
+            android:id="@+id/action_newExpenseFragment_to_expenseFragment"
+            app:destination="@id/expenseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@id/expenseFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
 </navigation>

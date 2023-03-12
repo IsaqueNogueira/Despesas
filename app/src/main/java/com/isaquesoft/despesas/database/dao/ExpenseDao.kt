@@ -1,6 +1,10 @@
 package com.isaquesoft.despesas.database.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.isaquesoft.despesas.data.model.Expense
 
 @Dao
@@ -10,7 +14,7 @@ interface ExpenseDao {
     suspend fun insertExpense(expense: Expense)
 
     @Query("SELECT * FROM Expense WHERE id = :id")
-    suspend fun getExpense(id: Int): Expense?
+    suspend fun getExpense(id: Int): Expense
 
     @Query("SELECT * FROM Expense")
     suspend fun getAllExpense(): List<Expense>
