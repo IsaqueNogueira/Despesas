@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey
 @Entity
 data class Expense(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val description: String,
-    val value: Double,
+    val value: String,
     val dateCreated: Long,
     val date: Long,
     val repeat: Boolean,

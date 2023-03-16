@@ -23,7 +23,9 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="-5dp"
         android:layout_marginEnd="30dp"
-        android:inputType="text"
+        android:hint="@string/rent"
+        android:inputType="textCapSentences"
+        android:maxLength="120"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/new_expense_description" />
@@ -80,33 +82,29 @@
         android:id="@+id/new_expense_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/new_expense_input_maturity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/new_expense_no_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:clickable="true"
+            android:text="@string/no_repeat"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <RadioButton
-                android:id="@+id/new_expense_no_repeat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:clickable="true"
-                android:text="@string/no_repeat"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioButton
-                android:id="@+id/new_expense_repeat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
-                android:clickable="true"
-                android:text="@string/repeat"
-                app:layout_constraintStart_toEndOf="@id/new_expense_no_repeat"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <RadioButton
+            android:id="@+id/new_expense_repeat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:clickable="true"
+            android:text="@string/repeat"
+            app:layout_constraintStart_toEndOf="@id/new_expense_no_repeat"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </RadioGroup>
 
@@ -117,32 +115,42 @@
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:background="@color/greyf"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/new_expense_radio_group" />
 
-    <RadioButton
-        android:id="@+id/new_expense_fixed"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/new_expense_radio_group2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:clickable="true"
-        android:text="@string/fixed"
-        android:visibility="gone"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_expense_diviser" />
+        app:layout_constraintTop_toBottomOf="@id/new_expense_diviser">
 
-    <RadioButton
-        android:id="@+id/new_expense_installments"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="-15dp"
-        android:clickable="true"
-        android:text="@string/installments"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_expense_fixed" />
+        <RadioButton
+            android:id="@+id/new_expense_fixed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:clickable="true"
+            android:text="@string/fixed"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/new_expense_diviser" />
+
+        <RadioButton
+            android:id="@+id/new_expense_installments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="-15dp"
+            android:clickable="true"
+            android:text="@string/installments"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/new_expense_fixed" />
+    </RadioGroup>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/new_expense_qtdInstallments"
@@ -153,7 +161,7 @@
         android:textColor="@color/black"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/new_expense_installments" />
+        app:layout_constraintTop_toBottomOf="@id/new_expense_radio_group2" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/new_expense_input_installments"
@@ -161,10 +169,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="-5dp"
-        android:layout_marginEnd="30dp"
+        android:hint="@string/twelve"
         android:inputType="number"
+        android:maxLength="3"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/new_expense_qtdInstallments"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/new_expense_qtdInstallments" />
 

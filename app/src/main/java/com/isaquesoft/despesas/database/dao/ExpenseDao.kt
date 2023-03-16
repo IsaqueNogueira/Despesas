@@ -16,8 +16,8 @@ interface ExpenseDao {
     @Query("SELECT * FROM Expense WHERE id = :id")
     suspend fun getExpense(id: Int): Expense
 
-    @Query("SELECT * FROM Expense")
-    suspend fun getAllExpense(): List<Expense>
+    @Query("SELECT * FROM Expense WHERE date >= :minDate AND date <= :maxDate")
+    suspend fun getAllExpense(minDate: Long, maxDate: Long): List<Expense>
 
     @Delete
     suspend fun deleteExpense(expense: Expense)

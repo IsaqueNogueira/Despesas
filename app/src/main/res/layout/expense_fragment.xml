@@ -40,25 +40,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/expense_nameapp">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageButton
                 android:id="@+id/expense_prevbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
+                android:background="@color/white"
                 android:src="@drawable/baseline_arrow_back"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageButton
                 android:id="@+id/expense_nextbutton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="3dp"
+                android:background="@color/white"
                 android:src="@drawable/baseline_arrow_forward"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -83,6 +85,97 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/expense_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintBottom_toTopOf="@id/expense_date_fullbar"
+        android:layout_marginBottom="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expense_toolbar"
+        tools:listitem="@layout/item_expense" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/expense_date_fullbar"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="@id/expense_floating"
+        app:layout_constraintEnd_toStartOf="@id/expense_floating"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/expense_floating"
+        android:background="@drawable/background_fullbar"
+        >
+        <TextView
+            android:id="@+id/expense_info_full_payable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/total_payable"
+            android:textColor="@color/white"
+            android:layout_marginStart="15dp"
+            android:textSize="12sp"
+            />
+        <TextView
+            android:id="@+id/expense_info_balance_to_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/balance_to_pay"
+            android:textColor="@color/white"
+            android:layout_marginStart="15dp"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/expense_info_full_payable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/expense_full_payable"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintStart_toEndOf="@id/expense_info_full_payable"
+            android:layout_marginTop="5dp"
+            tools:text="R$ 1.000.000,00"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:layout_marginStart="10dp"
+            android:textSize="12sp"
+            />
+
+        <TextView
+            android:id="@+id/expense_balance_to_pay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="R$ 89,49"
+            android:textColor="@color/white"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/expense_info_balance_to_pay"
+            android:textAlignment="textEnd"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@id/expense_info_full_payable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/expense_floating"
         android:layout_width="wrap_content"
@@ -96,16 +189,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/baseline_add"
         app:tint="@color/white" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/expense_recyclerview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expense_toolbar"
-        tools:listitem="@layout/item_expense" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

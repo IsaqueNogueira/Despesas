@@ -10,4 +10,12 @@
     <string name="installments">Parcelado</string>
     <string name="qtdInstallments">Quantidade de parcelas</string>
     <string name="save">Salvar</string>
+    <string name="provide_the_description_of_the_expense">Informe a descrição da despesa</string>
+    <string name="provide_the_value_of_the_expense">Informe o valor da despesa</string>
+    <string name="required_field_description">Informe a descrição da despesa</string>
+    <string name="required_field_value">Valor da despesa deve ser maior que 0</string>
+    <string name="rent">Aluguel</string>
+    <string name="twelve">12</string>
+    <string name="total_payable">Total a pagar</string>
+    <string name="balance_to_pay">Saldo a pagar</string>
 </resources>

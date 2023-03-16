@@ -9,7 +9,7 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
 
     suspend fun getExpense(id: Int) = expenseDao.getExpense(id)
 
-    suspend fun getAllExpense() = expenseDao.getAllExpense()
+    suspend fun getAllExpense(minDate: Long, maxDate: Long) = expenseDao.getAllExpense(minDate, maxDate)
 
     suspend fun deleteExpense(expense: Expense) = expenseDao.deleteExpense(expense)
 

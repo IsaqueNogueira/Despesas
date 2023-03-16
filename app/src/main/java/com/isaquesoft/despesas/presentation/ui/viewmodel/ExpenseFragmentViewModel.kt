@@ -9,39 +9,43 @@ import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.time.LocalDate
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository) : ViewModel() {
 
     private val calendar = Calendar.getInstance()
-    private val dateFormatter = java.text.SimpleDateFormat("MMMM/yyyy", Locale.getDefault()).apply {
-        applyPattern("MMMM/yyyy")
-        isLenient = false
-    }
-
     private val _expenseState by lazy { MutableLiveData<ExpenseState>() }
     val expenseState: LiveData<ExpenseState>
         get() = _expenseState
 
     fun clickPrevButton() {
         calendar.add(Calendar.MONTH, -1)
-        val month = dateFormatter.format(calendar.time)
-        val formatMonth = month.capitalize()
-        _expenseState.postValue(ExpenseState.DateText(formatMonth))
+        _expenseState.postValue(ExpenseState.DateText(calendar))
     }
 
     fun clickNextButton() {
         calendar.add(Calendar.MONTH, 1)
-        val month = dateFormatter.format(calendar.time)
-        val formatMonth = month.capitalize()
-        _expenseState.postValue(ExpenseState.DateText(formatMonth))
+        _expenseState.postValue(ExpenseState.DateText(calendar))
     }
 
-    fun getAllExpense() {
+    fun getAllExpense(minDate: Long, maxDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val listExpense = expenseRepository.getAllExpense()
+            val listExpense = expenseRepository.getAllExpense(minDate, maxDate)
             _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
         }
+    }
+
+    fun getFirstAndLastDayOfMonth(calendar: Calendar): ArrayList<Long> {
+        val localDate = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1)
+        val firstDayOfMonth = localDate.toEpochDay() * 86400000
+        val lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth)
+        val lastDayOfMonthMillis = calendar.timeInMillis
+        _expenseState.postValue(ExpenseState.MinDateMaxDate(firstDayOfMonth, lastDayOfMonthMillis))
+        return arrayListOf(firstDayOfMonth, lastDayOfMonthMillis)
     }
 
     fun deleteExpense(expense: Expense) {
@@ -54,5 +58,20 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteAllExpense(expense)
         }
+    }
+
+    fun fullExpenseSum(expenses: List<Expense>) {
+        var totalValue = BigDecimal.ZERO
+        val regex = Regex("""^R\$ (\d{1,3}(,\d{3})*)(\.\d{2})?$""")
+        for (expense in expenses) {
+            val matchResult = regex.find(expense.value)
+            val valueString = matchResult?.groups?.get(1)?.value?.replace(",", "") ?: ""
+            if (valueString.isNotEmpty()) {
+                val value = BigDecimal(valueString.replace(",", "."))
+                totalValue = totalValue.add(value)
+            }
+        }
+        val formattedFullValue = "R$ %.2f".format(totalValue)
+        _expenseState.postValue(ExpenseState.FullValueEndBalance(formattedFullValue))
     }
 }

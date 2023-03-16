@@ -10,6 +10,8 @@
 
     <color name="grey">#f4f4f4</color>
     <color name="greyf">#767676</color>
+    <color name="grey_value">#676767</color>
+    <color name="grey_line">#4C4C4C</color>
     <color name="green">#229522</color>
     <color name="blue_700">#1976d2</color>
     <color name="blue_600">#1e88e5</color>
