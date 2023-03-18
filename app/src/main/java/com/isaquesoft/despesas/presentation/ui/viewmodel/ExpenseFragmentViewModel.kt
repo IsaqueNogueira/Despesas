@@ -69,12 +69,6 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         _expenseState.postValue(ExpenseState.ShowValueEndBalance(formattedFullValue, formattedBalance))
     }
 
-    fun deleteExpense(expense: Expense) {
-        viewModelScope.launch(Dispatchers.IO) {
-            expenseRepository.deleteExpense(expense)
-        }
-    }
-
     fun deleteAllExpense(expense: List<Expense>) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteAllExpense(expense)

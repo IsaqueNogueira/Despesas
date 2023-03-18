@@ -1,5 +1,6 @@
 package com.isaquesoft.despesas.presentation.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ class AdapterExpense(
         val txtDescription = itemView.findViewById<TextView>(R.id.item_expense_description)
         val txtValue = itemView.findViewById<TextView>(R.id.item_expense_value)
         val txtMaturity = itemView.findViewById<TextView>(R.id.item_expense_maturity)
+        val itemPaidOut = itemView.findViewById<TextView>(R.id.item_paidout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,6 +33,14 @@ class AdapterExpense(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val expense = listExpense[position]
+
+        if (expense.paidOut == true) {
+            holder.itemPaidOut.visibility = View.VISIBLE
+            holder.txtValue.setTextColor(Color.parseColor("#229522"))
+        } else {
+            holder.itemPaidOut.visibility = View.GONE
+            holder.txtValue.setTextColor(Color.parseColor("#676767"))
+        }
 
         holder.txtDescription.text = expense.description
         holder.txtValue.text = expense.value

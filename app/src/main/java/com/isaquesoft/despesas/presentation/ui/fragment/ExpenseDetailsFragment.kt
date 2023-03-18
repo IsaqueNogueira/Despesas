@@ -9,10 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.isaquesoft.despesas.R
+import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseDetailsFragmentBinding
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
+import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseDetailsFramentViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 
 class ExpenseDetailsFragment : Fragment() {
@@ -23,6 +26,7 @@ class ExpenseDetailsFragment : Fragment() {
     }
 
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
+    private val viewModel: ExpenseDetailsFramentViewModel by viewModel()
     private val controlation by lazy { findNavController() }
     private lateinit var binding: ExpenseDetailsFragmentBinding
     override fun onCreateView(
@@ -40,6 +44,49 @@ class ExpenseDetailsFragment : Fragment() {
         setHasOptionsMenu(true)
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, true)
         setTextExpenseDetails()
+        setupCheckBox()
+        setupButtonDelete()
+    }
+
+    private fun setupCheckBox() {
+        binding.expenseDetailsCheckboxPaidout.isChecked = expense.paidOut == true
+
+        binding.expenseDetailsCheckboxPaidout.setOnCheckedChangeListener { compoundButton, b ->
+            if (compoundButton.isChecked) {
+                val newExpense = Expense(
+                    id = expense.id,
+                    description = expense.description,
+                    value = expense.value,
+                    dateCreated = expense.dateCreated,
+                    date = expense.date,
+                    repeat = expense.repeat,
+                    installments = expense.installments,
+                    paidOut = true,
+                )
+                viewModel.updateExpense(newExpense)
+                goToExpenseFragment()
+            } else {
+                val newExpense = Expense(
+                    id = expense.id,
+                    description = expense.description,
+                    value = expense.value,
+                    dateCreated = expense.dateCreated,
+                    date = expense.date,
+                    repeat = expense.repeat,
+                    installments = expense.installments,
+                    paidOut = false,
+                )
+                viewModel.updateExpense(newExpense)
+                goToExpenseFragment()
+            }
+        }
+    }
+
+    private fun setupButtonDelete(){
+        binding.expenseDetailsButtonDelete.setOnClickListener {
+            viewModel.deleteExpense(expense)
+            goToExpenseFragment()
+        }
     }
 
     private fun setTextExpenseDetails() {
