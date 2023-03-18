@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseState
@@ -37,7 +38,8 @@ class ExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        estadoAppViewModel.temComponentes = ComponentesVisuais(false, false)
+        estadoAppViewModel.temComponentes = ComponentesVisuais(true, false)
+        requireActivity().title = getString(R.string.title_my_expense)
         initViewModel()
         goToNewExpenseFragment()
         dateText()
@@ -67,13 +69,14 @@ class ExpenseFragment : Fragment() {
                 is ExpenseState.DateText -> showDateText(it)
                 is ExpenseState.ShowExpenses -> showExpenses(it.expense)
                 is ExpenseState.MinDateMaxDate -> minMaxDate(it.minDate, it.maxDate)
-                is ExpenseState.FullValueEndBalance -> showFullValueEndBalance(it.fullValue)
+                is ExpenseState.ShowValueEndBalance -> showFullValueEndBalance(it.fullValue, it.fullBalance)
             }
         }
     }
 
-    private fun showFullValueEndBalance(fullValue: String) {
+    private fun showFullValueEndBalance(fullValue: String, fullBalance: String) {
         binding.expenseFullPayable.text = fullValue
+        binding.expenseBalanceToPay.text = fullBalance
     }
 
     private fun showDateText(it: ExpenseState.DateText) {
@@ -93,8 +96,17 @@ class ExpenseFragment : Fragment() {
 
     private fun showExpenses(expenses: List<Expense>) {
         binding.expenseRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.expenseRecyclerview.adapter = AdapterExpense(expenses)
+        binding.expenseRecyclerview.adapter = AdapterExpense(expenses, this::clickItem)
         viewModel.fullExpenseSum(expenses)
+    }
+
+    private fun clickItem(expense: Expense) {
+        goToExpenseDetailsFragmennt(expense)
+    }
+
+    private fun goToExpenseDetailsFragmennt(expense: Expense) {
+        val direction = ExpenseFragmentDirections.actionExpenseFragmentToExpenseDetailsFragment(expense)
+        controlation.navigate(direction)
     }
 
     private fun goToNewExpenseFragment() {

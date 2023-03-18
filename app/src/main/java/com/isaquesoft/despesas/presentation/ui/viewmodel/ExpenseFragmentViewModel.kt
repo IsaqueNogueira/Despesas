@@ -48,6 +48,27 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         return arrayListOf(firstDayOfMonth, lastDayOfMonthMillis)
     }
 
+    fun fullExpenseSum(expenses: List<Expense>) {
+        var totalValue = BigDecimal.ZERO
+        var totalBalance = BigDecimal.ZERO
+        val regex = Regex("""R\$\s*(\d{1,3}(?:\.\d{3})*(?:,\d{2}))""")
+        for (expense in expenses) {
+            val matchResult = regex.find(expense.value)
+            if (matchResult != null) {
+                val valueString = matchResult.groupValues[1].replace(".", "").replace(",", ".")
+                val value = BigDecimal(valueString)
+                totalValue += value
+
+                if (expense.paidOut == false) {
+                    totalBalance += value
+                }
+            }
+        }
+        val formattedFullValue = "R$ %.2f".format(totalValue)
+        val formattedBalance = "R$ %.2f".format(totalBalance)
+        _expenseState.postValue(ExpenseState.ShowValueEndBalance(formattedFullValue, formattedBalance))
+    }
+
     fun deleteExpense(expense: Expense) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteExpense(expense)
@@ -58,20 +79,5 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteAllExpense(expense)
         }
-    }
-
-    fun fullExpenseSum(expenses: List<Expense>) {
-        var totalValue = BigDecimal.ZERO
-        val regex = Regex("""^R\$ (\d{1,3}(,\d{3})*)(\.\d{2})?$""")
-        for (expense in expenses) {
-            val matchResult = regex.find(expense.value)
-            val valueString = matchResult?.groups?.get(1)?.value?.replace(",", "") ?: ""
-            if (valueString.isNotEmpty()) {
-                val value = BigDecimal(valueString.replace(",", "."))
-                totalValue = totalValue.add(value)
-            }
-        }
-        val formattedFullValue = "R$ %.2f".format(totalValue)
-        _expenseState.postValue(ExpenseState.FullValueEndBalance(formattedFullValue))
     }
 }

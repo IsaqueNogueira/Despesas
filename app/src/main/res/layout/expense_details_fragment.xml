@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/expense_details_cardview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/expense_details_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="15dp"
+                android:layout_margin="15dp"
+                tools:text="Compras no Gbarbosa"
+                android:textColor="@color/grey_value"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@id/expense_details_diviser1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/expense_details_value"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                tools:text="R$ 2.000.000,00"
+                android:textSize="18sp"
+                android:textColor="@color/grey_value"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expense_details_diviser1" />
+
+            <TextView
+                android:id="@+id/expense_details_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                tools:text="18/03/2023"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expense_details_value" />
+
+            <View
+                android:id="@+id/expense_details_diviser"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:background="@color/grey"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expense_details_description" />
+
+            <View
+                android:id="@+id/expense_details_diviser1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/expense_details_description" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/expense_details_checkbox_paidout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/paidout"
+                android:textSize="18sp"
+                android:textColor="@color/grey_value"
+                app:layout_constraintTop_toBottomOf="@id/expense_details_diviser1"
+                app:layout_constraintStart_toEndOf="@id/expense_details_diviser"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/expense_details_button_delete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/button_delete"
+        android:text="@string/delete"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expense_details_cardview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

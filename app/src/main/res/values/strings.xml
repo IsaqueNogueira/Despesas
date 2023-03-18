@@ -18,4 +18,8 @@
     <string name="twelve">12</string>
     <string name="total_payable">Total a pagar</string>
     <string name="balance_to_pay">Saldo a pagar</string>
+    <string name="title_fragment_details">Detalhes</string>
+    <string name="title_my_expense">Minhas despesas</string>
+    <string name="delete">Excluir</string>
+    <string name="paidout">Pago</string>
 </resources>

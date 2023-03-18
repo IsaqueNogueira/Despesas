@@ -9,7 +9,10 @@ import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import java.text.SimpleDateFormat
 
-class AdapterExpense(private val listExpense: List<Expense>) : RecyclerView.Adapter<AdapterExpense.ViewHolder>() {
+class AdapterExpense(
+    private val listExpense: List<Expense>,
+    private val clickItem: (expense: Expense) -> Unit = {},
+) : RecyclerView.Adapter<AdapterExpense.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val txtDescription = itemView.findViewById<TextView>(R.id.item_expense_description)
@@ -32,5 +35,9 @@ class AdapterExpense(private val listExpense: List<Expense>) : RecyclerView.Adap
         holder.txtDescription.text = expense.description
         holder.txtValue.text = expense.value
         holder.txtMaturity.text = SimpleDateFormat("dd/MM/yyyy").format(expense.date)
+
+        holder.itemView.setOnClickListener {
+            clickItem.invoke(expense)
+        }
     }
 }
