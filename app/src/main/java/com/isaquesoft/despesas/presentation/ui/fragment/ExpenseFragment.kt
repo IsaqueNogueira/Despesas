@@ -15,6 +15,7 @@ import com.isaquesoft.despesas.presentation.ui.adapter.AdapterExpense
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewModel
+import com.isaquesoft.despesas.utils.AlertDialogStandard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -98,6 +99,21 @@ class ExpenseFragment : Fragment() {
         binding.expenseRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.expenseRecyclerview.adapter = AdapterExpense(expenses, this::clickItem)
         viewModel.fullExpenseSum(expenses)
+        showNewCoin(expenses)
+    }
+
+    private fun showNewCoin(expenses: List<Expense>) {
+        expenses.forEach {
+            val deviceLocale = Locale.getDefault()
+            val currencySymbol = Currency.getInstance(deviceLocale).symbol
+            val originalString = it.value
+            val onlyLetters = originalString.replace(Regex("[\\d.,\\s]"), "")
+            if (onlyLetters != currencySymbol) {
+                val title = getString(R.string.important)
+                val message = getString(R.string.new_coin_info)
+                AlertDialogStandard().sutupDialog(requireContext(), title, message)
+            }
+        }
     }
 
     private fun clickItem(expense: Expense) {

@@ -45,6 +45,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
                 tools:text="R$ 2.000.000,00"
+                app:layout_constraintEnd_toStartOf="@id/expense_details_diviser"
                 android:textSize="18sp"
                 android:textColor="@color/grey_value"
                 app:layout_constraintStart_toStartOf="parent"
@@ -110,5 +111,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expense_details_cardview" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

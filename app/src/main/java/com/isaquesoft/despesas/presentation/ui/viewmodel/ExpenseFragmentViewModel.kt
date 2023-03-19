@@ -10,6 +10,7 @@ import com.isaquesoft.despesas.presentation.state.ExpenseState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.text.NumberFormat
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
@@ -39,7 +40,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     }
 
     fun getFirstAndLastDayOfMonth(calendar: Calendar): ArrayList<Long> {
-        val localDate = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1)
+        val localDate =
+            LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1)
         val firstDayOfMonth = localDate.toEpochDay() * 86400000
         val lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth)
@@ -49,14 +51,25 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     }
 
     fun fullExpenseSum(expenses: List<Expense>) {
+        val deviceLocale = Locale.getDefault()
+        val currencySymbol = Currency.getInstance(deviceLocale).symbol
         var totalValue = BigDecimal.ZERO
         var totalBalance = BigDecimal.ZERO
-        val regex = Regex("""R\$\s*(\d{1,3}(?:\.\d{3})*(?:,\d{2}))""")
         for (expense in expenses) {
-            val matchResult = regex.find(expense.value)
-            if (matchResult != null) {
-                val valueString = matchResult.groupValues[1].replace(".", "").replace(",", ".")
-                val value = BigDecimal(valueString)
+            val originalString = expense.value
+            val onlyLetters = originalString.replace(Regex("[\\d.,\\s]"), "")
+            if (onlyLetters != currencySymbol) {
+            } else {
+                val valueString = expense.value.replace(currencySymbol, "").trim().replace(",", ".")
+                val lastDotIndex = valueString.lastIndexOf('.')
+                val formattedValueString = if (lastDotIndex >= 0) {
+                    valueString.substring(0, lastDotIndex).replace(".", "") + valueString.substring(
+                        lastDotIndex,
+                    )
+                } else {
+                    valueString
+                }
+                val value = BigDecimal(formattedValueString)
                 totalValue += value
 
                 if (expense.paidOut == false) {
@@ -64,9 +77,15 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                 }
             }
         }
-        val formattedFullValue = "R$ %.2f".format(totalValue)
-        val formattedBalance = "R$ %.2f".format(totalBalance)
-        _expenseState.postValue(ExpenseState.ShowValueEndBalance(formattedFullValue, formattedBalance))
+        val numberFormat = NumberFormat.getCurrencyInstance(deviceLocale)
+        val formattedFullValue = numberFormat.format(totalValue)
+        val formattedBalance = numberFormat.format(totalBalance)
+        _expenseState.postValue(
+            ExpenseState.ShowValueEndBalance(
+                formattedFullValue,
+                formattedBalance,
+            ),
+        )
     }
 
     fun deleteAllExpense(expense: List<Expense>) {

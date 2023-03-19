@@ -16,10 +16,13 @@
     <string name="required_field_value">Valor da despesa deve ser maior que 0</string>
     <string name="rent">Aluguel</string>
     <string name="twelve">12</string>
-    <string name="total_payable">Total a pagar</string>
+    <string name="total_payable">Total</string>
     <string name="balance_to_pay">Saldo a pagar</string>
     <string name="title_fragment_details">Detalhes</string>
     <string name="title_my_expense">Minhas despesas</string>
     <string name="delete">Excluir</string>
     <string name="paidout">Pago</string>
+    <string name="ok">Ok</string>
+    <string name="important">Importante</string>
+    <string name="new_coin_info">Você tem despesas cadastradas em uma moeda diferente da moeda corrente do seu país. Portanto, é necessário cadastrar todas as suas despesas na moeda corrente do seu país.</string>
 </resources>
