@@ -18,7 +18,6 @@ import com.isaquesoft.despesas.utils.CoinUtils
 import com.isaquesoft.despesas.utils.DateUtils
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -30,6 +29,7 @@ class NewExpenseFragment : Fragment() {
     private val controlation by lazy { findNavController() }
     private var repeat: Boolean = false
     private var installments: Int = 0
+    private var selectedInstallments: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,33 +56,52 @@ class NewExpenseFragment : Fragment() {
         binding.newExpenseSave.setOnClickListener {
             val description = binding.newExpenseInputDescription.text.toString()
             val value = binding.newExpenseInputValue.text.toString()
-            val dataCreated = Date().time
             val maturity = binding.newExpenseInputMaturity.text.toString()
             val date = SimpleDateFormat("dd/MM/yyyy").parse(maturity)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            val dataCreated = Date().time
             val installmentsInput = binding.newExpenseInputInstallments.text.toString()
 
-            if (!TextUtils.isEmpty(description) && !TextUtils.isEmpty(value)
-            ) {
-                if (!TextUtils.isEmpty(installmentsInput)) {
+            if (!TextUtils.isEmpty(description) && !TextUtils.isEmpty(value)) {
+                if (selectedInstallments && TextUtils.isEmpty(installmentsInput)) {
+                    binding.newExpenseInputInstallments.setError(getString(R.string.required_field_installments))
+                    binding.newExpenseInputInstallments.requestFocus()
+                    return@setOnClickListener
+                } else if (selectedInstallments && !TextUtils.isEmpty(installmentsInput)) {
                     installments = installmentsInput.toInt()
                 }
-                val expense = Expense(
-                    description = description,
-                    value = value,
-                    dateCreated = dataCreated,
-                    date = date.time,
-                    repeat = repeat,
-                    installments = installments,
-                )
 
-                viewModel.insertExpense(expense)
+                if (installments > 0) {
+                    for (i in 0 until installments) {
+                        val expense = Expense(
+                            description = description,
+                            value = value,
+                            dateCreated = dataCreated,
+                            date = calendar.timeInMillis,
+                            repeat = repeat,
+                            installments = installments,
+                        )
+                        viewModel.insertExpense(expense)
+                        calendar.add(Calendar.MONTH, 1)
+                    }
+                } else {
+                    val expense = Expense(
+                        description = description,
+                        value = value,
+                        dateCreated = dataCreated,
+                        date = calendar.timeInMillis,
+                        repeat = repeat,
+                        installments = installments,
+                    )
+                    viewModel.insertExpense(expense)
+                }
                 goToExpenseFragment()
             } else {
                 if (TextUtils.isEmpty(description)) {
                     binding.newExpenseInputDescription.setError(getString(R.string.required_field_description))
                     binding.newExpenseInputDescription.requestFocus()
                 } else {
-                    (TextUtils.isEmpty(value))
                     binding.newExpenseInputValue.setError(getString(R.string.required_field_value))
                     binding.newExpenseInputValue.requestFocus()
                 }
@@ -97,13 +116,16 @@ class NewExpenseFragment : Fragment() {
                 R.id.new_expense_repeat -> {
                     repeat = true
                     installments = 0
+                    selectedInstallments = false
                     binding.newExpenseDiviser.visibility = View.VISIBLE
                     binding.newExpenseFixed.visibility = View.VISIBLE
                     binding.newExpenseInstallments.visibility = View.VISIBLE
                     binding.newExpenseFixed.isChecked = true
-                } else -> {
+                }
+                else -> {
                     repeat = false
                     installments = 0
+                    selectedInstallments = false
                     binding.newExpenseDiviser.visibility = View.GONE
                     binding.newExpenseFixed.visibility = View.GONE
                     binding.newExpenseInstallments.visibility = View.GONE
@@ -123,10 +145,13 @@ class NewExpenseFragment : Fragment() {
                     installments = 0
                     binding.newExpenseQtdInstallments.visibility = View.GONE
                     binding.newExpenseInputInstallments.visibility = View.GONE
-                } else -> {
+                    selectedInstallments = false
+                }
+                else -> {
                     repeat = true
                     binding.newExpenseQtdInstallments.visibility = View.VISIBLE
                     binding.newExpenseInputInstallments.visibility = View.VISIBLE
+                    selectedInstallments = true
                 }
             }
         }

@@ -25,4 +25,5 @@
     <string name="ok">Ok</string>
     <string name="important">Importante</string>
     <string name="new_coin_info">Você tem despesas cadastradas em uma moeda diferente da moeda corrente do seu país. Portanto, é necessário cadastrar todas as suas despesas na moeda corrente do seu país.</string>
+    <string name="required_field_installments">Informe o número de parcelas</string>
 </resources>
