@@ -80,6 +80,18 @@
                 android:textSize="12sp"
                 />
 
+            <TextView
+                android:id="@+id/item_late"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/item_expense_value"
+                android:text="@string/late"
+                android:textColor="@color/red"
+                app:layout_constraintEnd_toEndOf="@id/item_expense_value"
+                android:visibility="gone"
+                android:textSize="12sp"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

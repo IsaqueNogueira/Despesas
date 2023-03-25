@@ -34,6 +34,34 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
 
     fun getAllExpense(minDate: Long, maxDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
+            val listExpensePrimary = expenseRepository.getAllExpense(minDate, maxDate)
+
+            for (expense in listExpensePrimary) {
+                if (expense.repeat && expense.installments == 0) {
+                    val date = expense.date
+                    val calendar = Calendar.getInstance()
+                    calendar.time = Date(date)
+                    calendar.add(Calendar.MONTH, 1)
+
+                    val expensesNextMonth = expenseRepository.getAllExpense(calendar.timeInMillis, calendar.timeInMillis)
+                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
+
+                    // Verifica se já existe uma despesa fixa para o mês seguinte
+                    val existingExpense = itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
+                    if (existingExpense == null) {
+                        val newExpense = Expense(
+                            description = expense.description,
+                            value = expense.value,
+                            dateCreated = expense.dateCreated,
+                            date = calendar.timeInMillis,
+                            repeat = expense.repeat,
+                            installments = expense.installments,
+                        )
+
+                        expenseRepository.insertExpense(newExpense)
+                    }
+                }
+            }
             val listExpense = expenseRepository.getAllExpense(minDate, maxDate)
             _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
         }

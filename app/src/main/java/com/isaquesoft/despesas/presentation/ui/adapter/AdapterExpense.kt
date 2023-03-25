@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class AdapterExpense(
     private val listExpense: List<Expense>,
@@ -20,6 +23,7 @@ class AdapterExpense(
         val txtValue = itemView.findViewById<TextView>(R.id.item_expense_value)
         val txtMaturity = itemView.findViewById<TextView>(R.id.item_expense_maturity)
         val itemPaidOut = itemView.findViewById<TextView>(R.id.item_paidout)
+        val itemIate = itemView.findViewById<TextView>(R.id.item_late)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -40,6 +44,20 @@ class AdapterExpense(
         } else {
             holder.itemPaidOut.visibility = View.GONE
             holder.txtValue.setTextColor(Color.parseColor("#676767"))
+        }
+
+        val currentDate = LocalDate.now()
+        val formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val dateCurrentFormated = currentDate.format(formatDate)
+        val date = SimpleDateFormat("dd/MM/yyyy").parse(dateCurrentFormated)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+
+        if (expense.date < calendar.timeInMillis && expense.paidOut == false) {
+            holder.itemIate.visibility = View.VISIBLE
+            holder.txtValue.setTextColor(Color.parseColor("#d4221f"))
+        } else {
+            holder.itemIate.visibility = View.GONE
         }
 
         holder.txtDescription.text = expense.description

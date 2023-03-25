@@ -99,17 +99,32 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/expense_details_button_edit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/expense_details_cardview"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="25dp"
+        android:text="@string/edit"
+        android:background="@drawable/button_edit"
+        app:layout_constraintEnd_toStartOf="@id/expense_details_button_delete"
+        android:textColor="@color/white"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/expense_details_button_delete"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/button_delete"
         android:text="@string/delete"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="25dp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/expense_details_button_edit"
         app:layout_constraintTop_toBottomOf="@id/expense_details_cardview" />
 
 

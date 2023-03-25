@@ -74,8 +74,9 @@ class NewExpenseFragment : Fragment() {
 
                 if (installments > 0) {
                     for (i in 0 until installments) {
+                        val inforInstallment = "${i + 1}/$installments"
                         val expense = Expense(
-                            description = description,
+                            description = description + " " + inforInstallment,
                             value = value,
                             dateCreated = dataCreated,
                             date = calendar.timeInMillis,

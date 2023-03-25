@@ -1,16 +1,22 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseDetailsFragmentBinding
+import com.isaquesoft.despesas.presentation.state.ExpenseDetailsState
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseDetailsFramentViewModel
@@ -35,6 +41,7 @@ class ExpenseDetailsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         binding = ExpenseDetailsFragmentBinding.inflate(layoutInflater, container, false)
+        binding.root.setBackgroundColor(Color.TRANSPARENT)
         return binding.root
     }
 
@@ -43,9 +50,30 @@ class ExpenseDetailsFragment : Fragment() {
         requireActivity().title = getString(R.string.title_fragment_details)
         setHasOptionsMenu(true)
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, true)
+        checkExpenseRepeat()
         setTextExpenseDetails()
         setupCheckBox()
         setupButtonDelete()
+        setupButtonEdit()
+    }
+
+    private fun setupButtonEdit() {
+        binding.expenseDetailsButtonEdit.setOnClickListener {
+            val bottomSheetDialogFragment = EditFragmentBottomSheet(expense, ::newExpense)
+            bottomSheetDialogFragment.setStyle(STYLE_NORMAL, R.style.MyBottomSheetDialogTheme)
+            fragmentManager?.let { it1 -> bottomSheetDialogFragment.show(it1, bottomSheetDialogFragment.tag) }
+        }
+    }
+
+    private fun checkExpenseRepeat() {
+        if (expense.repeat) {
+            viewModel.getExpenseRepeat(expense.description, expense.value, expense.repeat, expense.installments)
+        }
+    }
+
+    private fun newExpense(expense: Expense) {
+        viewModel.updateExpense(expense)
+        goToExpenseFragment()
     }
 
     private fun setupCheckBox() {
@@ -82,11 +110,57 @@ class ExpenseDetailsFragment : Fragment() {
         }
     }
 
-    private fun setupButtonDelete(){
+    private fun setupButtonDelete() {
         binding.expenseDetailsButtonDelete.setOnClickListener {
-            viewModel.deleteExpense(expense)
-            goToExpenseFragment()
+            setupAlertDialogDelete()
         }
+    }
+
+    fun setupAlertDialogDelete() {
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.alert_dialog_delet, null)
+        val alertDialog = AlertDialog.Builder(context)
+            .setView(view)
+            .create()
+        alertDialog.setOnShowListener {
+            view.apply {
+                val alertDeletTitle = findViewById<TextView>(R.id.alert_delet_title)
+                val alertDeleteButtonIt = findViewById<Button>(R.id.alert_delet_button_it)
+                val alertDeleteButtonAll = findViewById<Button>(R.id.alert_delet_button_all)
+                val alertDeleteDescription = findViewById<TextView>(R.id.alert_delet_description)
+                if (!expense.repeat) {
+                    alertDeletTitle.text = getString(R.string.alert_delet_info)
+                    alertDeleteButtonIt.text = getString(R.string.delete)
+                    alertDeleteDescription.visibility = View.GONE
+                } else {
+                    alertDeletTitle.text = getString(R.string.expense_delete_infor_title)
+                    alertDeleteButtonIt.text = getString(R.string.expense_delete_info_it)
+                    alertDeleteButtonAll.visibility = View.VISIBLE
+                    alertDeleteDescription.visibility = View.VISIBLE
+                }
+                val buttonPositiveIt = findViewById<Button>(R.id.alert_delet_button_it)
+                val buttonPositiveAll = findViewById<Button>(R.id.alert_delet_button_all)
+                buttonPositiveIt.setOnClickListener {
+                    viewModel.deleteExpense(expense)
+                    goToExpenseFragment()
+                    alertDialog.dismiss()
+                }
+
+                buttonPositiveAll.setOnClickListener {
+                    viewModel.expenseDetailsState.observe(viewLifecycleOwner) {
+                        when (it) {
+                            is ExpenseDetailsState.ShowExpenseRepeat -> {
+                                viewModel.deleteAllExpenseRepeat(it.expensesRepeat)
+                                goToExpenseFragment()
+                                alertDialog.dismiss()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        alertDialog.show()
     }
 
     private fun setTextExpenseDetails() {
@@ -107,7 +181,8 @@ class ExpenseDetailsFragment : Fragment() {
     }
 
     private fun goToExpenseFragment() {
-        val navigation = ExpenseDetailsFragmentDirections.actionExpenseDetailsFragmentToExpenseFragment()
+        val navigation =
+            ExpenseDetailsFragmentDirections.actionExpenseDetailsFragmentToExpenseFragment()
         controlation.navigate(navigation)
     }
 }
