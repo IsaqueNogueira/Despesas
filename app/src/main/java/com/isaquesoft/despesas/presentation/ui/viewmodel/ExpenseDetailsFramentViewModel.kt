@@ -27,9 +27,9 @@ class ExpenseDetailsFramentViewModel(val expenseRepository: ExpenseRepository) :
         }
     }
 
-    fun getExpenseRepeat(description: String, value: String, repeat: Boolean, installments: Int) {
+    fun getExpenseRepeat(dateCreated: Long, value: String, repeat: Boolean, installments: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            val expensesRepeat = expenseRepository.getExpenseRepeat(description, value, repeat, installments)
+            val expensesRepeat = expenseRepository.getExpenseRepeat(dateCreated, value, repeat, installments)
             _expenseDetailsState.postValue(ExpenseDetailsState.ShowExpenseRepeat(expensesRepeat))
         }
     }

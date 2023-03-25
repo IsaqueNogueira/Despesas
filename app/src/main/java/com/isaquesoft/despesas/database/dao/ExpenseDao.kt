@@ -22,8 +22,8 @@ interface ExpenseDao {
     @Query("SELECT * FROM Expense")
     suspend fun getExpenses(): List<Expense>
 
-    @Query("SELECT * FROM Expense WHERE description = :description AND value = :value AND repeat = :repeat AND installments = :installments")
-    suspend fun getExpenseRepeat(description: String, value: String, repeat: Boolean, installments: Int): List<Expense>
+    @Query("SELECT * FROM Expense WHERE dateCreated = :dateCreated AND value = :value AND repeat = :repeat AND installments = :installments")
+    suspend fun getExpenseRepeat(dateCreated: Long, value: String, repeat: Boolean, installments: Int): List<Expense>
     @Delete
     suspend fun deleteExpense(expense: Expense)
 

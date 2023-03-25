@@ -15,11 +15,7 @@
         <item name="android:fontFamily">@font/varela</item>
     </style>
 
-    <style name="MyBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="android:windowSoftInputMode">adjustResize</item>
-    </style>
-
-    <style name="BottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
+    <style name="BottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetDialogTheme</item>
     </style>
 

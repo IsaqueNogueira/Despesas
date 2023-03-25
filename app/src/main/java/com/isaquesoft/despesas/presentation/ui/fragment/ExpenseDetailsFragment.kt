@@ -60,14 +60,14 @@ class ExpenseDetailsFragment : Fragment() {
     private fun setupButtonEdit() {
         binding.expenseDetailsButtonEdit.setOnClickListener {
             val bottomSheetDialogFragment = EditFragmentBottomSheet(expense, ::newExpense)
-            bottomSheetDialogFragment.setStyle(STYLE_NORMAL, R.style.MyBottomSheetDialogTheme)
+            bottomSheetDialogFragment.setStyle(STYLE_NORMAL, R.style.BottomSheetStyle)
             fragmentManager?.let { it1 -> bottomSheetDialogFragment.show(it1, bottomSheetDialogFragment.tag) }
         }
     }
 
     private fun checkExpenseRepeat() {
         if (expense.repeat) {
-            viewModel.getExpenseRepeat(expense.description, expense.value, expense.repeat, expense.installments)
+            viewModel.getExpenseRepeat(expense.dateCreated, expense.value, expense.repeat, expense.installments)
         }
     }
 

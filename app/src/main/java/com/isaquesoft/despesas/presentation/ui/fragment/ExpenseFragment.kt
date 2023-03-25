@@ -27,7 +27,6 @@ class ExpenseFragment : Fragment() {
     private val controlation by lazy { findNavController() }
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: ExpenseFragmentViewModel by viewModel()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -89,6 +88,7 @@ class ExpenseFragment : Fragment() {
         val month = dateFormatter.format(it.calendar.time)
         val formatMonth = month.capitalize()
         binding.expenseDateText.text = formatMonth
+
     }
 
     private fun minMaxDate(minDate: Long, maxDate: Long) {

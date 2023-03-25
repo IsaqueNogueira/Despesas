@@ -13,7 +13,7 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
 
     suspend fun getExpenses() = expenseDao.getExpenses()
 
-    suspend fun getExpenseRepeat(description: String, value: String, repeat: Boolean, installments: Int) = expenseDao.getExpenseRepeat(description, value, repeat, installments)
+    suspend fun getExpenseRepeat(dateCreated: Long, value: String, repeat: Boolean, installments: Int) = expenseDao.getExpenseRepeat(dateCreated, value, repeat, installments)
 
     suspend fun deleteExpense(expense: Expense) = expenseDao.deleteExpense(expense)
 
