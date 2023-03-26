@@ -1,9 +1,7 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +9,7 @@ import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseState
+import com.isaquesoft.despesas.presentation.ui.SharedPreferences
 import com.isaquesoft.despesas.presentation.ui.adapter.AdapterExpense
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
@@ -38,11 +37,26 @@ class ExpenseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, false)
         requireActivity().title = getString(R.string.title_my_expense)
         initViewModel()
         goToNewExpenseFragment()
         dateText()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_principal, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.settings_item -> {
+                goToSettingsFragment()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun dateText() {
@@ -51,7 +65,22 @@ class ExpenseFragment : Fragment() {
             applyPattern("MMMM/yyyy")
             isLenient = false
         }
-        viewModel.getAllExpense(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+
+        when (SharedPreferences(requireContext()).getOrdemList()) {
+            "A-Z true" -> {
+                viewModel.getAllExpenseByDescriptionAsc(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+            }
+            "Date Desc true" -> {
+                viewModel.getAllExpenseDateDesc(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+            }
+            "Date Cres true" -> {
+                viewModel.getAllExpenseDateCres(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+            }
+            else -> {
+                viewModel.getAllExpense(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+            }
+        }
+
         binding.expenseDateText.text = dateFormatter.format(calendar.time).replaceFirstChar { it.uppercase() }
         binding.expensePrevbutton.setOnClickListener {
             viewModel.clickPrevButton()
@@ -88,11 +117,23 @@ class ExpenseFragment : Fragment() {
         val month = dateFormatter.format(it.calendar.time)
         val formatMonth = month.capitalize()
         binding.expenseDateText.text = formatMonth
-
     }
 
     private fun minMaxDate(minDate: Long, maxDate: Long) {
-        viewModel.getAllExpense(minDate, maxDate)
+        when (SharedPreferences(requireContext()).getOrdemList()) {
+            "A-Z true" -> {
+                viewModel.getAllExpenseByDescriptionAsc(minDate, maxDate)
+            }
+            "Date Desc true" -> {
+                viewModel.getAllExpenseDateDesc(minDate, maxDate)
+            }
+            "Date Cres true" -> {
+                viewModel.getAllExpenseDateCres(minDate, maxDate)
+            }
+            else -> {
+                viewModel.getAllExpense(minDate, maxDate)
+            }
+        }
     }
 
     private fun showExpenses(expenses: List<Expense>) {
@@ -130,5 +171,10 @@ class ExpenseFragment : Fragment() {
             val direction = ExpenseFragmentDirections.actionExpenseFragmentToNewExpenseFragment()
             controlation.navigate(direction)
         }
+    }
+
+    private fun goToSettingsFragment() {
+        val direction = ExpenseFragmentDirections.actionExpenseFragmentToSettingsFragment()
+        controlation.navigate(direction)
     }
 }

@@ -60,7 +60,7 @@ class ExpenseDetailsFragment : Fragment() {
     private fun setupButtonEdit() {
         binding.expenseDetailsButtonEdit.setOnClickListener {
             val bottomSheetDialogFragment = EditFragmentBottomSheet(expense, ::newExpense)
-            bottomSheetDialogFragment.setStyle(STYLE_NORMAL, R.style.BottomSheetStyle)
+            bottomSheetDialogFragment.setStyle(STYLE_NORMAL, R.style.MyBottomSheetDialogTheme)
             fragmentManager?.let { it1 -> bottomSheetDialogFragment.show(it1, bottomSheetDialogFragment.tag) }
         }
     }

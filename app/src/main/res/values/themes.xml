@@ -16,12 +16,8 @@
     </style>
 
 
-    <style name="BottomSheetStyle" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetDialogTheme</item>
-    </style>
-
-    <style name="BottomSheetDialogTheme" parent="Widget.Design.BottomSheet.Modal">
-        <item name="background">@android:color/transparent</item>
+    <style name="MyBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
 </resources>

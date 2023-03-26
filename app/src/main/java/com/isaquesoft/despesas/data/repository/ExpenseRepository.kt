@@ -11,6 +11,12 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
 
     suspend fun getAllExpense(minDate: Long, maxDate: Long) = expenseDao.getAllExpense(minDate, maxDate)
 
+    suspend fun getAllExpenseByDescriptionAsc(minDate: Long, maxDate: Long) = expenseDao.getAllExpenseByDescriptionAsc(minDate, maxDate)
+
+    suspend fun getAllExpenseDateDesc(minDate: Long, maxDate: Long) = expenseDao.getAllExpenseDateDesc(minDate, maxDate)
+
+    suspend fun getAllExpenseDateCres(minDate: Long, maxDate: Long) = expenseDao.getAllExpenseDateCres(minDate, maxDate)
+
     suspend fun getExpenses() = expenseDao.getExpenses()
 
     suspend fun getExpenseRepeat(dateCreated: Long, value: String, repeat: Boolean, installments: Int) = expenseDao.getExpenseRepeat(dateCreated, value, repeat, installments)

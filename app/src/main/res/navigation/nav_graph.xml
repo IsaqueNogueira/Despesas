@@ -24,6 +24,13 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_expenseFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"/>
 
     </fragment>
     <fragment
@@ -58,5 +65,20 @@
         <argument
             android:name="expense"
             app:argType="com.isaquesoft.despesas.data.model.Expense" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.isaquesoft.despesas.presentation.ui.fragment.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/settings_fragment">
+        <action
+            android:id="@+id/action_settingsFragment_to_expenseFragment"
+            app:destination="@id/expenseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@id/expenseFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

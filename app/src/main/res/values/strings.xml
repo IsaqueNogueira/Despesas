@@ -36,4 +36,17 @@
     <string name="expense_delete_info_it">Somente esta</string>
     <string name="expense_delete_info_all">Todas</string>
     <string name="alert_delet_info">Deseja realmente excluir?</string>
+    <string name="settings">Configurações</string>
+    <string name="settings_ordem_title">Lista de despesas</string>
+    <string name="settings_ordem_description">Ordenar por descrição A - Z</string>
+    <string name="settings_ordem_date_desc">Ordenar por data decrescente</string>
+    <string name="settings_ordem_date_cres">Ordenar por data crescente</string>
+    <string name="backup">Backup</string>
+    <string name="backup_description">Criar e restaurar cópia de segurança</string>
+    <string name="settings_pro_title">Vantagens da VERSÃO PRO</string>
+    <string name="vantagens_pro_1">Sem anúncios de vídeo.</string>
+    <string name="vantagens_pro_2">Sem anúncios de banner.</string>
+    <string name="vantagens_pro_3">Backup das despesas.</string>
+    <string name="vantagens_pro_4">Notificação de vencimento da despesa.</string>
+    <string name="btn_pro">Quero fazer parte da VERSÃO PRO</string>
 </resources>
