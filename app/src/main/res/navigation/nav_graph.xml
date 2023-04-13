@@ -43,10 +43,11 @@
             app:destination="@id/expenseFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
+            app:launchSingleTop="false"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/expenseFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/expenseDetailsFragment"

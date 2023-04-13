@@ -60,9 +60,14 @@ class AdapterExpense(
             holder.itemIate.visibility = View.GONE
         }
 
+        if (expense.repeat && expense.installments == 0) {
+            holder.txtMaturity.text = SimpleDateFormat("dd/MM/yyyy").format(expense.date) + " - Despesa fixa"
+        } else {
+            holder.txtMaturity.text = SimpleDateFormat("dd/MM/yyyy").format(expense.date)
+        }
+
         holder.txtDescription.text = expense.description
         holder.txtValue.text = expense.value
-        holder.txtMaturity.text = SimpleDateFormat("dd/MM/yyyy").format(expense.date)
 
         holder.itemView.setOnClickListener {
             clickItem.invoke(expense)

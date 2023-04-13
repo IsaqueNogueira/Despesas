@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment.STYLE_NORMAL
 import androidx.fragment.app.Fragment
@@ -73,7 +74,7 @@ class ExpenseDetailsFragment : Fragment() {
 
     private fun newExpense(expense: Expense) {
         viewModel.updateExpense(expense)
-        goToExpenseFragment()
+        requireActivity().onBackPressed()
     }
 
     private fun setupCheckBox() {
@@ -92,7 +93,7 @@ class ExpenseDetailsFragment : Fragment() {
                     paidOut = true,
                 )
                 viewModel.updateExpense(newExpense)
-                goToExpenseFragment()
+                requireActivity().onBackPressed()
             } else {
                 val newExpense = Expense(
                     id = expense.id,
@@ -105,7 +106,7 @@ class ExpenseDetailsFragment : Fragment() {
                     paidOut = false,
                 )
                 viewModel.updateExpense(newExpense)
-                goToExpenseFragment()
+                requireActivity().onBackPressed()
             }
         }
     }
@@ -128,6 +129,7 @@ class ExpenseDetailsFragment : Fragment() {
                 val alertDeleteButtonIt = findViewById<Button>(R.id.alert_delet_button_it)
                 val alertDeleteButtonAll = findViewById<Button>(R.id.alert_delet_button_all)
                 val alertDeleteDescription = findViewById<TextView>(R.id.alert_delet_description)
+                val alertBtnClose = findViewById<ImageButton>(R.id.alert_delet_btn_close)
                 if (!expense.repeat) {
                     alertDeletTitle.text = getString(R.string.alert_delet_info)
                     alertDeleteButtonIt.text = getString(R.string.delete)
@@ -142,7 +144,11 @@ class ExpenseDetailsFragment : Fragment() {
                 val buttonPositiveAll = findViewById<Button>(R.id.alert_delet_button_all)
                 buttonPositiveIt.setOnClickListener {
                     viewModel.deleteExpense(expense)
-                    goToExpenseFragment()
+                    requireActivity().onBackPressed()
+                    alertDialog.dismiss()
+                }
+
+                alertBtnClose.setOnClickListener {
                     alertDialog.dismiss()
                 }
 
@@ -151,7 +157,7 @@ class ExpenseDetailsFragment : Fragment() {
                         when (it) {
                             is ExpenseDetailsState.ShowExpenseRepeat -> {
                                 viewModel.deleteAllExpenseRepeat(it.expensesRepeat)
-                                goToExpenseFragment()
+                                requireActivity().onBackPressed()
                                 alertDialog.dismiss()
                             }
                         }
@@ -173,7 +179,7 @@ class ExpenseDetailsFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (activity != null) {
-                    goToExpenseFragment()
+                    activity?.onBackPressed()
                 }
             }
         }

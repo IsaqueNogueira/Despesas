@@ -49,4 +49,6 @@
     <string name="vantagens_pro_3">Backup das despesas.</string>
     <string name="vantagens_pro_4">Notificação de vencimento da despesa.</string>
     <string name="btn_pro">Quero fazer parte da VERSÃO PRO</string>
+    <string name="search">Pesquisar</string>
+    <string name="colunas">Colunas</string>
 </resources>

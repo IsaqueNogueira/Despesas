@@ -11,11 +11,6 @@ object CoinUtils {
         val deviceLocale = editText.resources.configuration.locale
         val numberFormat = NumberFormat.getCurrencyInstance(deviceLocale)
 
-        val currencySymbol = Currency.getInstance(deviceLocale).symbol
-        val hint = "$currencySymbol 0.00"
-
-        editText.hint = hint
-
         editText.addTextChangedListener(object : TextWatcher {
             private var current = ""
 

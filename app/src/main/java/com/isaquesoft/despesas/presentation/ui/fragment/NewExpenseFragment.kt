@@ -72,7 +72,7 @@ class NewExpenseFragment : Fragment() {
                     installments = installmentsInput.toInt()
                 }
 
-                if (installments > 0) {
+                if (installments > 1) {
                     for (i in 0 until installments) {
                         val inforInstallment = "${i + 1}/$installments"
                         val expense = Expense(
@@ -174,7 +174,7 @@ class NewExpenseFragment : Fragment() {
         when (item.itemId) {
             android.R.id.home -> {
                 if (activity != null) {
-                    goToExpenseFragment()
+                    activity?.onBackPressed()
                 }
             }
         }

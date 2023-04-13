@@ -32,6 +32,11 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         _expenseState.postValue(ExpenseState.DateText(calendar))
     }
 
+    fun initCalendar() {
+        calendar.add(Calendar.MONTH, 0)
+        _expenseState.postValue(ExpenseState.DateText(calendar))
+    }
+
     fun getAllExpense(minDate: Long, maxDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             val listExpensePrimary = expenseRepository.getAllExpense(minDate, maxDate)
