@@ -15,7 +15,7 @@ import java.util.*
 
 class AdapterExpense(
     private val listExpense: List<Expense>,
-    private val clickItem: (expense: Expense) -> Unit = {},
+    private val clickItem: (expense: Expense) -> Unit = {}
 ) : RecyclerView.Adapter<AdapterExpense.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

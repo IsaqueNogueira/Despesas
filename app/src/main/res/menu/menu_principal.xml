@@ -6,11 +6,23 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
     <item
-        android:id="@+id/settings_item"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings"
-        app:showAsAction="ifRoom" />
-
-
+        android:id="@+id/menu_main"
+        android:title="Menu principal"
+        android:icon="@drawable/more_vert"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/settings_item"
+                android:title="@string/settings"
+              />
+            <item
+                android:id="@+id/share_pdf"
+                android:title="@string/share_pdf" />
+            <item
+                android:id="@+id/menu_item3"
+                android:title="@string/about" />
+        </menu>
+    </item>
 </menu>

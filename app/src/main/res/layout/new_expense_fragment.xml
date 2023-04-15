@@ -5,84 +5,51 @@
     android:layout_height="match_parent"
     android:background="@color/grey">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="10dp"
-            android:paddingBottom="30dp"
-            app:cardCornerRadius="4dp"
-            app:cardElevation="1dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/new_expense_description_edit_layout"
-                    style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
-                    android:layout_width="0dp"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/new_expense_value_info"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
                     android:layout_marginTop="30dp"
-                    android:layout_marginEnd="30dp"
+                    android:text="@string/value_expense"
+                    android:textColor="@color/grey_value"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_expense_input_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:hint="@string/description"
-                        android:inputType="textCapSentences"
-                        android:maxLength="120" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/new_expense_value_edit_layout"
-                    style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/new_expense_input_value"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="30dp"
-                    android:hint="@string/value"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginEnd="60dp"
+                    android:digits="0123456789"
+                    android:inputType="number"
+                    android:maxLength="15"
+                    android:textAlignment="center"
+                    android:textColor="@color/grey_value"
+                    android:textSize="26sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/new_expense_description_edit_layout">
+                    app:layout_constraintTop_toBottomOf="@id/new_expense_value_info" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/new_expense_input_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:digits="0123456789"
-                        android:inputType="number"
-                        android:maxLength="19" />
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/new_expense_maturity_edit_layout"
                     style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="30dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
                     android:hint="@string/maturity"
+                    android:textColorHint="@color/grey_value"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/new_expense_value_edit_layout">
+                    app:layout_constraintTop_toBottomOf="@id/new_expense_input_value">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/new_expense_input_maturity"
@@ -92,8 +59,39 @@
                         android:focusable="false"
                         android:inputType="none"
                         android:maxLength="19"
-
+                        android:textColor="@color/grey_value"
+                        android:textSize="18sp"
+                        android:drawableStart="@drawable/calendar"
+                        android:drawablePadding="8dp"
                         />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/new_expense_description_edit_layout"
+                    style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:textColorHint="@color/grey_value"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/new_expense_maturity_edit_layout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/new_expense_input_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/description"
+                        android:drawableStart="@drawable/description"
+                        android:drawablePadding="8dp"
+                        android:textSize="18sp"
+                        android:inputType="textCapSentences"
+                        android:maxLength="120"
+                        android:textColor="@color/grey_value" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <RadioGroup
@@ -102,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/new_expense_maturity_edit_layout">
+                    app:layout_constraintTop_toBottomOf="@id/new_expense_description_edit_layout">
 
                     <RadioButton
                         android:id="@+id/new_expense_no_repeat"
@@ -110,6 +108,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
                         android:clickable="true"
+                        android:textColor="@color/grey_value"
                         android:text="@string/no_repeat"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -120,6 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
                         android:clickable="true"
+                        android:textColor="@color/grey_value"
                         android:text="@string/repeat"
                         app:layout_constraintStart_toEndOf="@id/new_expense_no_repeat"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -153,6 +153,7 @@
                         android:layout_marginStart="30dp"
                         android:clickable="true"
                         android:text="@string/fixed"
+                        android:textColor="@color/grey_value"
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/new_expense_diviser" />
@@ -165,6 +166,7 @@
                         android:layout_marginTop="-15dp"
                         android:clickable="true"
                         android:text="@string/installments"
+                        android:textColor="@color/grey_value"
                         android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/new_expense_fixed" />
@@ -188,6 +190,7 @@
                     android:layout_marginStart="30dp"
                     android:layout_marginTop="-5dp"
                     android:hint="@string/twelve"
+                    android:textColor="@color/grey_value"
                     android:inputType="number"
                     android:maxLength="3"
                     android:visibility="gone"
@@ -213,7 +216,4 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

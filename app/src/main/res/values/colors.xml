@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="grey">#f4f4f4</color>
+    <color name="grey_icon">#8F8F8F</color>
     <color name="greyf">#767676</color>
     <color name="grey_value">#676767</color>
     <color name="grey_line">#4C4C4C</color>
@@ -17,4 +18,8 @@
     <color name="blue_600">#1e88e5</color>
     <color name="blue_500">#2196f3</color>
     <color name="green_weak">#4CAF50</color>
+    <color name="yellow">#CF9501</color>
+
+        <color name="row_color_1">#FFFFFF</color>
+        <color name="row_color_2">#EAEAEA</color>
 </resources>

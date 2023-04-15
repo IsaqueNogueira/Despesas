@@ -10,6 +10,15 @@ object CoinUtils {
     fun addCurrencyMask(editText: EditText) {
         val deviceLocale = editText.resources.configuration.locale
         val numberFormat = NumberFormat.getCurrencyInstance(deviceLocale)
+        val defaultLocale = Locale.getDefault()
+
+        val currency = Currency.getInstance(Locale.getDefault())
+        val format = NumberFormat.getCurrencyInstance()
+        format.currency = currency
+        val amount = 0.00
+        val coinTxt = format.format(amount)
+
+        editText.setText(coinTxt)
 
         editText.addTextChangedListener(object : TextWatcher {
             private var current = ""

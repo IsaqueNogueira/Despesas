@@ -89,4 +89,7 @@ class EditFragmentBottomSheet(private val expense: Expense, private val actionEx
         }
     }
 
+    override fun getTheme(): Int {
+        return R.style.CustomBottomSheetDialog
+    }
 }

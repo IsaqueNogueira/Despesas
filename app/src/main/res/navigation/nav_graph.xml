@@ -31,6 +31,9 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_expenseFragment_to_view_pdf_fragment"
+            app:destination="@id/view_pdf_fragment" />
 
     </fragment>
     <fragment
@@ -81,5 +84,23 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/expenseFragment"
             app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/view_pdf_fragment"
+        android:name="com.isaquesoft.despesas.presentation.ui.fragment.ViewPdfFragment"
+        android:label="view_pdf_fragment"
+        tools:layout="@layout/view_pdf_fragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
+        app:popUpTo="@id/expenseFragment"
+        app:popUpToInclusive="true">
+        <argument
+            android:name="expenses"
+            app:argType="com.isaquesoft.despesas.data.model.Expense[]" />
+        <action
+            android:id="@+id/action_view_pdf_fragment_to_expenseFragment"
+            app:destination="@id/expenseFragment" />
     </fragment>
 </navigation>

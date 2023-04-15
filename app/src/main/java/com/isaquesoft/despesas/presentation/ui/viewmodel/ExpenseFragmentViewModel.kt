@@ -33,7 +33,6 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     }
 
     fun initCalendar() {
-        calendar.add(Calendar.MONTH, 0)
         _expenseState.postValue(ExpenseState.DateText(calendar))
     }
 
@@ -200,7 +199,6 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         val lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth)
         val lastDayOfMonthMillis = calendar.timeInMillis
-        _expenseState.postValue(ExpenseState.MinDateMaxDate(firstDayOfMonth, lastDayOfMonthMillis))
         return arrayListOf(firstDayOfMonth, lastDayOfMonthMillis)
     }
 
@@ -245,6 +243,18 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     fun deleteAllExpense(expense: List<Expense>) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteAllExpense(expense)
+        }
+    }
+
+    fun updateExpense(expense: Expense) {
+        viewModelScope.launch(Dispatchers.IO) {
+            expenseRepository.updateExpense(expense)
+        }
+    }
+
+    fun deleteExpense(expense: Expense) {
+        viewModelScope.launch(Dispatchers.IO) {
+            expenseRepository.deleteExpense(expense)
         }
     }
 }

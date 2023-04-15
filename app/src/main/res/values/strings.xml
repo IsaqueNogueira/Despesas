@@ -3,7 +3,7 @@
     <string name="new_expense">Nova despesa</string>
     <string name="description">Descrição</string>
     <string name="value">Valor</string>
-    <string name="maturity">Vencimento</string>
+    <string name="maturity">Date de vencimento</string>
     <string name="no_repeat">Não Repetir</string>
     <string name="repeat">Repetir</string>
     <string name="fixed">Fixo</string>
@@ -13,7 +13,7 @@
     <string name="provide_the_description_of_the_expense">Informe a descrição da despesa</string>
     <string name="provide_the_value_of_the_expense">Informe o valor da despesa</string>
     <string name="required_field_description">Informe a descrição da despesa</string>
-    <string name="required_field_value">Valor da despesa deve ser maior que 0</string>
+    <string name="required_field_value">Valor da despesa não pode ser</string>
     <string name="rent">Aluguel</string>
     <string name="twelve">12</string>
     <string name="total_payable">Total</string>
@@ -51,4 +51,18 @@
     <string name="btn_pro">Quero fazer parte da VERSÃO PRO</string>
     <string name="search">Pesquisar</string>
     <string name="colunas">Colunas</string>
+    <string name="value_expense">Valor da despesa</string>
+    <string name="maturity_date">14/04/2023</string>
+    <string name="maturity_info">Vencimento</string>
+    <string name="nopaidout">Não pago</string>
+    <string name="no_expense_share">Não há despesas para gerar PDF neste mês.</string>
+    <string name="no_expense_register">Sem despesas cadastradas</string>
+    <string name="share_pdf">Compartilhar PDF</string>
+    <string name="about">Sobre</string>
+    <string name="paidoutmarcar">Marcar como paga</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="deleteinfo">Você quer mesmo deletar essa despesa?</string>
+    <string name="paidoutinfo">Parábens! Essa despesa está paga.</string>
+    <string name="paidoutinfo2">Despesa não-paga.</string>
+    <string name="paidoutmarcardesmarcar">Marcar como não-paga</string>
 </resources>

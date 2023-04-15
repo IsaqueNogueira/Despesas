@@ -2,6 +2,7 @@ package com.isaquesoft.despesas.presentation.ui.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewModel
 import com.isaquesoft.despesas.utils.AlertDialogStandard
+import com.isaquesoft.despesas.utils.CustomToast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -89,8 +91,23 @@ class ExpenseFragment : Fragment() {
             R.id.settings_item -> {
                 goToSettingsFragment()
             }
+
+            R.id.share_pdf -> {
+                pdfShareButton()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun pdfShareButton() {
+        if (expenses.isNotEmpty()) {
+            val navigation = ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
+            controlation.navigate(navigation)
+        } else {
+            val message = getString(R.string.no_expense_share)
+            val customToast = CustomToast(requireContext(), message)
+            customToast.show()
+        }
     }
 
     private fun dateText() {
@@ -111,7 +128,6 @@ class ExpenseFragment : Fragment() {
             when (it) {
                 is ExpenseState.DateText -> showDateText(it.calendar)
                 is ExpenseState.ShowExpenses -> showExpenses(it.expense)
-                is ExpenseState.MinDateMaxDate -> minMaxDate(it.minDate, it.maxDate)
                 is ExpenseState.ShowValueEndBalance -> showFullValueEndBalance(it.fullValue, it.fullBalance)
             }
         }
@@ -144,24 +160,8 @@ class ExpenseFragment : Fragment() {
         }
         val month = dateFormatter.format(calendar.time)
         val formatMonth = month.capitalize()
+        binding.expenseDateText.startAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in))
         binding.expenseDateText.text = formatMonth
-    }
-
-    private fun minMaxDate(minDate: Long, maxDate: Long) {
-        when (SharedPreferences(requireContext()).getOrdemList()) {
-            "A-Z true" -> {
-                viewModel.getAllExpenseByDescriptionAsc(minDate, maxDate)
-            }
-            "Date Desc true" -> {
-                viewModel.getAllExpenseDateDesc(minDate, maxDate)
-            }
-            "Date Cres true" -> {
-                viewModel.getAllExpenseDateCres(minDate, maxDate)
-            }
-            else -> {
-                viewModel.getAllExpense(minDate, maxDate)
-            }
-        }
     }
 
     private fun showExpenses(expenses: List<Expense>) {
@@ -170,6 +170,7 @@ class ExpenseFragment : Fragment() {
         binding.expenseRecyclerview.adapter = AdapterExpense(expenses, this::clickItem)
         viewModel.fullExpenseSum(expenses)
         showNewCoin(expenses)
+        checkExpenseRegister()
     }
 
     private fun showNewCoin(expenses: List<Expense>) {
@@ -187,9 +188,30 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun clickItem(expense: Expense) {
-        goToExpenseDetailsFragmennt(expense)
+        val bottomSheetDialogFragment = BottomShettPrincipalFragment(expense, ::deleteExpense, ::updateExpense)
+        fragmentManager?.let { it1 ->
+            bottomSheetDialogFragment.show(
+                it1,
+                bottomSheetDialogFragment.tag,
+            )
+        }
     }
 
+    private fun updateExpense(expense: Expense) {
+        viewModel.updateExpense(expense)
+    }
+    private fun deleteExpense(expense: Expense) {
+        viewModel.deleteExpense(expense)
+    }
+    private fun checkExpenseRegister() {
+        if (expenses.isEmpty()) {
+            binding.expenseAnimationView.visibility = View.VISIBLE
+            binding.txtInfoNoExpenseRegister.visibility = View.VISIBLE
+        } else {
+            binding.expenseAnimationView.visibility = View.GONE
+            binding.txtInfoNoExpenseRegister.visibility = View.GONE
+        }
+    }
     private fun goToExpenseDetailsFragmennt(expense: Expense) {
         val direction = ExpenseFragmentDirections.actionExpenseFragmentToExpenseDetailsFragment(expense)
         controlation.navigate(direction)

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/pdf_view">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/title_pdf"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:background="@color/blue_500"
+        android:paddingTop="5dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Despesas Abril 2023"
+        />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/logodespesas"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <TextView
+        android:id="@+id/description_pdf"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/pdf_info_background"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/description"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/paidout_pdf"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_pdf" />
+
+    <TextView
+        android:id="@+id/paidout_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/pdf_info_background"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/paidout"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/maturity_pdf"
+        app:layout_constraintTop_toBottomOf="@id/title_pdf" />
+
+    <TextView
+        android:id="@+id/maturity_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/pdf_info_background"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/maturity_info"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/value_pdf"
+        app:layout_constraintTop_toBottomOf="@id/title_pdf" />
+
+    <TextView
+        android:id="@+id/value_pdf"
+        android:layout_width="98dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="7dp"
+        android:background="@drawable/pdf_info_background"
+        android:paddingStart="5dp"
+        android:paddingEnd="5dp"
+        android:text="@string/value"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_pdf" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerviewPdf"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        app:layout_constraintBottom_toTopOf="@id/total_pago_info_pdf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description_pdf"
+        tools:listitem="@layout/item_pdf" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_pago_info_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/recyclerviewPdf"
+        app:layout_constraintBottom_toTopOf="@id/total_no_pago_info_pdf"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="7dp"
+        android:text="@string/paidout"
+        android:textColor="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_pago_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/total_pago_info_pdf"
+        app:layout_constraintBottom_toBottomOf="@id/total_pago_info_pdf"
+        app:layout_constraintStart_toEndOf="@id/total_pago_info_pdf"
+        android:layout_marginStart="110dp"
+        tools:text="R$ 0,00"
+        android:textColor="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_no_pago_info_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/total_info_pdf"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="7dp"
+        android:text="@string/nopaidout"
+        android:textColor="@color/black"
+        android:layout_marginBottom="10dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_no_pago_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/total_no_pago_info_pdf"
+        app:layout_constraintBottom_toBottomOf="@id/total_no_pago_info_pdf"
+        app:layout_constraintEnd_toEndOf="@id/total_pago_pdf"
+        android:layout_marginStart="80dp"
+        tools:text="R$ 5,000,000,00"
+        android:textColor="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_info_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="7dp"
+        android:text="Total"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/total_pdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/total_info_pdf"
+        app:layout_constraintTop_toTopOf="@id/total_info_pdf"
+        app:layout_constraintEnd_toEndOf="@id/total_pago_pdf"
+        android:layout_marginStart="7dp"
+        tools:text="R$ 5.000.000.00"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        />
+      <View
+          android:layout_width="0dp"
+          android:layout_height="1dp"
+          android:background="@color/black"
+          app:layout_constraintTop_toBottomOf="@id/total_info_pdf"
+          app:layout_constraintStart_toStartOf="@id/total_info_pdf"
+          app:layout_constraintEnd_toEndOf="@id/total_pdf"
+          />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

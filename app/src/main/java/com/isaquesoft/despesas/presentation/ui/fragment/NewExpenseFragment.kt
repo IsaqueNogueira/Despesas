@@ -1,14 +1,17 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.isaquesoft.despesas.R
+import com.isaquesoft.despesas.utils.CustomToast
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.NewExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
@@ -50,6 +53,16 @@ class NewExpenseFragment : Fragment() {
         clickRepeat()
         clickFixed()
         clickSave()
+        initEditTextValueAutomatic()
+    }
+
+    private fun initEditTextValueAutomatic() {
+        val editValueInitAutomatic = binding.newExpenseInputValue
+
+        editValueInitAutomatic.requestFocus()
+        val imm =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(editValueInitAutomatic, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun clickSave() {
@@ -63,7 +76,9 @@ class NewExpenseFragment : Fragment() {
             val dataCreated = Date().time
             val installmentsInput = binding.newExpenseInputInstallments.text.toString()
 
-            if (!TextUtils.isEmpty(description) && !TextUtils.isEmpty(value)) {
+            val valorNumerico = value.replace(Regex("[^\\d]"), "").toDouble() / 100
+
+            if (!TextUtils.isEmpty(description) && !TextUtils.isEmpty(value) && valorNumerico > 0) {
                 if (selectedInstallments && TextUtils.isEmpty(installmentsInput)) {
                     binding.newExpenseInputInstallments.setError(getString(R.string.required_field_installments))
                     binding.newExpenseInputInstallments.requestFocus()
@@ -97,14 +112,16 @@ class NewExpenseFragment : Fragment() {
                     )
                     viewModel.insertExpense(expense)
                 }
-                goToExpenseFragment()
+                requireActivity().onBackPressed()
             } else {
                 if (TextUtils.isEmpty(description)) {
                     binding.newExpenseInputDescription.setError(getString(R.string.required_field_description))
                     binding.newExpenseInputDescription.requestFocus()
                 } else {
-                    binding.newExpenseInputValue.setError(getString(R.string.required_field_value))
                     binding.newExpenseInputValue.requestFocus()
+                    val message = getString(R.string.required_field_value) + " (" + value + ")"
+                    val customToast = CustomToast(requireContext(), message)
+                    customToast.show()
                 }
             }
         }
