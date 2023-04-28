@@ -65,4 +65,21 @@
     <string name="paidoutinfo">Parábens! Essa despesa está paga.</string>
     <string name="paidoutinfo2">Despesa não-paga.</string>
     <string name="paidoutmarcardesmarcar">Marcar como não-paga</string>
+    <string name="titlenotification">Despesa vencendo hoje</string>
+    <string name="expense_due_today">A despesa %s vence hoje!</string>
+    <string name="resumo">Resumo</string>
+    <string name="share">Share</string>
+    <string name="roupas">Roupas</string>
+    <string name="viagem">Viagem</string>
+    <string name="cartao">Cartão</string>
+    <string name="saude">Saúde</string>
+    <string name="filme">Filmes</string>
+    <string name="outros">Outros</string>
+    <string name="comidabebida">Comida e Bebida</string>
+    <string name="transporte">Transporte</string>
+    <string name="eletronicos">Eletrônicos</string>
+    <string name="educacao">Educação</string>
+    <string name="entretenimento">Entretenimento</string>
+    <string name="searchcategory">Pesquisar categoria</string>
+
 </resources>

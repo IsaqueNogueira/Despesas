@@ -57,6 +57,7 @@ class EditFragmentBottomSheet(private val expense: Expense, private val actionEx
                     repeat = expense.repeat,
                     installments = expense.installments,
                     paidOut = expense.paidOut,
+                    category = expense.category
                 )
 
                 actionExpense.invoke(newExpense)

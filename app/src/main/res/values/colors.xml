@@ -20,6 +20,23 @@
     <color name="green_weak">#4CAF50</color>
     <color name="yellow">#CF9501</color>
 
-        <color name="row_color_1">#FFFFFF</color>
-        <color name="row_color_2">#EAEAEA</color>
+    <color name="row_color_1">#FFFFFF</color>
+    <color name="row_color_2">#EAEAEA</color>
+
+    <color name="pink">#FF3A65</color>
+    <color name="blue">#2A3AFF</color>
+    <color name="cinza_forte">#1C222A</color>
+    <color name="cinza_fraco">#8591A4</color>
+
+    <color name="roupas">#1E2E81</color>
+    <color name="viagem">#9DC183</color>
+    <color name="cartao">#B3B3B3</color>
+    <color name="saude">#F2B6B6</color>
+    <color name="filmes">#6C5B7B</color>
+    <color name="outros">#00917C</color>
+    <color name="comidabebida">#497700</color>
+    <color name="transporte">#8F8F8F</color>
+    <color name="eletronicos">#C1D1CC</color>
+    <color name="educacao">#B3C1E1</color>
+    <color name="entretenimento">#E4C1F9</color>
 </resources>

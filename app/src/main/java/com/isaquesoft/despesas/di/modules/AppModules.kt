@@ -31,4 +31,8 @@ val appModules = module {
     viewModel {
         ExpenseDetailsFramentViewModel(get())
     }
+
+    viewModel {
+        ResumeGraphicExpenseViewModel(get())
+    }
 }

@@ -1,6 +1,7 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -8,19 +9,23 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.isaquesoft.despesas.R
-import com.isaquesoft.despesas.utils.CustomToast
+import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.NewExpenseFragmentBinding
+import com.isaquesoft.despesas.presentation.state.NewExpenseState
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.NewExpenseFragmentViewModel
 import com.isaquesoft.despesas.utils.CoinUtils
+import com.isaquesoft.despesas.utils.CustomToast
 import com.isaquesoft.despesas.utils.DateUtils
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,6 +38,7 @@ class NewExpenseFragment : Fragment() {
     private var repeat: Boolean = false
     private var installments: Int = 0
     private var selectedInstallments: Boolean = false
+    private lateinit var category: Category
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,7 +59,90 @@ class NewExpenseFragment : Fragment() {
         clickRepeat()
         clickFixed()
         clickSave()
+        initViewModel()
         initEditTextValueAutomatic()
+        viewModel.getAllCategory()
+    }
+
+    private fun initViewModel() {
+        viewModel.expenseState.observe(viewLifecycleOwner) {
+            when (it) {
+                is NewExpenseState.ShowAllCategory -> showCategory(it.category)
+            }
+        }
+    }
+
+    private fun showCategory(category: List<Category>) {
+        if (category.isNotEmpty()) {
+            this.category = category[5]
+            val categoryTxt = binding.newExpenseCategoryText
+            categoryTxt.text = category[5].category
+
+            val iconCategory = binding.newExpenseIconCategory
+            val outros = resources.getIdentifier("outros", "drawable", requireContext().packageName)
+            iconCategory.setImageResource(outros)
+
+            val background = categoryTxt.background as GradientDrawable
+            background.setStroke(
+                resources.getDimensionPixelSize(R.dimen.stroke_width),
+                resources.getColor(R.color.outros),
+            )
+            categoryTxt.background = background
+
+            val iconImageView = binding.newExpenseIconCategory
+            val drawable = iconImageView.background as GradientDrawable
+            drawable.setColor(ContextCompat.getColor(requireContext(), R.color.outros))
+        }
+
+        binding.newExpenseCategoryDescription.setOnClickListener {
+            val bottomSheetDialogFragment =
+                BottomSheetCategoryFragment(category, ::updateCategory)
+            fragmentManager?.let { it1 ->
+                bottomSheetDialogFragment.show(
+                    it1,
+                    bottomSheetDialogFragment.tag,
+                )
+            }
+        }
+    }
+
+    private fun updateCategory(category: Category) {
+        this.category = category
+
+        var categoryName = category.category.toLowerCase()
+        categoryName = categoryName.unaccent()
+        if (categoryName == "comida e bebida") {
+            categoryName = "comidabebida"
+        }
+
+        val color = resources.getIdentifier(
+            categoryName,
+            "color",
+            requireContext().packageName,
+        )
+
+        val categoryTxt = binding.newExpenseCategoryText
+        categoryTxt.text = category.category
+
+        val iconCategory = binding.newExpenseIconCategory
+        val outros = resources.getIdentifier(categoryName, "drawable", requireContext().packageName)
+        iconCategory.setImageResource(outros)
+
+        val background = categoryTxt.background as GradientDrawable
+        background.setStroke(
+            resources.getDimensionPixelSize(R.dimen.stroke_width),
+            resources.getColor(color),
+        )
+        categoryTxt.background = background
+
+        val iconImageView = binding.newExpenseIconCategory
+        val drawable = iconImageView.background as GradientDrawable
+        drawable.setColor(ContextCompat.getColor(requireContext(), color))
+    }
+
+    private fun String.unaccent(): String {
+        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
+        return Regex("[^\\p{ASCII}]").replace(temp, "")
     }
 
     private fun initEditTextValueAutomatic() {
@@ -97,6 +186,7 @@ class NewExpenseFragment : Fragment() {
                             date = calendar.timeInMillis,
                             repeat = repeat,
                             installments = installments,
+                            category = category.category,
                         )
                         viewModel.insertExpense(expense)
                         calendar.add(Calendar.MONTH, 1)
@@ -109,6 +199,7 @@ class NewExpenseFragment : Fragment() {
                         date = calendar.timeInMillis,
                         repeat = repeat,
                         installments = installments,
+                        category = category.category,
                     )
                     viewModel.insertExpense(expense)
                 }
@@ -140,6 +231,7 @@ class NewExpenseFragment : Fragment() {
                     binding.newExpenseInstallments.visibility = View.VISIBLE
                     binding.newExpenseFixed.isChecked = true
                 }
+
                 else -> {
                     repeat = false
                     installments = 0
@@ -165,6 +257,7 @@ class NewExpenseFragment : Fragment() {
                     binding.newExpenseInputInstallments.visibility = View.GONE
                     selectedInstallments = false
                 }
+
                 else -> {
                     repeat = true
                     binding.newExpenseQtdInstallments.visibility = View.VISIBLE

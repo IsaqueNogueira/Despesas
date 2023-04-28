@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.isaquesoft.despesas.R
+import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseState
@@ -17,6 +19,7 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewModel
 import com.isaquesoft.despesas.utils.AlertDialogStandard
+import com.isaquesoft.despesas.utils.CategoryUtils
 import com.isaquesoft.despesas.utils.CustomToast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -46,8 +49,17 @@ class ExpenseFragment : Fragment() {
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, false)
         requireActivity().title = getString(R.string.title_my_expense)
         initViewModel()
-        goToNewExpenseFragment()
         dateText()
+        viewModel.getAllCategory()
+        goToNewExpensesFragment()
+        goToResumeGraphicFragment()
+        setupSharePdf()
+    }
+
+    private fun setupSharePdf() {
+        binding.expenseMenuBottomShareIcon.setOnClickListener {
+            pdfShareButton()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -75,11 +87,14 @@ class ExpenseFragment : Fragment() {
                     val newExpenses =
                         expenses.filter {
                             it.description.toLowerCase(Locale.getDefault())
-                                .contains(newText?.toLowerCase(Locale.getDefault()).toString()) || it.value.contains(newText.toString())
+                                .contains(
+                                    newText?.toLowerCase(Locale.getDefault()).toString(),
+                                ) || it.value.contains(newText.toString())
                         }
                     binding.expenseRecyclerview.layoutManager =
                         LinearLayoutManager(requireContext())
-                    binding.expenseRecyclerview.adapter = AdapterExpense(newExpenses, this@ExpenseFragment::clickItem)
+                    binding.expenseRecyclerview.adapter =
+                        AdapterExpense(newExpenses, this@ExpenseFragment::clickItem)
                 }
                 return true
             }
@@ -91,17 +106,14 @@ class ExpenseFragment : Fragment() {
             R.id.settings_item -> {
                 goToSettingsFragment()
             }
-
-            R.id.share_pdf -> {
-                pdfShareButton()
-            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun pdfShareButton() {
         if (expenses.isNotEmpty()) {
-            val navigation = ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
+            val navigation =
+                ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
             controlation.navigate(navigation)
         } else {
             val message = getString(R.string.no_expense_share)
@@ -128,9 +140,52 @@ class ExpenseFragment : Fragment() {
             when (it) {
                 is ExpenseState.DateText -> showDateText(it.calendar)
                 is ExpenseState.ShowExpenses -> showExpenses(it.expense)
-                is ExpenseState.ShowValueEndBalance -> showFullValueEndBalance(it.fullValue, it.fullBalance)
+                is ExpenseState.ShowValueEndBalance -> showFullValueEndBalance(
+                    it.fullValue,
+                    it.fullBalance,
+                )
+
+                is ExpenseState.ShowAllCategory -> showCategory(it.category)
             }
         }
+    }
+
+    private fun showCategory(category: List<Category>) {
+        if (category.isEmpty()) {
+            val listCategory = CategoryUtils().getListCategory(requireContext())
+            viewModel.insertAllCategory(listCategory)
+        }
+
+        val roupas = resources.getIdentifier("roupas", "drawable", requireContext().packageName)
+        val viagem = resources.getIdentifier("viagem", "drawable", requireContext().packageName)
+        val cartao = resources.getIdentifier("cartao", "drawable", requireContext().packageName)
+        val saude = resources.getIdentifier("saude", "drawable", requireContext().packageName)
+        val filmes = resources.getIdentifier("filmes", "drawable", requireContext().packageName)
+        val outros = resources.getIdentifier("outros", "drawable", requireContext().packageName)
+        val comidabebida =
+            resources.getIdentifier("comidabebida", "drawable", requireContext().packageName)
+        val transporte =
+            resources.getIdentifier("transporte", "drawable", requireContext().packageName)
+        val eletronicos =
+            resources.getIdentifier("eletronicos", "drawable", requireContext().packageName)
+        val educacao =
+            resources.getIdentifier("educacao", "drawable", requireContext().packageName)
+        val entretenimento =
+            resources.getIdentifier("entretenimento", "drawable", requireContext().packageName)
+
+        val drawables = arrayOf(
+            ContextCompat.getDrawable(requireContext(), roupas),
+            ContextCompat.getDrawable(requireContext(), viagem),
+            ContextCompat.getDrawable(requireContext(), cartao),
+            ContextCompat.getDrawable(requireContext(), saude),
+            ContextCompat.getDrawable(requireContext(), filmes),
+            ContextCompat.getDrawable(requireContext(), outros),
+            ContextCompat.getDrawable(requireContext(), comidabebida),
+            ContextCompat.getDrawable(requireContext(), transporte),
+            ContextCompat.getDrawable(requireContext(), eletronicos),
+            ContextCompat.getDrawable(requireContext(), educacao),
+            ContextCompat.getDrawable(requireContext(), entretenimento),
+        )
     }
 
     private fun showFullValueEndBalance(fullValue: String, fullBalance: String) {
@@ -141,16 +196,31 @@ class ExpenseFragment : Fragment() {
     private fun showDateText(calendar: Calendar) {
         when (SharedPreferences(requireContext()).getOrdemList()) {
             "A-Z true" -> {
-                viewModel.getAllExpenseByDescriptionAsc(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+                viewModel.getAllExpenseByDescriptionAsc(
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
+                )
             }
+
             "Date Desc true" -> {
-                viewModel.getAllExpenseDateDesc(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+                viewModel.getAllExpenseDateDesc(
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
+                )
             }
+
             "Date Cres true" -> {
-                viewModel.getAllExpenseDateCres(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+                viewModel.getAllExpenseDateCres(
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
+                )
             }
+
             else -> {
-                viewModel.getAllExpense(viewModel.getFirstAndLastDayOfMonth(calendar)[0], viewModel.getFirstAndLastDayOfMonth(calendar)[1])
+                viewModel.getAllExpense(
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
+                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
+                )
             }
         }
         viewModel.getFirstAndLastDayOfMonth(calendar)
@@ -160,7 +230,12 @@ class ExpenseFragment : Fragment() {
         }
         val month = dateFormatter.format(calendar.time)
         val formatMonth = month.capitalize()
-        binding.expenseDateText.startAnimation(AnimationUtils.loadAnimation(context, R.anim.zoom_in))
+        binding.expenseDateText.startAnimation(
+            AnimationUtils.loadAnimation(
+                context,
+                R.anim.zoom_in,
+            ),
+        )
         binding.expenseDateText.text = formatMonth
     }
 
@@ -188,7 +263,8 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun clickItem(expense: Expense) {
-        val bottomSheetDialogFragment = BottomShettPrincipalFragment(expense, ::deleteExpense, ::updateExpense)
+        val bottomSheetDialogFragment =
+            BottomShettPrincipalFragment(expense, ::deleteExpense, ::updateExpense)
         fragmentManager?.let { it1 ->
             bottomSheetDialogFragment.show(
                 it1,
@@ -200,9 +276,11 @@ class ExpenseFragment : Fragment() {
     private fun updateExpense(expense: Expense) {
         viewModel.updateExpense(expense)
     }
+
     private fun deleteExpense(expense: Expense) {
         viewModel.deleteExpense(expense)
     }
+
     private fun checkExpenseRegister() {
         if (expenses.isEmpty()) {
             binding.expenseAnimationView.visibility = View.VISIBLE
@@ -212,14 +290,23 @@ class ExpenseFragment : Fragment() {
             binding.txtInfoNoExpenseRegister.visibility = View.GONE
         }
     }
+
     private fun goToExpenseDetailsFragmennt(expense: Expense) {
-        val direction = ExpenseFragmentDirections.actionExpenseFragmentToExpenseDetailsFragment(expense)
+        val direction =
+            ExpenseFragmentDirections.actionExpenseFragmentToExpenseDetailsFragment(expense)
         controlation.navigate(direction)
     }
 
-    private fun goToNewExpenseFragment() {
+    private fun goToNewExpensesFragment() {
         binding.expenseFloating.setOnClickListener {
             val direction = ExpenseFragmentDirections.actionExpenseFragmentToNewExpenseFragment()
+            controlation.navigate(direction)
+        }
+    }
+
+    private fun goToResumeGraphicFragment() {
+        binding.expenseMenuBottomGraficoIcon.setOnClickListener {
+            val direction = ExpenseFragmentDirections.actionExpenseFragmentToResumeGraphicExpenses()
             controlation.navigate(direction)
         }
     }

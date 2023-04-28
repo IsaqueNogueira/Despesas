@@ -5,93 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    app:layout_constraintStart_toStartOf="parent">
+    app:layout_constraintStart_toStartOf="parent"
+    android:background="?attr/selectableItemBackground">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/item_expense_cardview"
-        android:layout_width="match_parent"
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_expense_circulo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="15dp"
+        android:background="@drawable/icon_category"
+        tools:src="@drawable/outros"
+        android:padding="9dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/item_expense_description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:background="@drawable/style_brackground_change_date"
-        app:cardElevation="2dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:text="Vinagre"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:fontFamily="sans-serif-condensed-medium"
+        app:layout_constraintEnd_toStartOf="@id/item_expense_value"
+        app:layout_constraintStart_toEndOf="@id/item_expense_circulo"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/item_expense_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/item_expense_description"
+        app:layout_constraintStart_toStartOf="@id/item_expense_description"
+        tools:text="Entretenimento"
+        android:textColor="@color/cinza_fraco"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/item_expense_maturity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/greyf"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/item_expense_value"
+        tools:text="12/04/2023" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/item_expense_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="15dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="R$ 5,59" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_expense_description"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="4dp"
-                android:text="Vinagre"
-                android:textColor="@color/greyf"
-                android:textSize="16sp"
-                app:fontFamily="sans-serif-condensed-medium"
-                app:layout_constraintEnd_toStartOf="@id/item_expense_value"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_expense_maturity"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="@color/greyf"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/item_expense_value"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_expense_description"
-                tools:text="12/04/2023" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/item_expense_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:textAlignment="center"
-                android:textColor="@color/grey_value"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="R$ 5,59" />
-
-            <TextView
-                android:id="@+id/item_paidout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/item_expense_value"
-                android:text="@string/paidout"
-                android:textColor="@color/green"
-                app:layout_constraintEnd_toEndOf="@id/item_expense_value"
-                android:visibility="gone"
-                android:textSize="12sp"
-                />
-
-            <TextView
-                android:id="@+id/item_late"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/item_expense_value"
-                android:text="@string/late"
-                android:textColor="@color/red"
-                app:layout_constraintEnd_toEndOf="@id/item_expense_value"
-                android:visibility="gone"
-                android:textSize="12sp"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

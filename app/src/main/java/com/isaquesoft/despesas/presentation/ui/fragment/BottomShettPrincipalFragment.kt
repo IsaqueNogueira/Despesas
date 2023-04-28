@@ -83,6 +83,7 @@ class BottomShettPrincipalFragment(
                         repeat = expense.repeat,
                         installments = expense.installments,
                         paidOut = false,
+                        category = expense.category
                     )
                     actionExpensePago.invoke(newExpense)
                     dismiss()
@@ -104,6 +105,7 @@ class BottomShettPrincipalFragment(
                         repeat = expense.repeat,
                         installments = expense.installments,
                         paidOut = true,
+                        category = expense.category
                     )
                     actionExpensePago.invoke(newExpense)
                     dismiss()

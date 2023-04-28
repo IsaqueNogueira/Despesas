@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 
 @Dao
@@ -12,6 +13,9 @@ interface ExpenseDao {
 
     @Insert
     suspend fun insertExpense(expense: Expense)
+
+    @Query("SELECT * FROM Expense")
+    suspend fun getAllExpensesResume(): List<Expense>
 
     @Query("SELECT * FROM Expense WHERE id = :id")
     suspend fun getExpense(id: Int): Expense
@@ -45,4 +49,21 @@ interface ExpenseDao {
 
     @Update
     suspend fun updateAllExpense(expense: List<Expense>)
+
+    // Category
+
+    @Insert
+    suspend fun insertCategory(category: Category)
+
+    @Insert
+    suspend fun insertAllCategory(category: List<Category>)
+
+    @Query("SELECT * FROM Category WHERE id = :id")
+    suspend fun getCategory(id: Int): Category
+
+    @Query("SELECT * FROM Category")
+    suspend fun getAllCategory(): List<Category>
+
+    @Delete
+    suspend fun deleteCategory(category: Category)
 }

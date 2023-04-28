@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseState
@@ -64,6 +65,7 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             date = calendar.timeInMillis,
                             repeat = expense.repeat,
                             installments = expense.installments,
+                            category = expense.category,
                         )
 
                         expenseRepository.insertExpense(newExpense)
@@ -77,7 +79,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
 
     fun getAllExpenseByDescriptionAsc(minDate: Long, maxDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
-            val listExpensePrimary = expenseRepository.getAllExpenseByDescriptionAsc(minDate, maxDate)
+            val listExpensePrimary =
+                expenseRepository.getAllExpenseByDescriptionAsc(minDate, maxDate)
 
             for (expense in listExpensePrimary) {
                 if (expense.repeat && expense.installments == 0) {
@@ -103,6 +106,7 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             date = calendar.timeInMillis,
                             repeat = expense.repeat,
                             installments = expense.installments,
+                            category = expense.category,
                         )
 
                         expenseRepository.insertExpense(newExpense)
@@ -142,6 +146,7 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             date = calendar.timeInMillis,
                             repeat = expense.repeat,
                             installments = expense.installments,
+                            category = expense.category,
                         )
 
                         expenseRepository.insertExpense(newExpense)
@@ -181,6 +186,7 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             date = calendar.timeInMillis,
                             repeat = expense.repeat,
                             installments = expense.installments,
+                            category = expense.category,
                         )
 
                         expenseRepository.insertExpense(newExpense)
@@ -249,12 +255,27 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     fun updateExpense(expense: Expense) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.updateExpense(expense)
+            initCalendar()
         }
     }
 
     fun deleteExpense(expense: Expense) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteExpense(expense)
+            initCalendar()
+        }
+    }
+
+    fun getAllCategory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val category: List<Category> = expenseRepository.getAllCategory()
+            _expenseState.postValue(ExpenseState.ShowAllCategory(category))
+        }
+    }
+
+    fun insertAllCategory(category: List<Category>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            expenseRepository.insertAllCategory(category)
         }
     }
 }

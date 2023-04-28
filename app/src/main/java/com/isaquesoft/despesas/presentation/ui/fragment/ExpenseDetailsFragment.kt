@@ -90,7 +90,7 @@ class ExpenseDetailsFragment : Fragment() {
                     repeat = expense.repeat,
                     installments = expense.installments,
                     paidOut = true,
-                )
+                    category = expense.category)
                 viewModel.updateExpense(newExpense)
                 requireActivity().onBackPressed()
             } else {
@@ -103,6 +103,7 @@ class ExpenseDetailsFragment : Fragment() {
                     repeat = expense.repeat,
                     installments = expense.installments,
                     paidOut = false,
+                    category = expense.category
                 )
                 viewModel.updateExpense(newExpense)
                 requireActivity().onBackPressed()

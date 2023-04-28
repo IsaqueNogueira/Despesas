@@ -16,5 +16,6 @@ data class Expense(
     val date: Long,
     val repeat: Boolean,
     val installments: Int,
-    val paidOut: Boolean? = false
+    val paidOut: Boolean? = false,
+    val category: String
 ) : Parcelable
