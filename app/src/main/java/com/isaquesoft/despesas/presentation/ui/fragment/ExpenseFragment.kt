@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +31,7 @@ class ExpenseFragment : Fragment() {
     private val controlation by lazy { findNavController() }
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: ExpenseFragmentViewModel by viewModel()
-    private lateinit var expenses: List<Expense>
+    private var expenses: List<Expense> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +49,6 @@ class ExpenseFragment : Fragment() {
         requireActivity().title = getString(R.string.title_my_expense)
         initViewModel()
         dateText()
-        viewModel.getAllCategory()
         goToNewExpensesFragment()
         goToResumeGraphicFragment()
         setupSharePdf()
@@ -64,7 +62,7 @@ class ExpenseFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_principal, menu)
-        val searchItem = menu?.findItem(R.id.action_search)
+        val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
 
@@ -91,10 +89,10 @@ class ExpenseFragment : Fragment() {
                                     newText?.toLowerCase(Locale.getDefault()).toString(),
                                 ) || it.value.contains(newText.toString())
                         }
-                    binding.expenseRecyclerview.layoutManager =
-                        LinearLayoutManager(requireContext())
-                    binding.expenseRecyclerview.adapter =
-                        AdapterExpense(newExpenses, this@ExpenseFragment::clickItem)
+//                    binding.expenseRecyclerview.layoutManager =
+//                        LinearLayoutManager(requireContext())
+//                    binding.expenseRecyclerview.adapter =
+//                        AdapterExpense(newExpenses.toMutableList(), this@ExpenseFragment::clickItem)
                 }
                 return true
             }
@@ -140,11 +138,13 @@ class ExpenseFragment : Fragment() {
             when (it) {
                 is ExpenseState.DateText -> showDateText(it.calendar)
                 is ExpenseState.ShowExpenses -> showExpenses(it.expense)
-                is ExpenseState.ShowValueEndBalance -> showFullValueEndBalance(
-                    it.fullValue,
-                    it.fullBalance,
-                )
-
+                is ExpenseState.ShowValueEndBalance ->{
+                    showFullValueEndBalance(
+                        it.fullValue,
+                        it.fullBalance,
+                    )
+                    viewModel.getAllCategory()
+                }
                 is ExpenseState.ShowAllCategory -> showCategory(it.category)
             }
         }
@@ -155,37 +155,6 @@ class ExpenseFragment : Fragment() {
             val listCategory = CategoryUtils().getListCategory(requireContext())
             viewModel.insertAllCategory(listCategory)
         }
-
-        val roupas = resources.getIdentifier("roupas", "drawable", requireContext().packageName)
-        val viagem = resources.getIdentifier("viagem", "drawable", requireContext().packageName)
-        val cartao = resources.getIdentifier("cartao", "drawable", requireContext().packageName)
-        val saude = resources.getIdentifier("saude", "drawable", requireContext().packageName)
-        val filmes = resources.getIdentifier("filmes", "drawable", requireContext().packageName)
-        val outros = resources.getIdentifier("outros", "drawable", requireContext().packageName)
-        val comidabebida =
-            resources.getIdentifier("comidabebida", "drawable", requireContext().packageName)
-        val transporte =
-            resources.getIdentifier("transporte", "drawable", requireContext().packageName)
-        val eletronicos =
-            resources.getIdentifier("eletronicos", "drawable", requireContext().packageName)
-        val educacao =
-            resources.getIdentifier("educacao", "drawable", requireContext().packageName)
-        val entretenimento =
-            resources.getIdentifier("entretenimento", "drawable", requireContext().packageName)
-
-        val drawables = arrayOf(
-            ContextCompat.getDrawable(requireContext(), roupas),
-            ContextCompat.getDrawable(requireContext(), viagem),
-            ContextCompat.getDrawable(requireContext(), cartao),
-            ContextCompat.getDrawable(requireContext(), saude),
-            ContextCompat.getDrawable(requireContext(), filmes),
-            ContextCompat.getDrawable(requireContext(), outros),
-            ContextCompat.getDrawable(requireContext(), comidabebida),
-            ContextCompat.getDrawable(requireContext(), transporte),
-            ContextCompat.getDrawable(requireContext(), eletronicos),
-            ContextCompat.getDrawable(requireContext(), educacao),
-            ContextCompat.getDrawable(requireContext(), entretenimento),
-        )
     }
 
     private fun showFullValueEndBalance(fullValue: String, fullBalance: String) {
@@ -223,7 +192,6 @@ class ExpenseFragment : Fragment() {
                 )
             }
         }
-        viewModel.getFirstAndLastDayOfMonth(calendar)
         val dateFormatter = SimpleDateFormat("MMMM/yyyy", Locale.getDefault()).apply {
             applyPattern("MMMM/yyyy")
             isLenient = false
@@ -242,7 +210,7 @@ class ExpenseFragment : Fragment() {
     private fun showExpenses(expenses: List<Expense>) {
         this.expenses = expenses
         binding.expenseRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.expenseRecyclerview.adapter = AdapterExpense(expenses, this::clickItem)
+        binding.expenseRecyclerview.adapter = AdapterExpense(expenses.toMutableList(), this::clickItem)
         viewModel.fullExpenseSum(expenses)
         showNewCoin(expenses)
         checkExpenseRegister()
@@ -275,6 +243,7 @@ class ExpenseFragment : Fragment() {
 
     private fun updateExpense(expense: Expense) {
         viewModel.updateExpense(expense)
+        (binding.expenseRecyclerview.adapter as AdapterExpense).atualiza(expense)
     }
 
     private fun deleteExpense(expense: Expense) {

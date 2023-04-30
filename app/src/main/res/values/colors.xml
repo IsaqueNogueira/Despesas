@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="red">#d4221f</color>
+    <color name="red">#DB1E1B</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
@@ -13,7 +13,7 @@
     <color name="greyf">#767676</color>
     <color name="grey_value">#676767</color>
     <color name="grey_line">#4C4C4C</color>
-    <color name="green">#229522</color>
+    <color name="green">#22AA22</color>
     <color name="blue_700">#1976d2</color>
     <color name="blue_600">#1e88e5</color>
     <color name="blue_500">#2196f3</color>
@@ -29,14 +29,14 @@
     <color name="cinza_fraco">#8591A4</color>
 
     <color name="roupas">#1E2E81</color>
-    <color name="viagem">#9DC183</color>
-    <color name="cartao">#B3B3B3</color>
-    <color name="saude">#F2B6B6</color>
+    <color name="viagem">#86A570</color>
+    <color name="cartao">#D5B25A</color>
+    <color name="saude">#833B7F</color>
     <color name="filmes">#6C5B7B</color>
-    <color name="outros">#00917C</color>
+    <color name="outros">#0096A3</color>
     <color name="comidabebida">#497700</color>
-    <color name="transporte">#8F8F8F</color>
-    <color name="eletronicos">#C1D1CC</color>
-    <color name="educacao">#B3C1E1</color>
-    <color name="entretenimento">#E4C1F9</color>
+    <color name="transporte">#652F2F</color>
+    <color name="eletronicos">#007E56</color>
+    <color name="educacao">#6C8CD5</color>
+    <color name="entretenimento">#9C4444</color>
 </resources>

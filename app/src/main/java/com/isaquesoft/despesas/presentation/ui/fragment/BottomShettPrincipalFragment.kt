@@ -1,14 +1,17 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.BottomShettPrincipalFragmentBinding
+import java.text.Normalizer
 import java.text.SimpleDateFormat
 
 class BottomShettPrincipalFragment(
@@ -33,15 +36,43 @@ class BottomShettPrincipalFragment(
         initTxt()
     }
 
+    private fun String.unaccent(): String {
+        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
+        return Regex("[^\\p{ASCII}]").replace(temp, "")
+    }
+
     private fun initTxt() {
         binding.bottomSheetPrincipalTitle.text = expense.description
         binding.bottomSheetPrincipalValue.text = expense.value
+        binding.bottomSheetPrincipalCategory.text = expense.category
         binding.bottomSheetPrincipalMaturity.text =
             SimpleDateFormat("dd/MM/yyyy").format(expense.date)
         binding.bottomSheetPrincipalEdit.setOnClickListener {
             goToExpenseDetailsFragmennt(expense)
             dismiss()
         }
+
+        val itemCategoryIcon = binding.bottomSheetPrincipalIconCategory
+        var categoryName = expense.category.toLowerCase()
+        categoryName = categoryName.unaccent()
+        if (categoryName == "comida e bebida") {
+            categoryName = "comidabebida"
+        }
+
+        val outros = resources.getIdentifier(
+            categoryName,
+            "drawable",
+            requireContext().packageName,
+        )
+        itemCategoryIcon.setImageResource(outros)
+
+        val color = resources.getIdentifier(
+            categoryName,
+            "color",
+            requireContext().packageName,
+        )
+        val drawable = itemCategoryIcon.background as GradientDrawable
+        drawable.setColor(ContextCompat.getColor(requireContext(), color))
 
         binding.bottomSheetPrincipalDelete.setOnClickListener {
             binding.bottomSheetPrincipalDelete.visibility = View.INVISIBLE
@@ -83,7 +114,7 @@ class BottomShettPrincipalFragment(
                         repeat = expense.repeat,
                         installments = expense.installments,
                         paidOut = false,
-                        category = expense.category
+                        category = expense.category,
                     )
                     actionExpensePago.invoke(newExpense)
                     dismiss()
@@ -105,7 +136,7 @@ class BottomShettPrincipalFragment(
                         repeat = expense.repeat,
                         installments = expense.installments,
                         paidOut = true,
-                        category = expense.category
+                        category = expense.category,
                     )
                     actionExpensePago.invoke(newExpense)
                     dismiss()

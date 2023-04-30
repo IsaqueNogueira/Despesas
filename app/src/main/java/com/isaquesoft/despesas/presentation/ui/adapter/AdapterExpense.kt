@@ -1,6 +1,7 @@
 package com.isaquesoft.despesas.presentation.ui.adapter
 
-import android.graphics.Color
+import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,9 @@ import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import java.text.Normalizer
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
 
 class AdapterExpense(
-    private val listExpense: List<Expense>,
+    private val listExpense: MutableList<Expense>,
     private val clickItem: (expense: Expense) -> Unit = {},
 ) : RecyclerView.Adapter<AdapterExpense.ViewHolder>() {
 
@@ -34,6 +32,7 @@ class AdapterExpense(
         val txtMaturity = itemView.findViewById<TextView>(R.id.item_expense_maturity)
         val itemCirculo = itemView.findViewById<ImageView>(R.id.item_expense_circulo)
         val txtCategory = itemView.findViewById<TextView>(R.id.item_expense_category)
+        val itemExpensePaidOut = itemView.findViewById<View>(R.id.item_expense_paidout)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,21 +47,17 @@ class AdapterExpense(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val expense = listExpense[position]
 
-        if (expense.paidOut == true) {
-            holder.txtValue.setTextColor(Color.parseColor("#2A3AFF"))
+        holder.txtMaturity.text = SimpleDateFormat("dd/MM/yyyy").format(expense.date)
+        holder.txtCategory.text = expense.category
+        holder.txtDescription.text = expense.description
+        holder.txtValue.text = expense.value
+
+        if (expense.paidOut == false) {
+            val background: Drawable = holder.itemExpensePaidOut.getBackground()
+            background.setColorFilter(holder.context.getColor(R.color.red), PorterDuff.Mode.SRC_IN)
         } else {
-            holder.txtValue.setTextColor(Color.parseColor("#000000"))
-        }
-
-        val currentDate = LocalDate.now()
-        val formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val dateCurrentFormated = currentDate.format(formatDate)
-        val date = SimpleDateFormat("dd/MM/yyyy").parse(dateCurrentFormated)
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-
-        if (expense.date < calendar.timeInMillis && expense.paidOut == false) {
-            holder.txtValue.setTextColor(Color.parseColor("#d4221f"))
+            val background: Drawable = holder.itemExpensePaidOut.getBackground()
+            background.setColorFilter(holder.context.getColor(R.color.green), PorterDuff.Mode.SRC_IN)
         }
 
         var categoryName = expense.category.toLowerCase()
@@ -86,10 +81,17 @@ class AdapterExpense(
         val drawable = holder.itemCirculo.background as GradientDrawable
         drawable.setColor(ContextCompat.getColor(holder.context, color))
 
-        holder.txtMaturity.text = SimpleDateFormat("dd/MM/yyyy").format(expense.date)
-        holder.txtCategory.text = expense.category
-        holder.txtDescription.text = expense.description
-        holder.txtValue.text = expense.value
+        if (position == listExpense.size - 1) {
+            // Se for o último item, defina a margem inferior maior
+            val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams
+            layoutParams.setMargins(0, 0, 0, 60) // Defina a margem inferior maior aqui
+            holder.itemView.layoutParams = layoutParams
+        } else {
+            // Se não for o último item, defina a margem inferior normal
+            val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams
+            layoutParams.setMargins(0, 0, 0, 16) // Defina a margem inferior normal aqui
+            holder.itemView.layoutParams = layoutParams
+        }
 
         holder.itemView.setOnClickListener {
             clickItem.invoke(expense)
@@ -97,6 +99,13 @@ class AdapterExpense(
         holder.itemView.setOnLongClickListener {
             Toast.makeText(holder.itemView.context, "ddd", Toast.LENGTH_SHORT).show()
             true
+        }
+    }
+    fun atualiza(expense: Expense) {
+        val index = listExpense.indexOf(expense)
+        if (index != -1) {
+            listExpense[index] = expense
+            notifyItemChanged(index)
         }
     }
 }

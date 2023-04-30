@@ -17,5 +17,12 @@ data class Expense(
     val repeat: Boolean,
     val installments: Int,
     val paidOut: Boolean? = false,
-    val category: String
-) : Parcelable
+    val category: String,
+) : Parcelable {
+    override fun equals(other: Any?): Boolean {
+        if (other == null || other !is Expense) {
+            return false
+        }
+        return id == other.id
+    }
+}

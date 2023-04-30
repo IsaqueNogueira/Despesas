@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
+    android:paddingBottom="15dp"
     app:layout_constraintStart_toStartOf="parent"
     android:background="?attr/selectableItemBackground">
 
@@ -17,9 +17,8 @@
         android:background="@drawable/icon_category"
         tools:src="@drawable/outros"
         android:padding="9dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/item_expense_description" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_expense_description"
@@ -30,7 +29,7 @@
         android:layout_marginEnd="4dp"
         android:text="Vinagre"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="15sp"
         app:fontFamily="sans-serif-condensed-medium"
         app:layout_constraintEnd_toStartOf="@id/item_expense_value"
         app:layout_constraintStart_toEndOf="@id/item_expense_circulo"
@@ -51,26 +50,36 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/greyf"
+        android:layout_marginEnd="35dp"
+        android:textColor="@color/cinza_fraco"
         android:textSize="10sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_expense_value"
         tools:text="12/04/2023" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_expense_value"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="35dp"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textStyle="bold"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/item_expense_description"
         tools:text="R$ 5,59" />
+
+    <View
+        android:id="@+id/item_expense_paidout"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/circular"
+        app:layout_constraintStart_toEndOf="@id/item_expense_value"
+        app:layout_constraintTop_toTopOf="@id/item_expense_value"
+        app:layout_constraintBottom_toBottomOf="@id/item_expense_value"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

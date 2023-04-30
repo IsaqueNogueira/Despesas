@@ -255,14 +255,12 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     fun updateExpense(expense: Expense) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.updateExpense(expense)
-            initCalendar()
         }
     }
 
     fun deleteExpense(expense: Expense) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteExpense(expense)
-            initCalendar()
         }
     }
 

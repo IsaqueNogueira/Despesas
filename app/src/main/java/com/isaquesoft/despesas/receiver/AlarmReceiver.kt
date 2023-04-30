@@ -50,7 +50,7 @@ class AlarmReceiver : BroadcastReceiver() {
                         context,
                         titulo,
                         mensagem,
-                        expenses[1].id,
+                        expenses[0].id,
                         MainActivity::class.java,
                     )
                 }
