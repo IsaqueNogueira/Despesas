@@ -4,9 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class SharedPreferences(context: Context) {
-    private val PREFERENCE_NAME = "MyPreference"
-    private val KEY_USERNAME = "ordemList"
-    private val KEY_NOTIFICATION_ENABLED = "notification_enabled"
+
+    companion object {
+        private const val PREFERENCE_NAME = "MyPreference"
+        private const val KEY_USERNAME = "ordemList"
+        private const val KEY_NOTIFICATION_ENABLED = "notification_enabled"
+    }
 
     private val mSharedPreferences: SharedPreferences =
         context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)

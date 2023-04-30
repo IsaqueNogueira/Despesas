@@ -14,7 +14,10 @@ import com.isaquesoft.despesas.utils.DateUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EditFragmentBottomSheet(private val expense: Expense, private val actionExpense: (expense: Expense) -> Unit = {}) : BottomSheetDialogFragment() {
+class EditFragmentBottomSheet(
+    private val expense: Expense,
+    private val actionExpense: (expense: Expense) -> Unit = {},
+) : BottomSheetDialogFragment() {
 
     private lateinit var binding: EditFragmentBottomSheetBinding
 
@@ -35,6 +38,9 @@ class EditFragmentBottomSheet(private val expense: Expense, private val actionEx
         binding.editExpenseInputDescription.setText(expense.description)
         binding.editExpenseInputValue.setText(expense.value)
         binding.editExpenseInputMaturity.setText(SimpleDateFormat("dd/MM/yyyy").format(expense.date))
+        binding.editExpenseBottomSheetClose.setOnClickListener {
+            dismiss()
+        }
         setupBtnSave()
     }
 
@@ -57,7 +63,7 @@ class EditFragmentBottomSheet(private val expense: Expense, private val actionEx
                     repeat = expense.repeat,
                     installments = expense.installments,
                     paidOut = expense.paidOut,
-                    category = expense.category
+                    category = expense.category,
                 )
 
                 actionExpense.invoke(newExpense)

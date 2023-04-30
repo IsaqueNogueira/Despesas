@@ -1,15 +1,17 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.github.mikephil.charting.data.BarData
-import com.github.mikephil.charting.data.BarDataSet
-import com.github.mikephil.charting.data.BarEntry
-import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.formatter.PercentFormatter
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ResumeGraphicExpensesBinding
@@ -20,9 +22,8 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.ResumeGraphicExpenseVie
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
-import java.text.DateFormatSymbols
+import java.text.Normalizer
 import java.util.Currency
-import java.util.Date
 import java.util.Locale
 
 class ResumeGraphicExpenses : Fragment() {
@@ -45,8 +46,6 @@ class ResumeGraphicExpenses : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().title = getString(R.string.resumo)
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, false)
-        goToExpenseFragment()
-        goToNewExpenseFragment()
         viewModel.getExpenses()
         viewModel.expenseState.observe(viewLifecycleOwner) {
             when (it) {
@@ -56,7 +55,8 @@ class ResumeGraphicExpenses : Fragment() {
     }
 
     private fun showExpenses(expenses: List<Expense>) {
-        val monthlyExpenses = MutableList(12) { 0.0 }
+        val categoryTotals: MutableMap<String, Float> = mutableMapOf()
+
         expenses.forEach { expense ->
 
             val deviceLocale = Locale.getDefault()
@@ -74,58 +74,74 @@ class ResumeGraphicExpenses : Fragment() {
                 } else {
                     valueString
                 }
-                val value = BigDecimal(formattedValueString)
-                val month = Date(expense.date).month
-                monthlyExpenses[month] += value.toDouble()
-            }
-        }
+                val category = expense.category
 
-        val barChart = binding.barChart
+                val value = BigDecimal(formattedValueString).toFloat()
 
-        val entries = monthlyExpenses.mapIndexed { index, value ->
-            BarEntry(index.toFloat(), value.toFloat())
-        }
-
-        val dataSet = BarDataSet(entries, "Gastos por mês")
-
-        val data = BarData(dataSet)
-        barChart.data = data
-
-        barChart.setDrawValueAboveBar(true)
-        barChart.description.isEnabled = false
-        barChart.xAxis.apply {
-            setDrawGridLines(false)
-            labelCount = 12
-            valueFormatter = object : ValueFormatter() {
-                override fun getFormattedValue(value: Float): String {
-                    val month = DateFormatSymbols().months[value.toInt()]
-                    return month.substring(0, 3)
+                if (categoryTotals.containsKey(category)) {
+                    categoryTotals[category] = categoryTotals[category]!! + value
+                } else {
+                    categoryTotals[category] = value
                 }
             }
-        }
 
-        barChart.axisRight.isEnabled = false
-        barChart.axisLeft.apply {
-            setDrawGridLines(false)
-            axisMinimum = 0f
-        }
+            // Crie uma lista de objetos PieEntry que contém as categorias e suas porcentagens
+            val entries: MutableList<PieEntry> = mutableListOf()
+            val colors: MutableList<Int> = mutableListOf()
+            val totalValue = categoryTotals.values.sum()
+            categoryTotals.forEach { (category, value) ->
+                val percent = value / totalValue * 100
+                entries.add(PieEntry(percent, ""))
+                colors.add(
+                    when (category.toLowerCase().unaccent()) {
+                        "roupas" -> ContextCompat.getColor(requireContext(), R.color.roupas)
+                        "viagem" -> ContextCompat.getColor(requireContext(), R.color.viagem)
+                        "cartao" -> ContextCompat.getColor(requireContext(), R.color.cartao)
+                        "saude" -> ContextCompat.getColor(requireContext(), R.color.saude)
+                        "filmes" -> ContextCompat.getColor(requireContext(), R.color.filmes)
+                        "outros" -> ContextCompat.getColor(requireContext(), R.color.outros)
+                        "comidabebida" -> ContextCompat.getColor(
+                            requireContext(),
+                            R.color.comidabebida,
+                        )
 
-        barChart.invalidate()
+                        "transporte" -> ContextCompat.getColor(requireContext(), R.color.transporte)
+                        "eletronicos" -> ContextCompat.getColor(
+                            requireContext(),
+                            R.color.eletronicos,
+                        )
+
+                        "educacao" -> ContextCompat.getColor(requireContext(), R.color.educacao)
+                        "entretenimento" -> ContextCompat.getColor(
+                            requireContext(),
+                            R.color.entretenimento,
+                        )
+
+                        else -> ContextCompat.getColor(requireContext(), R.color.blue)
+                    },
+                )
+
+            }
+
+            val dataSet = PieDataSet(entries, "")
+            dataSet.colors = colors
+
+            val data = PieData(dataSet)
+            data.setValueFormatter(PercentFormatter())
+            data.setValueTextSize(12f)
+            data.setValueTextColor(Color.WHITE)
+
+            val pieChart = binding.pieChart
+            pieChart.setUsePercentValues(true)
+            pieChart.description.isEnabled = false
+            pieChart.legend.isEnabled = false
+            pieChart.data = data
+            pieChart.invalidate()
+        }
     }
 
-    private fun goToExpenseFragment() {
-        binding.expenseMenuBottomExpensesIcon.setOnClickListener {
-            val direcition =
-                ResumeGraphicExpensesDirections.actionResumeGraphicExpensesToExpenseFragment()
-            controlation.navigate(direcition)
-        }
-    }
-
-    private fun goToNewExpenseFragment() {
-        binding.expenseFloating.setOnClickListener {
-            val direction =
-                ResumeGraphicExpensesDirections.actionResumeGraphicExpensesToNewExpenseFragment()
-            controlation.navigate(direction)
-        }
+    private fun String.unaccent(): String {
+        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
+        return Regex("[^\\p{ASCII}]").replace(temp, "")
     }
 }

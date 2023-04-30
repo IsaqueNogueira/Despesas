@@ -59,18 +59,18 @@ class SettingsFragment : Fragment() {
         settingsOrdemDataDesc: SwitchCompat,
         settingsOrdemDataCres: SwitchCompat,
     ) {
-        if (SharedPreferences(requireContext()).getOrdemList() == "A-Z true") {
+        if (SharedPreferences(requireContext()).getOrdemList() == LISTA_AZ) {
             settingsOrdemDescription.isChecked = true
             settingsOrdemDataDesc.isChecked = false
             settingsOrdemDataCres.isChecked = false
         }
         settingsOrdemDescription.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                SharedPreferences(requireContext()).setOrdemList("A-Z true")
+                SharedPreferences(requireContext()).setOrdemList(LISTA_AZ)
                 settingsOrdemDataDesc.isChecked = false
                 settingsOrdemDataCres.isChecked = false
             } else {
-                SharedPreferences(requireContext()).setOrdemList("A-z false")
+                SharedPreferences(requireContext()).setOrdemList("A-Z false")
             }
         }
     }
@@ -80,14 +80,14 @@ class SettingsFragment : Fragment() {
         settingsOrdemDataDesc: SwitchCompat,
         settingsOrdemDataCres: SwitchCompat,
     ) {
-        if (SharedPreferences(requireContext()).getOrdemList() == "Date Desc true") {
+        if (SharedPreferences(requireContext()).getOrdemList() == LISTA_DESC) {
             settingsOrdemDescription.isChecked = false
             settingsOrdemDataDesc.isChecked = true
             settingsOrdemDataCres.isChecked = false
         }
         settingsOrdemDataDesc.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                SharedPreferences(requireContext()).setOrdemList("Date Desc true")
+                SharedPreferences(requireContext()).setOrdemList(LISTA_DESC)
                 settingsOrdemDescription.isChecked = false
                 settingsOrdemDataCres.isChecked = false
             } else {
@@ -101,14 +101,14 @@ class SettingsFragment : Fragment() {
         settingsOrdemDataDesc: SwitchCompat,
         settingsOrdemDataCres: SwitchCompat,
     ) {
-        if (SharedPreferences(requireContext()).getOrdemList() == "Date Cres true") {
+        if (SharedPreferences(requireContext()).getOrdemList() == LISTA_CRES) {
             settingsOrdemDescription.isChecked = false
             settingsOrdemDataDesc.isChecked = false
             settingsOrdemDataCres.isChecked = true
         }
         settingsOrdemDataCres.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                SharedPreferences(requireContext()).setOrdemList("Date Cres true")
+                SharedPreferences(requireContext()).setOrdemList(LISTA_CRES)
                 settingsOrdemDescription.isChecked = false
                 settingsOrdemDataDesc.isChecked = false
             } else {
@@ -132,5 +132,11 @@ class SettingsFragment : Fragment() {
         val navigation =
             SettingsFragmentDirections.actionSettingsFragmentToExpenseFragment()
         controlation.navigate(navigation)
+    }
+
+    companion object {
+        const val LISTA_AZ = "A-Z true"
+        const val LISTA_DESC = "Date Desc true"
+        const val LISTA_CRES = "Date Cres true"
     }
 }

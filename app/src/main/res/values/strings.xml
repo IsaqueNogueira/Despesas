@@ -31,8 +31,7 @@
     <string name="message_info_expense_existing">Não é possível cadastrar essa despesa porque já existe uma despesa com essa mesma descrição e valor cadastrado.</string>
     <string name="edit">Editar</string>
     <string name="edit_bottom_sheet_description_info">Editar parcela</string>
-    <string name="expense_delete_infor_title">Esta despesa possui mais de uma parcela</string>
-    <string name="expense_delete_infor_description">Deseja excluir:</string>
+    <string name="expense_delete_infor_title">Esta despesa possui mais de uma parcela, deseja excluir:</string>
     <string name="expense_delete_info_it">Somente esta</string>
     <string name="expense_delete_info_all">Todas</string>
     <string name="alert_delet_info">Deseja realmente excluir?</string>
@@ -81,5 +80,7 @@
     <string name="educacao">Educação</string>
     <string name="entretenimento">Entretenimento</string>
     <string name="searchcategory">Pesquisar categoria</string>
+    <string name="add">Adicionar\n</string>
+    <string name="home">Home</string>
 
 </resources>

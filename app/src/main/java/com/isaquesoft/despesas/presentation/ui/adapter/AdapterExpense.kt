@@ -84,7 +84,7 @@ class AdapterExpense(
         if (position == listExpense.size - 1) {
             // Se for o último item, defina a margem inferior maior
             val layoutParams = holder.itemView.layoutParams as RecyclerView.LayoutParams
-            layoutParams.setMargins(0, 0, 0, 60) // Defina a margem inferior maior aqui
+            layoutParams.setMargins(0, 0, 0, 20) // Defina a margem inferior maior aqui
             holder.itemView.layoutParams = layoutParams
         } else {
             // Se não for o último item, defina a margem inferior normal
@@ -108,4 +108,16 @@ class AdapterExpense(
             notifyItemChanged(index)
         }
     }
+
+    fun remove(expense: Expense){
+        this.listExpense.remove(expense)
+        notifyDataSetChanged()
+    }
+
+    fun removeAll(expenses: List<Expense>){
+        this.listExpense.removeAll(expenses)
+        notifyDataSetChanged()
+    }
+
+
 }

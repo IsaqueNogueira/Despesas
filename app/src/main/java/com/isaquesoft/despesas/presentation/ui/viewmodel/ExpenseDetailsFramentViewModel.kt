@@ -15,18 +15,6 @@ class ExpenseDetailsFramentViewModel(val expenseRepository: ExpenseRepository) :
     private val _expenseDetailsState by lazy { MutableLiveData<ExpenseDetailsState>() }
     val expenseDetailsState: LiveData<ExpenseDetailsState>
         get() = _expenseDetailsState
-    fun deleteExpense(expense: Expense) {
-        viewModelScope.launch(Dispatchers.IO) {
-            expenseRepository.deleteExpense(expense)
-        }
-    }
-
-    fun updateExpense(expense: Expense) {
-        viewModelScope.launch(Dispatchers.IO) {
-            expenseRepository.updateExpense(expense)
-        }
-    }
-
     fun getExpenseRepeat(dateCreated: Long, value: String, repeat: Boolean, installments: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val expensesRepeat = expenseRepository.getExpenseRepeat(dateCreated, value, repeat, installments)
@@ -34,9 +22,4 @@ class ExpenseDetailsFramentViewModel(val expenseRepository: ExpenseRepository) :
         }
     }
 
-    fun deleteAllExpenseRepeat(expenses: List<Expense>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            expenseRepository.deleteAllExpense(expenses)
-        }
-    }
 }

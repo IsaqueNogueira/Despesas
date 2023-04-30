@@ -1,9 +1,13 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +18,9 @@ import com.isaquesoft.despesas.databinding.ExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseState
 import com.isaquesoft.despesas.presentation.ui.SharedPreferences
 import com.isaquesoft.despesas.presentation.ui.adapter.AdapterExpense
+import com.isaquesoft.despesas.presentation.ui.fragment.SettingsFragment.Companion.LISTA_AZ
+import com.isaquesoft.despesas.presentation.ui.fragment.SettingsFragment.Companion.LISTA_CRES
+import com.isaquesoft.despesas.presentation.ui.fragment.SettingsFragment.Companion.LISTA_DESC
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewModel
@@ -23,7 +30,9 @@ import com.isaquesoft.despesas.utils.CustomToast
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Currency
+import java.util.Locale
 
 class ExpenseFragment : Fragment() {
 
@@ -32,6 +41,7 @@ class ExpenseFragment : Fragment() {
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: ExpenseFragmentViewModel by viewModel()
     private var expenses: List<Expense> = mutableListOf()
+    private var calendarUpdateValueEndBalance = Calendar.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,54 +59,11 @@ class ExpenseFragment : Fragment() {
         requireActivity().title = getString(R.string.title_my_expense)
         initViewModel()
         dateText()
-        goToNewExpensesFragment()
-        goToResumeGraphicFragment()
-        setupSharePdf()
-    }
-
-    private fun setupSharePdf() {
-        binding.expenseMenuBottomShareIcon.setOnClickListener {
-            pdfShareButton()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_principal, menu)
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
-
-        setupSearch(searchView)
-
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    private fun setupSearch(searchView: SearchView) {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                // Ação a ser executada quando o usuário submeter a busca
-
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                // Ação a ser executada quando o texto da busca mudar
-                if (expenses.isNotEmpty()) {
-                    val newExpenses =
-                        expenses.filter {
-                            it.description.toLowerCase(Locale.getDefault())
-                                .contains(
-                                    newText?.toLowerCase(Locale.getDefault()).toString(),
-                                ) || it.value.contains(newText.toString())
-                        }
-//                    binding.expenseRecyclerview.layoutManager =
-//                        LinearLayoutManager(requireContext())
-//                    binding.expenseRecyclerview.adapter =
-//                        AdapterExpense(newExpenses.toMutableList(), this@ExpenseFragment::clickItem)
-                }
-                return true
-            }
-        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -104,8 +71,20 @@ class ExpenseFragment : Fragment() {
             R.id.settings_item -> {
                 goToSettingsFragment()
             }
+
+            R.id.share_item -> {
+                sharePdf()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun sharePdf() {
+        if (expenses.isNotEmpty()) {
+            val navigation =
+                ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
+            controlation.navigate(navigation)
+        }
     }
 
     private fun pdfShareButton() {
@@ -138,13 +117,14 @@ class ExpenseFragment : Fragment() {
             when (it) {
                 is ExpenseState.DateText -> showDateText(it.calendar)
                 is ExpenseState.ShowExpenses -> showExpenses(it.expense)
-                is ExpenseState.ShowValueEndBalance ->{
+                is ExpenseState.ShowValueEndBalance -> {
                     showFullValueEndBalance(
                         it.fullValue,
                         it.fullBalance,
                     )
                     viewModel.getAllCategory()
                 }
+
                 is ExpenseState.ShowAllCategory -> showCategory(it.category)
             }
         }
@@ -163,35 +143,15 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun showDateText(calendar: Calendar) {
+        calendarUpdateValueEndBalance = calendar
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendar)
         when (SharedPreferences(requireContext()).getOrdemList()) {
-            "A-Z true" -> {
-                viewModel.getAllExpenseByDescriptionAsc(
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
-                )
-            }
-
-            "Date Desc true" -> {
-                viewModel.getAllExpenseDateDesc(
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
-                )
-            }
-
-            "Date Cres true" -> {
-                viewModel.getAllExpenseDateCres(
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
-                )
-            }
-
-            else -> {
-                viewModel.getAllExpense(
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[0],
-                    viewModel.getFirstAndLastDayOfMonth(calendar)[1],
-                )
-            }
+            LISTA_AZ -> viewModel.getAllExpenseByDescriptionAsc(startDate, endDate)
+            LISTA_DESC -> viewModel.getAllExpenseDateDesc(startDate, endDate)
+            LISTA_CRES -> viewModel.getAllExpenseDateCres(startDate, endDate)
+            else -> viewModel.getAllExpense(startDate, endDate)
         }
+
         val dateFormatter = SimpleDateFormat("MMMM/yyyy", Locale.getDefault()).apply {
             applyPattern("MMMM/yyyy")
             isLenient = false
@@ -210,7 +170,8 @@ class ExpenseFragment : Fragment() {
     private fun showExpenses(expenses: List<Expense>) {
         this.expenses = expenses
         binding.expenseRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        binding.expenseRecyclerview.adapter = AdapterExpense(expenses.toMutableList(), this::clickItem)
+        binding.expenseRecyclerview.adapter =
+            AdapterExpense(expenses.toMutableList(), this::clickItem)
         viewModel.fullExpenseSum(expenses)
         showNewCoin(expenses)
         checkExpenseRegister()
@@ -232,7 +193,7 @@ class ExpenseFragment : Fragment() {
 
     private fun clickItem(expense: Expense) {
         val bottomSheetDialogFragment =
-            BottomShettPrincipalFragment(expense, ::deleteExpense, ::updateExpense)
+            BottomShettPrincipalFragment(expense, ::deleteExpense, ::deleteAllExpense, ::updateExpense)
         fragmentManager?.let { it1 ->
             bottomSheetDialogFragment.show(
                 it1,
@@ -248,6 +209,12 @@ class ExpenseFragment : Fragment() {
 
     private fun deleteExpense(expense: Expense) {
         viewModel.deleteExpense(expense)
+        (binding.expenseRecyclerview.adapter as AdapterExpense).remove(expense)
+    }
+
+    private fun deleteAllExpense(expenses: List<Expense>) {
+        viewModel.deleteAllExpense(expenses)
+        (binding.expenseRecyclerview.adapter as AdapterExpense).removeAll(expenses)
     }
 
     private fun checkExpenseRegister() {
@@ -257,26 +224,6 @@ class ExpenseFragment : Fragment() {
         } else {
             binding.expenseAnimationView.visibility = View.GONE
             binding.txtInfoNoExpenseRegister.visibility = View.GONE
-        }
-    }
-
-    private fun goToExpenseDetailsFragmennt(expense: Expense) {
-        val direction =
-            ExpenseFragmentDirections.actionExpenseFragmentToExpenseDetailsFragment(expense)
-        controlation.navigate(direction)
-    }
-
-    private fun goToNewExpensesFragment() {
-        binding.expenseFloating.setOnClickListener {
-            val direction = ExpenseFragmentDirections.actionExpenseFragmentToNewExpenseFragment()
-            controlation.navigate(direction)
-        }
-    }
-
-    private fun goToResumeGraphicFragment() {
-        binding.expenseMenuBottomGraficoIcon.setOnClickListener {
-            val direction = ExpenseFragmentDirections.actionExpenseFragmentToResumeGraphicExpenses()
-            controlation.navigate(direction)
         }
     }
 

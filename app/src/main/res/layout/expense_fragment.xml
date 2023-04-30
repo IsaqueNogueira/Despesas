@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/grey">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/expense_container_saldo"
@@ -134,8 +134,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="10dp"
-        app:layout_constraintBottom_toTopOf="@id/expense_tabe_bar"
+        android:background="@color/grey"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expense_troca_date"
@@ -168,112 +168,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/expense_animation_view"
         tools:visibility="visible" />
-
-    <View
-        android:id="@+id/expense_tabe_bar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/expense_recyclerview" />
-
-
-    <ImageButton
-        android:id="@+id/expense_floating"
-        android:layout_width="54dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="25sp"
-        android:background="@drawable/circulo_menu_click"
-        android:backgroundTint="@color/blue_700"
-        android:clickable="true"
-        android:elevation="6dp"
-        android:focusable="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/expense_menu_bottom_expenses_icon"
-        app:srcCompat="@drawable/baseline_add"
-        app:tint="@color/white" />
-
-    <ImageButton
-        android:id="@+id/expense_menu_bottom_expenses_icon"
-        android:layout_width="48dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/circulo_menu_click"
-        android:elevation="4dp"
-        android:src="@drawable/menuexpensesclick"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/app_name"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/expense_menu_bottom_expenses_icon"
-        app:layout_constraintStart_toStartOf="@id/expense_menu_bottom_expenses_icon"
-        app:layout_constraintTop_toBottomOf="@id/expense_menu_bottom_expenses_icon" />
-
-    <ImageButton
-        android:id="@+id/expense_menu_bottom_grafico_icon"
-        android:layout_width="48dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/circulo_menu"
-        android:elevation="4dp"
-        android:src="@drawable/menugrafico"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/expense_menu_bottom_expenses_icon" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/resumo"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/expense_menu_bottom_grafico_icon"
-        app:layout_constraintStart_toStartOf="@id/expense_menu_bottom_grafico_icon"
-        app:layout_constraintTop_toBottomOf="@id/expense_menu_bottom_grafico_icon" />
-
-
-    <ImageButton
-        android:id="@+id/expense_menu_bottom_share_icon"
-        android:layout_width="48dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/circulo_menu"
-        android:elevation="4dp"
-        android:src="@drawable/share"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/expense_menu_bottom_grafico_icon" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/share"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/expense_menu_bottom_share_icon"
-        app:layout_constraintStart_toStartOf="@id/expense_menu_bottom_share_icon"
-        app:layout_constraintTop_toBottomOf="@id/expense_menu_bottom_share_icon" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/background_bottom_menu"
-        app:layout_constraintBottom_toTopOf="@id/expense_tabe_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
