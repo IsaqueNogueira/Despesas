@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_expenseFragment_to_resumeGraphicExpenses"
             app:destination="@id/resumeGraphicExpenses" />
+        <action
+            android:id="@+id/action_expenseFragment_to_categoryFragment2"
+            app:destination="@id/categoryFragment" />
 
     </fragment>
     <fragment
@@ -98,6 +101,21 @@
         <action
             android:id="@+id/action_resumeGraphicExpenses_to_newExpenseFragment"
             app:destination="@id/newExpenseFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.isaquesoft.despesas.presentation.ui.fragment.CategoryFragment"
+        android:label="CategoryFragment"
+        tools:layout="@layout/category_fragment">
+        <action
+            android:id="@+id/action_categoryFragment2_to_expenseFragment"
+            app:destination="@id/expenseFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@id/expenseFragment"
             app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

@@ -17,7 +17,7 @@
     <string name="rent">Aluguel</string>
     <string name="twelve">12</string>
     <string name="total_payable">Total</string>
-    <string name="balance_to_pay">Saldo a pagar</string>
+    <string name="balance_to_pay">A pagar</string>
     <string name="title_fragment_details">Detalhes</string>
     <string name="title_my_expense">Minhas despesas</string>
     <string name="delete">Excluir</string>
@@ -61,7 +61,9 @@
     <string name="paidoutmarcar">Marcar como paga</string>
     <string name="confirmar">Confirmar</string>
     <string name="deleteinfo">Você quer mesmo deletar essa despesa?</string>
-    <string name="paidoutinfo">Parábens! Essa despesa está paga.</string>
+    <string name="deletecategory">Você quer mesmo deletar essa categoria?</string>
+    <string name="nodesfeita">Está ação não poderá ser desfeita.</string>
+    <string name="paidoutinfo">Essa despesa está paga.</string>
     <string name="paidoutinfo2">Despesa não-paga.</string>
     <string name="paidoutmarcardesmarcar">Marcar como não-paga</string>
     <string name="titlenotification">Despesa vencendo hoje</string>
@@ -82,5 +84,13 @@
     <string name="searchcategory">Pesquisar categoria</string>
     <string name="add">Adicionar\n</string>
     <string name="home">Home</string>
+    <string name="category">Categorias\n</string>
+    <string name="new_category">Nova categoria\n</string>
+    <string name="name">Nome</string>
+    <string name="select_color">Selecione cor</string>
+    <string name="select_imagem">Selecione imagem</string>
+    <string name="select_a_color">Selecione a cor</string>
+    <string name="select_a_icon">Selecione</string>
+    <string name="required">Preencha este campo.</string>
 
 </resources>

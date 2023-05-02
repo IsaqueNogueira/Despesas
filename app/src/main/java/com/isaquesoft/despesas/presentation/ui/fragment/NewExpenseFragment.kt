@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
@@ -39,7 +40,7 @@ class NewExpenseFragment : Fragment() {
     private var installments: Int = 0
     private var selectedInstallments: Boolean = false
     private lateinit var category: Category
-
+    private var bottomNavigationView: BottomNavigationView? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +55,9 @@ class NewExpenseFragment : Fragment() {
         setHasOptionsMenu(true)
         requireActivity().title = getString(R.string.new_expense)
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, true)
+        bottomNavigationView = requireActivity().findViewById(R.id.bottomNavigationView)
+        bottomNavigationView?.visibility = View.GONE
+
         getCoinFormatInput()
         setDateInputMaturity()
         clickRepeat()
@@ -62,6 +66,11 @@ class NewExpenseFragment : Fragment() {
         initViewModel()
         initEditTextValueAutomatic()
         viewModel.getAllCategory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        bottomNavigationView?.visibility = View.VISIBLE
     }
 
     private fun initViewModel() {
@@ -187,6 +196,8 @@ class NewExpenseFragment : Fragment() {
                             repeat = repeat,
                             installments = installments,
                             category = category.category,
+                            iconPosition = category.iconPosition,
+                            corIcon = category.cor,
                         )
                         viewModel.insertExpense(expense)
                         calendar.add(Calendar.MONTH, 1)
@@ -200,6 +211,8 @@ class NewExpenseFragment : Fragment() {
                         repeat = repeat,
                         installments = installments,
                         category = category.category,
+                        iconPosition = category.iconPosition,
+                        corIcon = category.cor,
                     )
                     viewModel.insertExpense(expense)
                 }

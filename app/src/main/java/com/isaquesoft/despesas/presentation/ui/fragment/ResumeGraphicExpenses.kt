@@ -3,6 +3,7 @@ package com.isaquesoft.despesas.presentation.ui.fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -29,7 +30,6 @@ import java.util.Locale
 class ResumeGraphicExpenses : Fragment() {
 
     private lateinit var binding: ResumeGraphicExpensesBinding
-    private val controlation by lazy { findNavController() }
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: ResumeGraphicExpenseViewModel by viewModel()
 
@@ -45,7 +45,8 @@ class ResumeGraphicExpenses : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().title = getString(R.string.resumo)
-        estadoAppViewModel.temComponentes = ComponentesVisuais(true, false)
+        setHasOptionsMenu(true)
+        estadoAppViewModel.temComponentes = ComponentesVisuais(true, true)
         viewModel.getExpenses()
         viewModel.expenseState.observe(viewLifecycleOwner) {
             when (it) {
@@ -143,5 +144,16 @@ class ResumeGraphicExpenses : Fragment() {
     private fun String.unaccent(): String {
         val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
         return Regex("[^\\p{ASCII}]").replace(temp, "")
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                if (activity != null) {
+                    activity?.onBackPressed()
+                }
+            }
+        }
+        return true
     }
 }

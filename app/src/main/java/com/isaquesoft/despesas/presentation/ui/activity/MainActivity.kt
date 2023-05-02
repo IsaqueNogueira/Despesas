@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.databinding.ActivityMainBinding
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity() {
                 }
             },
         )
-
         setupBottomMenu()
     }
 

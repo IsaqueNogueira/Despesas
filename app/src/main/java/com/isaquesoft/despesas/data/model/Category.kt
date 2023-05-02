@@ -8,5 +8,6 @@ data class Category(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val category: String,
-    val icon: Int
+    val iconPosition: Int,
+    val cor: String
 )

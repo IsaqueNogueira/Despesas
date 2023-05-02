@@ -8,6 +8,11 @@
         android:id="@+id/resumeGraphicExpenses"
         android:icon="@drawable/menugraphic"
         android:title="@string/resumo" />
+
+    <item
+        android:id="@+id/categoryFragment"
+        android:icon="@drawable/categorymenu"
+        android:title="@string/category" />
     <item
         android:id="@+id/newExpenseFragment"
         android:icon="@drawable/menuadd"

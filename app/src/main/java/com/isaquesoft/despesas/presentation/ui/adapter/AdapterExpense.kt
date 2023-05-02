@@ -1,5 +1,7 @@
 package com.isaquesoft.despesas.presentation.ui.adapter
 
+import android.content.Context
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
@@ -9,22 +11,19 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
-import java.text.Normalizer
+import com.isaquesoft.despesas.utils.IconsCategory
 import java.text.SimpleDateFormat
 
 class AdapterExpense(
+    context: Context,
     private val listExpense: MutableList<Expense>,
     private val clickItem: (expense: Expense) -> Unit = {},
 ) : RecyclerView.Adapter<AdapterExpense.ViewHolder>() {
 
-    private fun String.unaccent(): String {
-        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
-        return Regex("[^\\p{ASCII}]").replace(temp, "")
-    }
+    private val listIcons = IconsCategory().listIcons(context)
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val context = itemView.context
         val txtDescription = itemView.findViewById<TextView>(R.id.item_expense_description)
@@ -60,26 +59,12 @@ class AdapterExpense(
             background.setColorFilter(holder.context.getColor(R.color.green), PorterDuff.Mode.SRC_IN)
         }
 
-        var categoryName = expense.category.toLowerCase()
-        categoryName = categoryName.unaccent()
-        if (categoryName == "comida e bebida") {
-            categoryName = "comidabebida"
-        }
+        val iconId = listIcons[expense.iconPosition]
 
-        val outros = holder.context.resources.getIdentifier(
-            categoryName,
-            "drawable",
-            holder.context.packageName,
-        )
-        holder.itemCirculo.setImageResource(outros)
+        holder.itemCirculo.setImageDrawable(iconId)
 
-        val color = holder.context.resources.getIdentifier(
-            categoryName,
-            "color",
-            holder.context.packageName,
-        )
         val drawable = holder.itemCirculo.background as GradientDrawable
-        drawable.setColor(ContextCompat.getColor(holder.context, color))
+        drawable.setColor(Color.parseColor(expense.corIcon))
 
         if (position == listExpense.size - 1) {
             // Se for o último item, defina a margem inferior maior
@@ -109,15 +94,13 @@ class AdapterExpense(
         }
     }
 
-    fun remove(expense: Expense){
+    fun remove(expense: Expense) {
         this.listExpense.remove(expense)
         notifyDataSetChanged()
     }
 
-    fun removeAll(expenses: List<Expense>){
+    fun removeAll(expenses: List<Expense>) {
         this.listExpense.removeAll(expenses)
         notifyDataSetChanged()
     }
-
-
 }

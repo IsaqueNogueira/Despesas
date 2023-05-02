@@ -64,7 +64,8 @@ class EditFragmentBottomSheet(
                     installments = expense.installments,
                     paidOut = expense.paidOut,
                     category = expense.category,
-                )
+                    iconPosition = expense.iconPosition,
+                    corIcon = expense.corIcon,)
 
                 actionExpense.invoke(newExpense)
                 dismiss()

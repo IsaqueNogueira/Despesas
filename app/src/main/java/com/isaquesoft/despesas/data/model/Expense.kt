@@ -18,6 +18,8 @@ data class Expense(
     val installments: Int,
     val paidOut: Boolean? = false,
     val category: String,
+    val iconPosition: Int,
+    val corIcon: String
 ) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (other == null || other !is Expense) {

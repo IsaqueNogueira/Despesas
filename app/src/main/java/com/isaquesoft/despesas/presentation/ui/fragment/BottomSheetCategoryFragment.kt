@@ -33,7 +33,7 @@ class BottomSheetCategoryFragment(
 
     private fun initRecyclerview() {
         val recyclerView = binding.bottomSheetCategoryRecyclerview
-        recyclerView.adapter = AdapterCategoryBottomSheet(category, ::clickItem)
+        recyclerView.adapter = AdapterCategoryBottomSheet(requireContext(), category, ::clickItem)
     }
 
     private fun clickItem(category: Category) {

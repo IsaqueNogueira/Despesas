@@ -8,7 +8,7 @@ import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.database.dao.ExpenseDao
 
-@Database(entities = [Category::class, Expense::class], version = 3)
+@Database(entities = [Category::class, Expense::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun expenseDao(): ExpenseDao
 

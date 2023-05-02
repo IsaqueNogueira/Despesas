@@ -66,6 +66,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             repeat = expense.repeat,
                             installments = expense.installments,
                             category = expense.category,
+                            iconPosition = expense.iconPosition,
+                            corIcon = expense.corIcon
                         )
 
                         expenseRepository.insertExpense(newExpense)
@@ -107,7 +109,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             repeat = expense.repeat,
                             installments = expense.installments,
                             category = expense.category,
-                        )
+                            iconPosition = expense.iconPosition,
+                            corIcon = expense.corIcon)
 
                         expenseRepository.insertExpense(newExpense)
                     }
@@ -147,7 +150,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             repeat = expense.repeat,
                             installments = expense.installments,
                             category = expense.category,
-                        )
+                            iconPosition = expense.iconPosition,
+                            corIcon = expense.corIcon)
 
                         expenseRepository.insertExpense(newExpense)
                     }
@@ -187,7 +191,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             repeat = expense.repeat,
                             installments = expense.installments,
                             category = expense.category,
-                        )
+                            iconPosition = expense.iconPosition,
+                            corIcon = expense.corIcon)
 
                         expenseRepository.insertExpense(newExpense)
                     }

@@ -27,6 +27,7 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewMode
 import com.isaquesoft.despesas.utils.AlertDialogStandard
 import com.isaquesoft.despesas.utils.CategoryUtils
 import com.isaquesoft.despesas.utils.CustomToast
+import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -84,6 +85,8 @@ class ExpenseFragment : Fragment() {
             val navigation =
                 ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
             controlation.navigate(navigation)
+        }else{
+            CustomToast(requireContext(), getString(R.string.no_expense_share)).show()
         }
     }
 
@@ -171,7 +174,7 @@ class ExpenseFragment : Fragment() {
         this.expenses = expenses
         binding.expenseRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.expenseRecyclerview.adapter =
-            AdapterExpense(expenses.toMutableList(), this::clickItem)
+            AdapterExpense(requireContext(), expenses.toMutableList(), this::clickItem)
         viewModel.fullExpenseSum(expenses)
         showNewCoin(expenses)
         checkExpenseRegister()

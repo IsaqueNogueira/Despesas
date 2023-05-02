@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
@@ -43,7 +42,12 @@ class BottomShettPrincipalFragment(
 
     private fun checkExpenseRepeat() {
         if (expense.repeat) {
-            viewModel.getExpenseRepeat(expense.dateCreated, expense.value, expense.repeat, expense.installments)
+            viewModel.getExpenseRepeat(
+                expense.dateCreated,
+                expense.value,
+                expense.repeat,
+                expense.installments,
+            )
         }
     }
 
@@ -141,6 +145,8 @@ class BottomShettPrincipalFragment(
                         installments = expense.installments,
                         paidOut = false,
                         category = expense.category,
+                        iconPosition = expense.iconPosition,
+                        corIcon = expense.corIcon,
                     )
                     actionExpenseUpdate.invoke(newExpense)
                     dismiss()
@@ -164,6 +170,8 @@ class BottomShettPrincipalFragment(
                         installments = expense.installments,
                         paidOut = true,
                         category = expense.category,
+                        iconPosition = expense.iconPosition,
+                        corIcon = expense.corIcon,
                     )
                     actionExpenseUpdate.invoke(newExpense)
                     dismiss()

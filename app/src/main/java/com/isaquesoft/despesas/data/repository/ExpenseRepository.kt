@@ -39,5 +39,7 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
     suspend fun insertAllCategory(category: List<Category>) = expenseDao.insertAllCategory(category)
     suspend fun getCategory(id: Int) = expenseDao.getCategory(id)
 
+    suspend fun deleteCategory(category: Category) = expenseDao.deleteCategory(category)
+
     suspend fun getAllCategory() = expenseDao.getAllCategory()
 }
