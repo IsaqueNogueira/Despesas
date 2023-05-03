@@ -1,6 +1,7 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,7 +10,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,9 +24,9 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.NewExpenseFragmentViewM
 import com.isaquesoft.despesas.utils.CoinUtils
 import com.isaquesoft.despesas.utils.CustomToast
 import com.isaquesoft.despesas.utils.DateUtils
+import com.isaquesoft.despesas.utils.IconsCategory
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.Normalizer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,24 +83,26 @@ class NewExpenseFragment : Fragment() {
 
     private fun showCategory(category: List<Category>) {
         if (category.isNotEmpty()) {
-            this.category = category[5]
+            val listIcons = IconsCategory().listIcons(requireContext())
+            this.category = category.first()
             val categoryTxt = binding.newExpenseCategoryText
-            categoryTxt.text = category[5].category
+            categoryTxt.text = category.first().category
+
+            val iconId = listIcons[category.first().iconPosition]
 
             val iconCategory = binding.newExpenseIconCategory
-            val outros = resources.getIdentifier("outros", "drawable", requireContext().packageName)
-            iconCategory.setImageResource(outros)
+            iconCategory.setImageDrawable(iconId)
 
             val background = categoryTxt.background as GradientDrawable
             background.setStroke(
                 resources.getDimensionPixelSize(R.dimen.stroke_width),
-                resources.getColor(R.color.outros),
+                Color.parseColor(category.first().cor),
             )
             categoryTxt.background = background
 
             val iconImageView = binding.newExpenseIconCategory
             val drawable = iconImageView.background as GradientDrawable
-            drawable.setColor(ContextCompat.getColor(requireContext(), R.color.outros))
+            drawable.setColor(Color.parseColor(category.first().cor))
         }
 
         binding.newExpenseCategoryDescription.setOnClickListener {
@@ -118,40 +120,26 @@ class NewExpenseFragment : Fragment() {
     private fun updateCategory(category: Category) {
         this.category = category
 
-        var categoryName = category.category.toLowerCase()
-        categoryName = categoryName.unaccent()
-        if (categoryName == "comida e bebida") {
-            categoryName = "comidabebida"
-        }
+        val listIcons = IconsCategory().listIcons(requireContext())
 
-        val color = resources.getIdentifier(
-            categoryName,
-            "color",
-            requireContext().packageName,
-        )
+        val iconId = listIcons[category.iconPosition]
 
         val categoryTxt = binding.newExpenseCategoryText
         categoryTxt.text = category.category
 
-        val iconCategory = binding.newExpenseIconCategory
-        val outros = resources.getIdentifier(categoryName, "drawable", requireContext().packageName)
-        iconCategory.setImageResource(outros)
-
         val background = categoryTxt.background as GradientDrawable
         background.setStroke(
             resources.getDimensionPixelSize(R.dimen.stroke_width),
-            resources.getColor(color),
+            Color.parseColor(category.cor),
         )
         categoryTxt.background = background
 
+        val iconCategory = binding.newExpenseIconCategory
+        iconCategory.setImageDrawable(iconId)
+
         val iconImageView = binding.newExpenseIconCategory
         val drawable = iconImageView.background as GradientDrawable
-        drawable.setColor(ContextCompat.getColor(requireContext(), color))
-    }
-
-    private fun String.unaccent(): String {
-        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
-        return Regex("[^\\p{ASCII}]").replace(temp, "")
+        drawable.setColor(Color.parseColor(category.cor))
     }
 
     private fun initEditTextValueAutomatic() {

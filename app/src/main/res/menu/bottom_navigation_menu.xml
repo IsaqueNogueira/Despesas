@@ -3,18 +3,22 @@
     <item
         android:id="@+id/expenseFragment"
         android:icon="@drawable/home"
-        android:title="@string/home" />
+        android:title="" />
     <item
         android:id="@+id/resumeGraphicExpenses"
-        android:icon="@drawable/menugraphic"
-        android:title="@string/resumo" />
+        android:icon="@drawable/menuresume"
+        android:title="" />
+    <item
+        android:id="@+id/newExpenseFragment"
+        android:icon="@drawable/menuadd"
+        android:title="" />
 
     <item
         android:id="@+id/categoryFragment"
         android:icon="@drawable/categorymenu"
-        android:title="@string/category" />
+        android:title="" />
     <item
-        android:id="@+id/newExpenseFragment"
-        android:icon="@drawable/menuadd"
-        android:title="@string/add" />
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/settingsmenu"
+        android:title="" />
 </menu>

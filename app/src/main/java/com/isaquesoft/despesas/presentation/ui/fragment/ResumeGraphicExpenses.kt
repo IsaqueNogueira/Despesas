@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -59,7 +57,6 @@ class ResumeGraphicExpenses : Fragment() {
         val categoryTotals: MutableMap<String, Float> = mutableMapOf()
 
         expenses.forEach { expense ->
-
             val deviceLocale = Locale.getDefault()
             val currencySymbol = Currency.getInstance(deviceLocale).symbol
             val originalString = expense.value
@@ -69,9 +66,7 @@ class ResumeGraphicExpenses : Fragment() {
                 val valueString = expense.value.replace(currencySymbol, "").trim().replace(",", ".")
                 val lastDotIndex = valueString.lastIndexOf('.')
                 val formattedValueString = if (lastDotIndex >= 0) {
-                    valueString.substring(0, lastDotIndex).replace(".", "") + valueString.substring(
-                        lastDotIndex,
-                    )
+                    valueString.substring(0, lastDotIndex).replace(".", "") + valueString.substring(lastDotIndex)
                 } else {
                     valueString
                 }
@@ -85,65 +80,44 @@ class ResumeGraphicExpenses : Fragment() {
                     categoryTotals[category] = value
                 }
             }
-
-            // Crie uma lista de objetos PieEntry que contém as categorias e suas porcentagens
-            val entries: MutableList<PieEntry> = mutableListOf()
-            val colors: MutableList<Int> = mutableListOf()
-            val totalValue = categoryTotals.values.sum()
-            categoryTotals.forEach { (category, value) ->
-                val percent = value / totalValue * 100
-                entries.add(PieEntry(percent, ""))
-                colors.add(
-                    when (category.toLowerCase().unaccent()) {
-                        "roupas" -> ContextCompat.getColor(requireContext(), R.color.roupas)
-                        "viagem" -> ContextCompat.getColor(requireContext(), R.color.viagem)
-                        "cartao" -> ContextCompat.getColor(requireContext(), R.color.cartao)
-                        "saude" -> ContextCompat.getColor(requireContext(), R.color.saude)
-                        "filmes" -> ContextCompat.getColor(requireContext(), R.color.filmes)
-                        "outros" -> ContextCompat.getColor(requireContext(), R.color.outros)
-                        "comidabebida" -> ContextCompat.getColor(
-                            requireContext(),
-                            R.color.comidabebida,
-                        )
-
-                        "transporte" -> ContextCompat.getColor(requireContext(), R.color.transporte)
-                        "eletronicos" -> ContextCompat.getColor(
-                            requireContext(),
-                            R.color.eletronicos,
-                        )
-
-                        "educacao" -> ContextCompat.getColor(requireContext(), R.color.educacao)
-                        "entretenimento" -> ContextCompat.getColor(
-                            requireContext(),
-                            R.color.entretenimento,
-                        )
-
-                        else -> ContextCompat.getColor(requireContext(), R.color.blue)
-                    },
-                )
-
-            }
-
-            val dataSet = PieDataSet(entries, "")
-            dataSet.colors = colors
-
-            val data = PieData(dataSet)
-            data.setValueFormatter(PercentFormatter())
-            data.setValueTextSize(12f)
-            data.setValueTextColor(Color.WHITE)
-
-            val pieChart = binding.pieChart
-            pieChart.setUsePercentValues(true)
-            pieChart.description.isEnabled = false
-            pieChart.legend.isEnabled = false
-            pieChart.data = data
-            pieChart.invalidate()
         }
-    }
 
-    private fun String.unaccent(): String {
-        val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
-        return Regex("[^\\p{ASCII}]").replace(temp, "")
+        val entries: MutableList<PieEntry> = mutableListOf()
+        val colors: MutableList<Int> = mutableListOf()
+        val totalValue = categoryTotals.values.sum()
+
+        categoryTotals.forEach { (category, value) ->
+            val percent = value / totalValue * 100
+            entries.add(PieEntry(percent, ""))
+            val categoryExpenses = expenses.filter { it.category == category }
+            categoryExpenses.forEach { expense ->
+                colors.add(Color.parseColor(expense.corIcon))
+            }
+        }
+
+        val dataSet = PieDataSet(entries, "")
+        dataSet.colors = colors
+
+        val data = PieData(dataSet)
+        data.setValueFormatter(PercentFormatter())
+        data.setValueTextSize(10f)
+        data.setValueTextColor(Color.BLACK)
+
+        val pieChart = binding.pieChart
+        pieChart.setUsePercentValues(true)
+        pieChart.description.isEnabled = false
+        pieChart.legend.isEnabled = false
+        pieChart.data = data
+        pieChart.invalidate()
+
+        // Configurar o formato dos valores das porcentagens e a cor das linhas de conexão
+        dataSet.valueLineColor = Color.BLACK
+        dataSet.valueLinePart1OffsetPercentage = 90f
+        dataSet.valueLinePart1Length = 0.5f
+        dataSet.valueLinePart2Length = 0.2f
+        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+        dataSet.valueTextColor = Color.BLACK
+        dataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

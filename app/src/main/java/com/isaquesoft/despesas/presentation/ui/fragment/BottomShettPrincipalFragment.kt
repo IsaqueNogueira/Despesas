@@ -1,5 +1,6 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.BottomShettPrincipalFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseDetailsState
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseDetailsFramentViewModel
+import com.isaquesoft.despesas.utils.IconsCategory
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.Normalizer
 import java.text.SimpleDateFormat
@@ -69,27 +71,16 @@ class BottomShettPrincipalFragment(
             }
         }
 
+        val listIcons = IconsCategory().listIcons(requireContext())
+
         val itemCategoryIcon = binding.bottomSheetPrincipalIconCategory
-        var categoryName = expense.category.toLowerCase()
-        categoryName = categoryName.unaccent()
-        if (categoryName == "comida e bebida") {
-            categoryName = "comidabebida"
-        }
 
-        val outros = resources.getIdentifier(
-            categoryName,
-            "drawable",
-            requireContext().packageName,
-        )
-        itemCategoryIcon.setImageResource(outros)
+        val iconId = listIcons[expense.iconPosition]
+        itemCategoryIcon.setImageDrawable(iconId)
 
-        val color = resources.getIdentifier(
-            categoryName,
-            "color",
-            requireContext().packageName,
-        )
+
         val drawable = itemCategoryIcon.background as GradientDrawable
-        drawable.setColor(ContextCompat.getColor(requireContext(), color))
+        drawable.setColor(Color.parseColor(expense.corIcon))
 
         binding.bottomSheetPrincipalDelete.setOnClickListener {
             if (!expense.repeat) {
