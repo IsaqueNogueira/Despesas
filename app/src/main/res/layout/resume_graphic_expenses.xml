@@ -6,16 +6,30 @@
     android:layout_height="match_parent"
     android:background="@color/grey">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/resume_graphic_container"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:background="@drawable/background_corners_value"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_graphic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="-25dp"
+        android:layout_marginEnd="30dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/resume_graphic_container">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -24,10 +38,10 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pieChart"
                 android:layout_width="0dp"
-                android:padding="30dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_height="200dp"
+                android:padding="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -50,4 +64,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/card_view_graphic"
         tools:listitem="@layout/item_category_graphic" />
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/resume_graphic_animation_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="15dp"
+        android:elevation="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/card_view_graphic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/card_view_graphic"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/statistics"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

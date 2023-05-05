@@ -57,6 +57,10 @@ class ResumeGraphicExpenses : Fragment() {
     }
 
     private fun showExpenses(expenses: List<Expense>) {
+        if (expenses.isEmpty()) {
+            binding.resumeGraphicAnimationView.visibility = View.VISIBLE
+            return
+        }
         val entries: MutableList<PieEntry> = mutableListOf()
         val colors: MutableList<Int> = mutableListOf()
         val categoryMap: MutableMap<String, Float> = mutableMapOf()
@@ -115,15 +119,13 @@ class ResumeGraphicExpenses : Fragment() {
         pieChart.data = data
         pieChart.invalidate()
 
-// Configurar o formato dos valores das porcentagens e a cor das linhas de conexão
         dataSet.valueLineColor = Color.BLACK
         dataSet.valueLinePart1OffsetPercentage = 90f
         dataSet.valueLinePart1Length = 0.3f
-        dataSet.valueLinePart2Length = 0.2f
+        dataSet.valueLinePart2Length = 1f
         dataSet.valueTextColor = Color.BLACK
         dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         dataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-
         val categorias = mutableMapOf<String, Triple<Double, Int, String>>()
 
         for (expense in expenses) {
@@ -173,6 +175,12 @@ class ResumeGraphicExpenses : Fragment() {
         binding.resumeGraphicRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.resumeGraphicRecyclerview.adapter =
             AdapterCategoryGraphic(requireContext(), listaCategoriasValores)
+
+        if (expenses.isEmpty()) {
+            binding.resumeGraphicAnimationView.visibility = View.VISIBLE
+        } else {
+            binding.resumeGraphicAnimationView.visibility = View.GONE
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
