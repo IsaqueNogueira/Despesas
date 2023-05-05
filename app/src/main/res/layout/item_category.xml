@@ -11,8 +11,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="0dp"
-        app:cardElevation="4dp"
-        android:layout_margin="4dp"
+        app:cardElevation="2dp"
+        android:layout_margin="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_height="wrap_content">
 

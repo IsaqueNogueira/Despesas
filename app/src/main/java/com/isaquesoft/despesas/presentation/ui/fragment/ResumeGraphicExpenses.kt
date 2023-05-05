@@ -7,21 +7,24 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.isaquesoft.despesas.R
+import com.isaquesoft.despesas.data.model.CategoryGraphic
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ResumeGraphicExpensesBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseResumeState
+import com.isaquesoft.despesas.presentation.ui.adapter.AdapterCategoryGraphic
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ResumeGraphicExpenseViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
-import java.text.Normalizer
+import java.text.NumberFormat
 import java.util.Currency
 import java.util.Locale
 
@@ -54,7 +57,9 @@ class ResumeGraphicExpenses : Fragment() {
     }
 
     private fun showExpenses(expenses: List<Expense>) {
-        val categoryTotals: MutableMap<String, Float> = mutableMapOf()
+        val entries: MutableList<PieEntry> = mutableListOf()
+        val colors: MutableList<Int> = mutableListOf()
+        val categoryMap: MutableMap<String, Float> = mutableMapOf()
 
         expenses.forEach { expense ->
             val deviceLocale = Locale.getDefault()
@@ -66,7 +71,9 @@ class ResumeGraphicExpenses : Fragment() {
                 val valueString = expense.value.replace(currencySymbol, "").trim().replace(",", ".")
                 val lastDotIndex = valueString.lastIndexOf('.')
                 val formattedValueString = if (lastDotIndex >= 0) {
-                    valueString.substring(0, lastDotIndex).replace(".", "") + valueString.substring(lastDotIndex)
+                    valueString.substring(0, lastDotIndex).replace(".", "") + valueString.substring(
+                        lastDotIndex,
+                    )
                 } else {
                     valueString
                 }
@@ -74,24 +81,22 @@ class ResumeGraphicExpenses : Fragment() {
 
                 val value = BigDecimal(formattedValueString).toFloat()
 
-                if (categoryTotals.containsKey(category)) {
-                    categoryTotals[category] = categoryTotals[category]!! + value
+                if (categoryMap.containsKey(category)) {
+                    categoryMap[category] = categoryMap[category]!! + value
                 } else {
-                    categoryTotals[category] = value
+                    categoryMap[category] = value
                 }
             }
         }
 
-        val entries: MutableList<PieEntry> = mutableListOf()
-        val colors: MutableList<Int> = mutableListOf()
-        val totalValue = categoryTotals.values.sum()
+        val totalValue = categoryMap.values.sum()
 
-        categoryTotals.forEach { (category, value) ->
+        categoryMap.forEach { (category, value) ->
             val percent = value / totalValue * 100
             entries.add(PieEntry(percent, ""))
             val categoryExpenses = expenses.filter { it.category == category }
-            categoryExpenses.forEach { expense ->
-                colors.add(Color.parseColor(expense.corIcon))
+            if (!colors.contains(Color.parseColor(categoryExpenses[0].corIcon))) {
+                colors.add(Color.parseColor(categoryExpenses[0].corIcon))
             }
         }
 
@@ -110,14 +115,64 @@ class ResumeGraphicExpenses : Fragment() {
         pieChart.data = data
         pieChart.invalidate()
 
-        // Configurar o formato dos valores das porcentagens e a cor das linhas de conexão
+// Configurar o formato dos valores das porcentagens e a cor das linhas de conexão
         dataSet.valueLineColor = Color.BLACK
         dataSet.valueLinePart1OffsetPercentage = 90f
-        dataSet.valueLinePart1Length = 0.5f
+        dataSet.valueLinePart1Length = 0.3f
         dataSet.valueLinePart2Length = 0.2f
-        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         dataSet.valueTextColor = Color.BLACK
+        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         dataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+
+        val categorias = mutableMapOf<String, Triple<Double, Int, String>>()
+
+        for (expense in expenses) {
+            val categoria = expense.category
+            val originalString = expense.value
+            val onlyLetters = originalString.replace(Regex("[\\d.,\\s]"), "")
+            val deviceLocale = Locale.getDefault()
+            val currencySymbol = Currency.getInstance(deviceLocale).symbol
+
+            if (onlyLetters == currencySymbol) {
+                val valueString = expense.value.replace(currencySymbol, "").trim().replace(",", ".")
+                val lastDotIndex = valueString.lastIndexOf('.')
+                val formattedValueString = if (lastDotIndex >= 0) {
+                    valueString.substring(0, lastDotIndex).replace(".", "") + valueString.substring(
+                        lastDotIndex,
+                    )
+                } else {
+                    valueString
+                }
+                val value = formattedValueString.toDouble()
+                val iconPosition = expense.iconPosition
+                val corIcon = expense.corIcon
+
+                val currentValue = categorias.getOrDefault(categoria, Triple(0.0, 0, ""))
+                categorias[categoria] = Triple(currentValue.first + value, iconPosition, corIcon)
+            }
+        }
+
+        val listaCategoriasValores = mutableListOf<CategoryGraphic>()
+        val deviceLocale = Locale.getDefault()
+        val currencyFormatter = NumberFormat.getCurrencyInstance(deviceLocale)
+
+        for ((categoria, valorIconCor) in categorias) {
+            val valorTotalFormatado = currencyFormatter.format(valorIconCor.first)
+            val iconPosition = valorIconCor.second
+            val corIcon = valorIconCor.third
+            listaCategoriasValores.add(
+                CategoryGraphic(
+                    categoria,
+                    valorTotalFormatado,
+                    iconPosition,
+                    corIcon,
+                ),
+            )
+        }
+
+        binding.resumeGraphicRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        binding.resumeGraphicRecyclerview.adapter =
+            AdapterCategoryGraphic(requireContext(), listaCategoriasValores)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
