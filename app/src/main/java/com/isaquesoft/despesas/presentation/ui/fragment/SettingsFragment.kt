@@ -37,6 +37,13 @@ class SettingsFragment : Fragment() {
         requireActivity().title = getString(R.string.settings)
 
         setupSettings()
+        setupBackup()
+    }
+
+    private fun setupBackup() {
+        binding.settingsCardviewBackup.setOnClickListener {
+            goToBackupFragment()
+        }
     }
 
     private fun setupSettings() {
@@ -131,6 +138,12 @@ class SettingsFragment : Fragment() {
     private fun goToExpenseFragment() {
         val navigation =
             SettingsFragmentDirections.actionSettingsFragmentToExpenseFragment()
+        controlation.navigate(navigation)
+    }
+
+    private fun goToBackupFragment() {
+        val navigation =
+            SettingsFragmentDirections.actionSettingsFragmentToBackupFragment()
         controlation.navigate(navigation)
     }
 

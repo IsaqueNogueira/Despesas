@@ -8,6 +8,8 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
 
     suspend fun insertExpense(expense: Expense) = expenseDao.insertExpense(expense)
 
+    suspend fun insertAllExpenses(expenses: List<Expense>) = expenseDao.insertAllExpenses(expenses)
+
     suspend fun getExpense(id: Int) = expenseDao.getExpense(id)
 
     suspend fun getAllExpensesResume() = expenseDao.getAllExpensesResume()

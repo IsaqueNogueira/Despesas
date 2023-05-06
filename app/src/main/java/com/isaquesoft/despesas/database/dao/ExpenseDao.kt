@@ -13,6 +13,8 @@ interface ExpenseDao {
 
     @Insert
     suspend fun insertExpense(expense: Expense)
+    @Insert
+    suspend fun insertAllExpenses(expenses: List<Expense>)
 
     @Query("SELECT * FROM Expense")
     suspend fun getAllExpensesResume(): List<Expense>
@@ -66,4 +68,5 @@ interface ExpenseDao {
 
     @Delete
     suspend fun deleteCategory(category: Category)
+
 }

@@ -19,38 +19,34 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
-private const val VENCIMENTO = "Vencimento"
-private val expensesNotification = mutableListOf<Expense>()
+private const val CHANNEL_NAME = "Despesas Vencendo Hoje"
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val db = AppDatabase.getDatabase(context)
+        // Log.d("AlarmReceiver", "Verificando despesas vencendo hoje")
 
         CoroutineScope(Dispatchers.Default).launch {
+            val db = AppDatabase.getDatabase(context)
+
+            val expensesDueToday = mutableListOf<Expense>()
             val expenses = db.expenseDao().getExpenses()
+
             expenses.forEach { expense ->
-                val hoje = Calendar.getInstance()
-                val vencimento = Calendar.getInstance()
-                vencimento.timeInMillis = expense.date
-                if (vencimento.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) &&
-                    vencimento.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR) &&
-                    expense.paidOut == false
-                ) {
-                    expensesNotification.add(expense)
+                if (expense.isDueToday()) {
+                    expensesDueToday.add(expense)
                 }
             }
 
-            if (expensesNotification.isNotEmpty()) {
+            if (expensesDueToday.isNotEmpty()) {
                 val titulo = context.getString(R.string.titlenotification)
-                val mensagem =
-                    context.getString(R.string.expense_due_today)
+                val mensagem = context.getString(R.string.expense_due_today)
 
                 withContext(Dispatchers.Main) {
                     showNotificationWithIntent(
                         context,
                         titulo,
                         mensagem,
-                        expenses[0].id,
+                        expensesDueToday[0].id,
                         MainActivity::class.java,
                     )
                 }
@@ -58,7 +54,17 @@ class AlarmReceiver : BroadcastReceiver() {
         }
     }
 
-    fun showNotificationWithIntent(
+    private fun Expense.isDueToday(): Boolean {
+        val hoje = Calendar.getInstance()
+        val vencimento = Calendar.getInstance().apply {
+            timeInMillis = this@isDueToday.date
+        }
+        return vencimento.get(Calendar.YEAR) == hoje.get(Calendar.YEAR) &&
+            vencimento.get(Calendar.DAY_OF_YEAR) == hoje.get(Calendar.DAY_OF_YEAR) &&
+            this.paidOut == false
+    }
+
+    private fun showNotificationWithIntent(
         context: Context,
         titulo: String?,
         mensagem: String?,
@@ -68,9 +74,9 @@ class AlarmReceiver : BroadcastReceiver() {
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val channelId = "my_channel_id"
-        val channelName = VENCIMENTO
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT)
+            val channel =
+                NotificationChannel(channelId, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
         val contentIntent = PendingIntent.getActivity(
@@ -85,7 +91,7 @@ class AlarmReceiver : BroadcastReceiver() {
             .setContentTitle(titulo)
             .setContentText(mensagem)
             .setSmallIcon(R.drawable.ic_stat_name)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(NotificationCompat.DEFAULT_ALL)
             .setContentIntent(contentIntent)
             .setAutoCancel(true)
             .build()

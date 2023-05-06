@@ -61,12 +61,12 @@
     <string name="confirmar">Confirmar</string>
     <string name="deleteinfo">Você quer mesmo deletar essa despesa?</string>
     <string name="deletecategory">Você quer mesmo deletar essa categoria?</string>
-    <string name="nodesfeita">Está ação não poderá ser desfeita.</string>
+    <string name="nodesfeita">Esta ação não poderá ser desfeita.</string>
     <string name="paidoutinfo">Essa despesa está paga.</string>
     <string name="paidoutinfo2">Despesa não-paga.</string>
     <string name="paidoutmarcardesmarcar">Marcar como não-paga</string>
     <string name="titlenotification">Despesa vencendo hoje</string>
-    <string name="expense_due_today">A despesa %s vence hoje!</string>
+    <string name="expense_due_today">Lembrete: você tem despesa vencendo hoje. Não esqueça de efetuar o pagamento!</string>
     <string name="resumo">Resumo</string>
     <string name="share">Share</string>
     <string name="roupas">Roupas</string>
@@ -92,5 +92,13 @@
     <string name="select_a_icon">Selecione</string>
     <string name="required">Preencha este campo.</string>
     <string name="no_expense_month">Você não tem nenhuma despesa neste mês!</string>
+    <string name="exportar_backups">Exportar backup</string>
+    <string name="backup_seguranca">Criar cópia de segurança</string>
+    <string name="importar_backups">Importar backup</string>
+    <string name="restaurar_backup_seguranca">Restaurar cópia de segurança</string>
+    <string name="importado_backup_sucesso">As despesas foram restauradas com sucesso e estão agora salvas em seu aplicativo.</string>
+    <string name="exportado_sucesso">O backup foi realizado e está salvo no seu dispositivo com sucesso.</string>
+    <string name="importado_backup_existente">Os itens desse backup já estão salvos neste dispositivo, portanto, não é necessário importá-los novamente.</string>
+    <string name="lista_backup_vazia">Você não possui despesas cadastradas para criar um backup.</string>
 
 </resources>

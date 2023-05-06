@@ -37,4 +37,6 @@ val appModules = module {
     }
 
     viewModel { CategoryFragmentViewModel(get()) }
+
+    viewModel { BackupFragmentViewModel(get()) }
 }

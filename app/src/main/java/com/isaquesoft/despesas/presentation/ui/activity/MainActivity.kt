@@ -2,6 +2,7 @@ package com.isaquesoft.despesas.presentation.ui.activity
 
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.isaquesoft.despesas.AlarmService
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.databinding.ActivityMainBinding
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
@@ -28,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setAlarmManager()
         estadoAppViewModel.componentes.observe(
             this,
             Observer {
@@ -47,6 +47,8 @@ class MainActivity : AppCompatActivity() {
             },
         )
         setupBottomMenu()
+
+        startService(Intent(this, AlarmService::class.java))
     }
 
     private fun setupBottomMenu() {
@@ -59,14 +61,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setAlarmManager() {
-        val calendar = Calendar.getInstance()
-        val timeInterval = TimeUnit.DAYS.toMillis(1)
-        val intent = Intent(this, AlarmReceiver::class.java)
-        val sender = PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_IMMUTABLE)
-        val am = getSystemService(ALARM_SERVICE) as AlarmManager
-        var l = Date().time
-        if (l < Date().time) l += timeInterval
-        am.setRepeating(AlarmManager.RTC_WAKEUP, l, timeInterval, sender)
-    }
+
 }
