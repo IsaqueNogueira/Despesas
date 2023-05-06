@@ -85,20 +85,8 @@ class ExpenseFragment : Fragment() {
             val navigation =
                 ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
             controlation.navigate(navigation)
-        }else{
-            CustomToast(requireContext(), getString(R.string.no_expense_share)).show()
-        }
-    }
-
-    private fun pdfShareButton() {
-        if (expenses.isNotEmpty()) {
-            val navigation =
-                ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
-            controlation.navigate(navigation)
         } else {
-            val message = getString(R.string.no_expense_share)
-            val customToast = CustomToast(requireContext(), message)
-            customToast.show()
+            CustomToast(requireContext(), getString(R.string.no_expense_share)).show()
         }
     }
 

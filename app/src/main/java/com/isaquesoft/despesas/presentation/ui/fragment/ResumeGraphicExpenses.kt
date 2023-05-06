@@ -21,10 +21,13 @@ import com.isaquesoft.despesas.presentation.ui.adapter.AdapterCategoryGraphic
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ResumeGraphicExpenseViewModel
+import com.isaquesoft.despesas.utils.MonthYearPickerDialog
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.math.BigDecimal
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Currency
 import java.util.Locale
 
@@ -48,7 +51,48 @@ class ResumeGraphicExpenses : Fragment() {
         requireActivity().title = getString(R.string.resumo)
         setHasOptionsMenu(true)
         estadoAppViewModel.temComponentes = ComponentesVisuais(true, true)
-        viewModel.getExpenses()
+        initDate()
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(Calendar.getInstance())
+        viewModel.getAllExpense(startDate, endDate)
+        initViewModel()
+        binding.monthPickerView.setOnClickListener { buscaMes() }
+    }
+
+    private fun buscaMes() {
+        val dialog = MonthYearPickerDialog(requireContext()) { month, year ->
+            val calendar = Calendar.getInstance().apply {
+                set(Calendar.MONTH, month - 1)
+                set(Calendar.YEAR, year)
+            }
+            updateText(calendar)
+            val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendar)
+            viewModel.getAllExpense(startDate, endDate)
+        }
+        dialog.show()
+    }
+
+    private fun updateText(calendar: Calendar) {
+        val dateFormatter = SimpleDateFormat("MMMM/yyyy", Locale.getDefault()).apply {
+            applyPattern("MMMM/yyyy")
+            isLenient = false
+        }
+        val month = dateFormatter.format(calendar.time)
+        val formatMonth = month.capitalize()
+        binding.monthPickerView.text = formatMonth
+    }
+
+    private fun initDate() {
+        val calendar = Calendar.getInstance()
+        val dateFormatter = SimpleDateFormat("MMMM/yyyy", Locale.getDefault()).apply {
+            applyPattern("MMMM/yyyy")
+            isLenient = false
+        }
+        val month = dateFormatter.format(calendar.time)
+        val formatMonth = month.capitalize()
+        binding.monthPickerView.text = formatMonth
+    }
+
+    private fun initViewModel() {
         viewModel.expenseState.observe(viewLifecycleOwner) {
             when (it) {
                 is ExpenseResumeState.ShowExpenses -> showExpenses(it.expenses)
@@ -59,7 +103,10 @@ class ResumeGraphicExpenses : Fragment() {
     private fun showExpenses(expenses: List<Expense>) {
         if (expenses.isEmpty()) {
             binding.resumeGraphicAnimationView.visibility = View.VISIBLE
-            return
+            binding.resumeGraphicNoExpense.visibility = View.VISIBLE
+        } else {
+            binding.resumeGraphicAnimationView.visibility = View.GONE
+            binding.resumeGraphicNoExpense.visibility = View.GONE
         }
         val entries: MutableList<PieEntry> = mutableListOf()
         val colors: MutableList<Int> = mutableListOf()
@@ -122,7 +169,7 @@ class ResumeGraphicExpenses : Fragment() {
         dataSet.valueLineColor = Color.BLACK
         dataSet.valueLinePart1OffsetPercentage = 90f
         dataSet.valueLinePart1Length = 0.3f
-        dataSet.valueLinePart2Length = 1f
+        dataSet.valueLinePart2Length = 0.6f
         dataSet.valueTextColor = Color.BLACK
         dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         dataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
@@ -175,12 +222,6 @@ class ResumeGraphicExpenses : Fragment() {
         binding.resumeGraphicRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.resumeGraphicRecyclerview.adapter =
             AdapterCategoryGraphic(requireContext(), listaCategoriasValores)
-
-        if (expenses.isEmpty()) {
-            binding.resumeGraphicAnimationView.visibility = View.VISIBLE
-        } else {
-            binding.resumeGraphicAnimationView.visibility = View.GONE
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

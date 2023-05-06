@@ -10,7 +10,7 @@ class CategoryUtils {
         val categorys =
             listOf(
                 Category(category = context.getString(R.string.roupas), iconPosition = 12, cor = "#1E2E81"),
-                Category(category = context.getString(R.string.viagem), iconPosition = 12, cor = "#86A570"),
+                Category(category = context.getString(R.string.viagem), iconPosition = 13, cor = "#86A570"),
                 Category(category = context.getString(R.string.cartao), iconPosition = 14, cor = "#D5B25A"),
                 Category(category = context.getString(R.string.saude), iconPosition = 15, cor = "#833B7F"),
                 Category(category = context.getString(R.string.filme), iconPosition = 16, cor = "#6C5B7B"),

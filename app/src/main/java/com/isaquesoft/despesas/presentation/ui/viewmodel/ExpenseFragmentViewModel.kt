@@ -8,6 +8,7 @@ import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseState
+import com.isaquesoft.despesas.utils.CategoryUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -18,6 +19,7 @@ import kotlin.collections.ArrayList
 
 class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository) : ViewModel() {
 
+    private var categoriesSave = false
     private val calendar = Calendar.getInstance()
     private val _expenseState by lazy { MutableLiveData<ExpenseState>() }
     val expenseState: LiveData<ExpenseState>
@@ -277,8 +279,12 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     }
 
     fun insertAllCategory(category: List<Category>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            expenseRepository.insertAllCategory(category)
+        if (!categoriesSave){
+            viewModelScope.launch(Dispatchers.IO) {
+                expenseRepository.insertAllCategory(category)
+                categoriesSave = true
+            }
         }
+
     }
 }

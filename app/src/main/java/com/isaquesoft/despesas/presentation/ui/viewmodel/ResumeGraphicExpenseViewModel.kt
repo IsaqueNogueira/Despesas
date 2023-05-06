@@ -6,7 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseResumeState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.Calendar
 
 class ResumeGraphicExpenseViewModel(private val expenseRepository: ExpenseRepository) :
     ViewModel() {
@@ -15,10 +18,19 @@ class ResumeGraphicExpenseViewModel(private val expenseRepository: ExpenseReposi
     val expenseState: LiveData<ExpenseResumeState>
         get() = _expenseState
 
-    fun getExpenses() {
-        viewModelScope.launch {
-            val expenses = expenseRepository.getAllExpensesResume()
+    fun getFirstAndLastDayOfMonth(calendar: Calendar): ArrayList<Long> {
+        val localDate =
+            LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1)
+        val firstDayOfMonth = localDate.toEpochDay() * 86400000
+        val lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth)
+        val lastDayOfMonthMillis = calendar.timeInMillis
+        return arrayListOf(firstDayOfMonth, lastDayOfMonthMillis)
+    }
 
+    fun getAllExpense(minDate: Long, maxDate: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val expenses = expenseRepository.getAllExpense(minDate, maxDate)
             _expenseState.postValue(ExpenseResumeState.ShowExpenses(expenses))
         }
     }
