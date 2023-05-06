@@ -100,5 +100,6 @@
     <string name="exportado_sucesso">O backup foi realizado e está salvo no seu dispositivo com sucesso.</string>
     <string name="importado_backup_existente">Os itens desse backup já estão salvos neste dispositivo, portanto, não é necessário importá-los novamente.</string>
     <string name="lista_backup_vazia">Você não possui despesas cadastradas para criar um backup.</string>
+    <string name="alerta_backup">Ao realizar um backup, o arquivo é salvo em seu dispositivo na pasta de sua preferência. É altamente recomendado que você faça o upload deste arquivo para um serviço de armazenamento na nuvem, para evitar perda de dados caso ocorra algum problema com o seu dispositivo.</string>
 
 </resources>
