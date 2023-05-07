@@ -9,6 +9,7 @@ class SharedPreferences(context: Context) {
         private const val PREFERENCE_NAME = "MyPreference"
         private const val KEY_USERNAME = "ordemList"
         private const val KEY_NOTIFICATION_ENABLED = "notification_enabled"
+        private const val NOTIFICATION_PERMISSION_DIALOG = "notification_dialog"
     }
 
     private val mSharedPreferences: SharedPreferences =
@@ -22,6 +23,16 @@ class SharedPreferences(context: Context) {
 
     fun getOrdemList(): String? {
         return mSharedPreferences.getString(KEY_USERNAME, null)
+    }
+
+    fun setNotificationDialogShow(boolean: Boolean){
+        val editor = mSharedPreferences.edit()
+        editor.putBoolean(NOTIFICATION_PERMISSION_DIALOG, boolean)
+        editor.apply()
+    }
+
+    fun getNotificationDialogShow(): Boolean {
+        return mSharedPreferences.getBoolean(NOTIFICATION_PERMISSION_DIALOG, false)
     }
 
     fun setNotificationEnabled(enabled: Boolean) {

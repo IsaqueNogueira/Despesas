@@ -101,5 +101,12 @@
     <string name="importado_backup_existente">Os itens desse backup já estão salvos neste dispositivo, portanto, não é necessário importá-los novamente.</string>
     <string name="lista_backup_vazia">Você não possui despesas cadastradas para criar um backup.</string>
     <string name="alerta_backup">Ao realizar um backup, o arquivo é salvo em seu dispositivo na pasta de sua preferência. É altamente recomendado que você faça o upload deste arquivo para um serviço de armazenamento na nuvem, para evitar perda de dados caso ocorra algum problema com o seu dispositivo.</string>
+    <string name="permicaonotification">Permitir o envio de notificações de vencimento de despesas para você?</string>
+    <string name="abrirsettings">Abrir configurações</string>
+    <string name="cancel">Cancelar</string>
+    <string name="notitification_infor">Permissão de notificação</string>
+    <string name="abrir_settings_notification">Abrir as configurações de notificação do sistema</string>
+    <string name="permitir">Permitir</string>
+    <string name="naopermitir">Não permitir</string>
 
 </resources>

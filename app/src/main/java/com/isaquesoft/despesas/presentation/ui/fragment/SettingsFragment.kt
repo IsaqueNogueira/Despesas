@@ -1,6 +1,8 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -38,6 +40,15 @@ class SettingsFragment : Fragment() {
 
         setupSettings()
         setupBackup()
+        openSettingsNotificationSystem()
+    }
+
+    private fun openSettingsNotificationSystem() {
+        binding.settingsCardviewNotification.setOnClickListener {
+            val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+            startActivity(intent)
+        }
     }
 
     private fun setupBackup() {

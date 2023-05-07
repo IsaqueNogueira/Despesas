@@ -148,6 +148,59 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/settings_cardview_notification"
+            android:layout_width="0dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            app:cardElevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settings_cardview_backup">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/settings_icon_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/baseline_notifications"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/settings_notification_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/notitification_infor"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toEndOf="@id/settings_icon_notification"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/settings_notification_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/abrir_settings_notification"
+                    android:textColor="@color/greyf"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toEndOf="@id/settings_icon_notification"
+                    app:layout_constraintTop_toBottomOf="@id/settings_notification_title" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
         <View
             android:id="@+id/settings_diviser1"
             android:layout_width="0dp"
@@ -158,7 +211,7 @@
             android:background="@color/greyf"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/settings_cardview_backup" />
+            app:layout_constraintTop_toBottomOf="@id/settings_cardview_notification" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/settings_cardview_version_pro"
