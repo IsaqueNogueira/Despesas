@@ -172,7 +172,23 @@ class NewExpenseFragment : Fragment() {
                     installments = installmentsInput.toInt()
                 }
 
-                if (installments > 1) {
+                if (installments == 0 && repeat) {
+                    for (i in 1..420) {
+                        val expense = Expense(
+                            description = description,
+                            value = value,
+                            dateCreated = dataCreated,
+                            date = calendar.timeInMillis,
+                            repeat = repeat,
+                            installments = 1,
+                            category = category.category,
+                            iconPosition = category.iconPosition,
+                            corIcon = category.cor,
+                        )
+                        viewModel.insertExpense(expense)
+                        calendar.add(Calendar.MONTH, 1)
+                    }
+                } else if (installments > 1) {
                     for (i in 0 until installments) {
                         val inforInstallment = "${i + 1}/$installments"
                         val expense = Expense(

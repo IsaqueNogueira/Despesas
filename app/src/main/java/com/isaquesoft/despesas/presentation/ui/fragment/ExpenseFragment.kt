@@ -204,14 +204,17 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun setLado() {
-        binding.expenseRecyclerview.addOnItemTouchListener(object :
-            RecyclerView.OnItemTouchListener {
+        binding.expenseRecyclerview.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
             val swipeTouchListener = object : OnSwipeTouchListener() {
                 override fun onSwipeLeft() {
+                    val slideOutLeft = AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
+                    binding.expenseRecyclerview.startAnimation(slideOutLeft)
                     viewModel.clickNextButton()
                 }
 
                 override fun onSwipeRight() {
+                    val slideInLeft = AnimationUtils.loadAnimation(context, R.anim.slide_in_left)
+                    binding.expenseRecyclerview.startAnimation(slideInLeft)
                     viewModel.clickPrevButton()
                 }
             }

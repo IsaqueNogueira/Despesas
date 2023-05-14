@@ -48,41 +48,41 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         viewModelScope.launch(Dispatchers.IO) {
             val listExpensePrimary = expenseRepository.getAllExpense(minDate, maxDate)
 
-            for (expense in listExpensePrimary) {
-                if (expense.repeat && expense.installments == 0) {
-                    val date = expense.date
-                    val calendar = Calendar.getInstance()
-                    calendar.time = Date(date)
-                    calendar.add(Calendar.MONTH, 1)
-
-                    val expensesNextMonth = expenseRepository.getAllExpense(
-                        calendar.timeInMillis,
-                        calendar.timeInMillis,
-                    )
-                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
-
-                    // Verifica se já existe uma despesa fixa para o mês seguinte
-                    val existingExpense =
-                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
-                    if (existingExpense == null) {
-                        val newExpense = Expense(
-                            description = expense.description,
-                            value = expense.value,
-                            dateCreated = expense.dateCreated,
-                            date = calendar.timeInMillis,
-                            repeat = expense.repeat,
-                            installments = expense.installments,
-                            category = expense.category,
-                            iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon,
-                        )
-
-                        expenseRepository.insertExpense(newExpense)
-                    }
-                }
-            }
-            val listExpense = expenseRepository.getAllExpense(minDate, maxDate)
-            _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
+//            for (expense in listExpensePrimary) {
+//                if (expense.repeat && expense.installments == 0) {
+//                    val date = expense.date
+//                    val calendar = Calendar.getInstance()
+//                    calendar.time = Date(date)
+//                    calendar.add(Calendar.MONTH, 1)
+//
+//                    val expensesNextMonth = expenseRepository.getAllExpense(
+//                        calendar.timeInMillis,
+//                        calendar.timeInMillis,
+//                    )
+//                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
+//
+//                    // Verifica se já existe uma despesa fixa para o mês seguinte
+//                    val existingExpense =
+//                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
+//                    if (existingExpense == null) {
+//                        val newExpense = Expense(
+//                            description = expense.description,
+//                            value = expense.value,
+//                            dateCreated = expense.dateCreated,
+//                            date = calendar.timeInMillis,
+//                            repeat = expense.repeat,
+//                            installments = expense.installments,
+//                            category = expense.category,
+//                            iconPosition = expense.iconPosition,
+//                            corIcon = expense.corIcon,
+//                        )
+//
+//                        expenseRepository.insertExpense(newExpense)
+//                    }
+//                }
+//            }
+//            val listExpense = expenseRepository.getAllExpense(minDate, maxDate)
+            _expenseState.postValue(ExpenseState.ShowExpenses(listExpensePrimary))
         }
     }
 
@@ -90,42 +90,42 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         viewModelScope.launch(Dispatchers.IO) {
             val listExpensePrimary =
                 expenseRepository.getAllExpenseByDescriptionAsc(minDate, maxDate)
-
-            for (expense in listExpensePrimary) {
-                if (expense.repeat && expense.installments == 0) {
-                    val date = expense.date
-                    val calendar = Calendar.getInstance()
-                    calendar.time = Date(date)
-                    calendar.add(Calendar.MONTH, 1)
-
-                    val expensesNextMonth = expenseRepository.getAllExpenseByDescriptionAsc(
-                        calendar.timeInMillis,
-                        calendar.timeInMillis,
-                    )
-                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
-
-                    // Verifica se já existe uma despesa fixa para o mês seguinte
-                    val existingExpense =
-                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
-                    if (existingExpense == null) {
-                        val newExpense = Expense(
-                            description = expense.description,
-                            value = expense.value,
-                            dateCreated = expense.dateCreated,
-                            date = calendar.timeInMillis,
-                            repeat = expense.repeat,
-                            installments = expense.installments,
-                            category = expense.category,
-                            iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon,
-                        )
-
-                        expenseRepository.insertExpense(newExpense)
-                    }
-                }
-            }
-            val listExpense = expenseRepository.getAllExpenseByDescriptionAsc(minDate, maxDate)
-            _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
+//
+//            for (expense in listExpensePrimary) {
+//                if (expense.repeat && expense.installments == 0) {
+//                    val date = expense.date
+//                    val calendar = Calendar.getInstance()
+//                    calendar.time = Date(date)
+//                    calendar.add(Calendar.MONTH, 1)
+//
+//                    val expensesNextMonth = expenseRepository.getAllExpenseByDescriptionAsc(
+//                        calendar.timeInMillis,
+//                        calendar.timeInMillis,
+//                    )
+//                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
+//
+//                    // Verifica se já existe uma despesa fixa para o mês seguinte
+//                    val existingExpense =
+//                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
+//                    if (existingExpense == null) {
+//                        val newExpense = Expense(
+//                            description = expense.description,
+//                            value = expense.value,
+//                            dateCreated = expense.dateCreated,
+//                            date = calendar.timeInMillis,
+//                            repeat = expense.repeat,
+//                            installments = expense.installments,
+//                            category = expense.category,
+//                            iconPosition = expense.iconPosition,
+//                            corIcon = expense.corIcon,
+//                        )
+//
+//                        expenseRepository.insertExpense(newExpense)
+//                    }
+//                }
+//            }
+//            val listExpense = expenseRepository.getAllExpenseByDescriptionAsc(minDate, maxDate)
+            _expenseState.postValue(ExpenseState.ShowExpenses(listExpensePrimary))
         }
     }
 
@@ -133,41 +133,41 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         viewModelScope.launch(Dispatchers.IO) {
             val listExpensePrimary = expenseRepository.getAllExpenseDateDesc(minDate, maxDate)
 
-            for (expense in listExpensePrimary) {
-                if (expense.repeat && expense.installments == 0) {
-                    val date = expense.date
-                    val calendar = Calendar.getInstance()
-                    calendar.time = Date(date)
-                    calendar.add(Calendar.MONTH, 1)
-
-                    val expensesNextMonth = expenseRepository.getAllExpenseDateDesc(
-                        calendar.timeInMillis,
-                        calendar.timeInMillis,
-                    )
-                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
-
-                    // Verifica se já existe uma despesa fixa para o mês seguinte
-                    val existingExpense =
-                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
-                    if (existingExpense == null) {
-                        val newExpense = Expense(
-                            description = expense.description,
-                            value = expense.value,
-                            dateCreated = expense.dateCreated,
-                            date = calendar.timeInMillis,
-                            repeat = expense.repeat,
-                            installments = expense.installments,
-                            category = expense.category,
-                            iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon,
-                        )
-
-                        expenseRepository.insertExpense(newExpense)
-                    }
-                }
-            }
-            val listExpense = expenseRepository.getAllExpenseDateDesc(minDate, maxDate)
-            _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
+//            for (expense in listExpensePrimary) {
+//                if (expense.repeat && expense.installments == 0) {
+//                    val date = expense.date
+//                    val calendar = Calendar.getInstance()
+//                    calendar.time = Date(date)
+//                    calendar.add(Calendar.MONTH, 1)
+//
+//                    val expensesNextMonth = expenseRepository.getAllExpenseDateDesc(
+//                        calendar.timeInMillis,
+//                        calendar.timeInMillis,
+//                    )
+//                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
+//
+//                    // Verifica se já existe uma despesa fixa para o mês seguinte
+//                    val existingExpense =
+//                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
+//                    if (existingExpense == null) {
+//                        val newExpense = Expense(
+//                            description = expense.description,
+//                            value = expense.value,
+//                            dateCreated = expense.dateCreated,
+//                            date = calendar.timeInMillis,
+//                            repeat = expense.repeat,
+//                            installments = expense.installments,
+//                            category = expense.category,
+//                            iconPosition = expense.iconPosition,
+//                            corIcon = expense.corIcon,
+//                        )
+//
+//                        expenseRepository.insertExpense(newExpense)
+//                    }
+//                }
+//            }
+//            val listExpense = expenseRepository.getAllExpenseDateDesc(minDate, maxDate)
+            _expenseState.postValue(ExpenseState.ShowExpenses(listExpensePrimary))
         }
     }
 
@@ -175,41 +175,41 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         viewModelScope.launch(Dispatchers.IO) {
             val listExpensePrimary = expenseRepository.getAllExpenseDateCres(minDate, maxDate)
 
-            for (expense in listExpensePrimary) {
-                if (expense.repeat && expense.installments == 0) {
-                    val date = expense.date
-                    val calendar = Calendar.getInstance()
-                    calendar.time = Date(date)
-                    calendar.add(Calendar.MONTH, 1)
-
-                    val expensesNextMonth = expenseRepository.getAllExpenseDateCres(
-                        calendar.timeInMillis,
-                        calendar.timeInMillis,
-                    )
-                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
-
-                    // Verifica se já existe uma despesa fixa para o mês seguinte
-                    val existingExpense =
-                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
-                    if (existingExpense == null) {
-                        val newExpense = Expense(
-                            description = expense.description,
-                            value = expense.value,
-                            dateCreated = expense.dateCreated,
-                            date = calendar.timeInMillis,
-                            repeat = expense.repeat,
-                            installments = expense.installments,
-                            category = expense.category,
-                            iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon,
-                        )
-
-                        expenseRepository.insertExpense(newExpense)
-                    }
-                }
-            }
-            val listExpense = expenseRepository.getAllExpenseDateCres(minDate, maxDate)
-            _expenseState.postValue(ExpenseState.ShowExpenses(listExpense))
+//            for (expense in listExpensePrimary) {
+//                if (expense.repeat && expense.installments == 0) {
+//                    val date = expense.date
+//                    val calendar = Calendar.getInstance()
+//                    calendar.time = Date(date)
+//                    calendar.add(Calendar.MONTH, 1)
+//
+//                    val expensesNextMonth = expenseRepository.getAllExpenseDateCres(
+//                        calendar.timeInMillis,
+//                        calendar.timeInMillis,
+//                    )
+//                    val itemsRepeat = expensesNextMonth.filter { it.repeat && it.installments == 0 }
+//
+//                    // Verifica se já existe uma despesa fixa para o mês seguinte
+//                    val existingExpense =
+//                        itemsRepeat.firstOrNull { it.description == expense.description && it.value == expense.value }
+//                    if (existingExpense == null) {
+//                        val newExpense = Expense(
+//                            description = expense.description,
+//                            value = expense.value,
+//                            dateCreated = expense.dateCreated,
+//                            date = calendar.timeInMillis,
+//                            repeat = expense.repeat,
+//                            installments = expense.installments,
+//                            category = expense.category,
+//                            iconPosition = expense.iconPosition,
+//                            corIcon = expense.corIcon,
+//                        )
+//
+//                        expenseRepository.insertExpense(newExpense)
+//                    }
+//                }
+//            }
+//            val listExpense = expenseRepository.getAllExpenseDateCres(minDate, maxDate)
+            _expenseState.postValue(ExpenseState.ShowExpenses(listExpensePrimary))
         }
     }
 
