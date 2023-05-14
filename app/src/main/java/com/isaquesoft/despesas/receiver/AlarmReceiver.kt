@@ -23,8 +23,6 @@ private const val CHANNEL_NAME = "Despesas Vencendo Hoje"
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        // Log.d("AlarmReceiver", "Verificando despesas vencendo hoje")
-
         CoroutineScope(Dispatchers.Default).launch {
             val db = AppDatabase.getDatabase(context)
 

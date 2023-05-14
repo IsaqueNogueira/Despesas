@@ -8,17 +8,9 @@
         app:showAsAction="always">
         <menu>
             <item
-                android:id="@+id/settings_item"
-                android:title="@string/settings"
-              />
-
-            <item
                 android:id="@+id/share_item"
                 android:title="@string/share_pdf"
                 />
-            <item
-                android:id="@+id/menu_item3"
-                android:title="@string/about" />
         </menu>
     </item>
 </menu>

@@ -46,8 +46,9 @@ class AdapterCategory(
         val drawable = holder.iconCategory.background as GradientDrawable
         drawable.setColor(Color.parseColor(category.cor))
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.setOnLongClickListener{
             clickCategory(category)
+            true
         }
     }
 

@@ -35,7 +35,6 @@ class NewExpenseFragment : Fragment() {
     private lateinit var binding: NewExpenseFragmentBinding
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: NewExpenseFragmentViewModel by viewModel()
-    private val controlation by lazy { findNavController() }
     private var repeat: Boolean = false
     private var installments: Int = 0
     private var selectedInstallments: Boolean = false
@@ -290,11 +289,6 @@ class NewExpenseFragment : Fragment() {
             }
         }
         return true
-    }
-
-    private fun goToExpenseFragment() {
-        val navigation = NewExpenseFragmentDirections.actionNewExpenseFragmentToExpenseFragment()
-        controlation.navigate(navigation)
     }
 
     private fun getCoinFormatInput() {

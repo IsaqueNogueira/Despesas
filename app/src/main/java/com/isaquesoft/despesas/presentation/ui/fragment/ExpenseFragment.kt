@@ -1,16 +1,21 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
+import OnSwipeTouchListener
+import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
@@ -27,7 +32,6 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewMode
 import com.isaquesoft.despesas.utils.AlertDialogStandard
 import com.isaquesoft.despesas.utils.CategoryUtils
 import com.isaquesoft.despesas.utils.CustomToast
-import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -43,6 +47,7 @@ class ExpenseFragment : Fragment() {
     private val viewModel: ExpenseFragmentViewModel by viewModel()
     private var expenses: List<Expense> = mutableListOf()
     private var calendarUpdateValueEndBalance = Calendar.getInstance()
+    private var calendarSelected: Calendar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,6 +65,40 @@ class ExpenseFragment : Fragment() {
         requireActivity().title = getString(R.string.title_my_expense)
         initViewModel()
         dateText()
+        setLado()
+        binding.expenseDateText.setOnClickListener {
+            buscaMes()
+        }
+    }
+
+    private fun buscaMes() {
+        val currentMonth = calendarUpdateValueEndBalance.get(Calendar.MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            null,
+            calendarUpdateValueEndBalance.get(Calendar.YEAR),
+            currentMonth,
+            calendarUpdateValueEndBalance.get(Calendar.DAY_OF_MONTH),
+        )
+        datePickerDialog.datePicker.calendarViewShown = false
+        datePickerDialog.datePicker.spinnersShown = true
+        datePickerDialog.setButton(
+            DialogInterface.BUTTON_POSITIVE,
+            getString(R.string.ok),
+        ) { dialog, which ->
+            val selectedMonth = datePickerDialog.datePicker.month
+            val selectedYear = datePickerDialog.datePicker.year
+            val selectedCalendar = Calendar.getInstance().apply {
+                set(Calendar.MONTH, selectedMonth)
+                set(Calendar.YEAR, selectedYear)
+            }
+            calendarSelected = selectedCalendar
+            viewModel.setCalendarSelected(selectedCalendar)
+            showDateText(selectedCalendar)
+        }
+
+        datePickerDialog.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -69,10 +108,6 @@ class ExpenseFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.settings_item -> {
-                goToSettingsFragment()
-            }
-
             R.id.share_item -> {
                 sharePdf()
             }
@@ -168,6 +203,32 @@ class ExpenseFragment : Fragment() {
         checkExpenseRegister()
     }
 
+    private fun setLado() {
+        binding.expenseRecyclerview.addOnItemTouchListener(object :
+            RecyclerView.OnItemTouchListener {
+            val swipeTouchListener = object : OnSwipeTouchListener() {
+                override fun onSwipeLeft() {
+                    viewModel.clickNextButton()
+                }
+
+                override fun onSwipeRight() {
+                    viewModel.clickPrevButton()
+                }
+            }
+
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                swipeTouchListener.onTouch(rv, e)
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+                swipeTouchListener.onTouch(rv, e)
+            }
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+        })
+    }
+
     private fun showNewCoin(expenses: List<Expense>) {
         expenses.forEach {
             val deviceLocale = Locale.getDefault()
@@ -184,7 +245,12 @@ class ExpenseFragment : Fragment() {
 
     private fun clickItem(expense: Expense) {
         val bottomSheetDialogFragment =
-            BottomShettPrincipalFragment(expense, ::deleteExpense, ::deleteAllExpense, ::updateExpense)
+            BottomShettPrincipalFragment(
+                expense,
+                ::deleteExpense,
+                ::deleteAllExpense,
+                ::updateExpense,
+            )
         fragmentManager?.let { it1 ->
             bottomSheetDialogFragment.show(
                 it1,
@@ -194,12 +260,14 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun updateExpense(expense: Expense) {
-        viewModel.updateExpense(expense)
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendarUpdateValueEndBalance)
+        viewModel.updateExpense(expense, startDate, endDate)
         (binding.expenseRecyclerview.adapter as AdapterExpense).atualiza(expense)
     }
 
     private fun deleteExpense(expense: Expense) {
-        viewModel.deleteExpense(expense)
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendarUpdateValueEndBalance)
+        viewModel.deleteExpense(expense, startDate, endDate)
         (binding.expenseRecyclerview.adapter as AdapterExpense).remove(expense)
     }
 
@@ -216,10 +284,5 @@ class ExpenseFragment : Fragment() {
             binding.expenseAnimationView.visibility = View.GONE
             binding.txtInfoNoExpenseRegister.visibility = View.GONE
         }
-    }
-
-    private fun goToSettingsFragment() {
-        val direction = ExpenseFragmentDirections.actionExpenseFragmentToSettingsFragment()
-        controlation.navigate(direction)
     }
 }

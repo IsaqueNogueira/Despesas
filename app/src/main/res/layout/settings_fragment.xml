@@ -283,19 +283,6 @@
                     app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_1" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/settings_vantenges_pro_3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:drawableStart="@drawable/baseline_check"
-                    android:drawablePadding="10dp"
-                    android:text="@string/vantagens_pro_3"
-                    android:textColor="@color/greyf"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_2" />
-
-                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/settings_vantenges_pro_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -306,7 +293,7 @@
                     android:text="@string/vantagens_pro_4"
                     android:textColor="@color/greyf"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_3" />
+                    app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_2" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"

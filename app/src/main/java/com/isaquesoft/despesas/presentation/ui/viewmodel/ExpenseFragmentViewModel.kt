@@ -8,7 +8,6 @@ import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseState
-import com.isaquesoft.despesas.utils.CategoryUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -20,7 +19,7 @@ import kotlin.collections.ArrayList
 class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository) : ViewModel() {
 
     private var categoriesSave = false
-    private val calendar = Calendar.getInstance()
+    private var calendar = Calendar.getInstance()
     private val _expenseState by lazy { MutableLiveData<ExpenseState>() }
     val expenseState: LiveData<ExpenseState>
         get() = _expenseState
@@ -28,6 +27,12 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     fun clickPrevButton() {
         calendar.add(Calendar.MONTH, -1)
         _expenseState.postValue(ExpenseState.DateText(calendar))
+    }
+
+    fun setCalendarSelected(calendarSelected: Calendar?) {
+        if (calendarSelected != null) {
+            calendar = calendarSelected
+        }
     }
 
     fun clickNextButton() {
@@ -69,7 +74,7 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             installments = expense.installments,
                             category = expense.category,
                             iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon
+                            corIcon = expense.corIcon,
                         )
 
                         expenseRepository.insertExpense(newExpense)
@@ -112,7 +117,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             installments = expense.installments,
                             category = expense.category,
                             iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon)
+                            corIcon = expense.corIcon,
+                        )
 
                         expenseRepository.insertExpense(newExpense)
                     }
@@ -153,7 +159,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             installments = expense.installments,
                             category = expense.category,
                             iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon)
+                            corIcon = expense.corIcon,
+                        )
 
                         expenseRepository.insertExpense(newExpense)
                     }
@@ -194,7 +201,8 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
                             installments = expense.installments,
                             category = expense.category,
                             iconPosition = expense.iconPosition,
-                            corIcon = expense.corIcon)
+                            corIcon = expense.corIcon,
+                        )
 
                         expenseRepository.insertExpense(newExpense)
                     }
@@ -259,15 +267,19 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         }
     }
 
-    fun updateExpense(expense: Expense) {
+    fun updateExpense(expense: Expense, startDate: Long, endDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.updateExpense(expense)
+            val listExpense = expenseRepository.getAllExpense(startDate, endDate)
+            fullExpenseSum(listExpense)
         }
     }
 
-    fun deleteExpense(expense: Expense) {
+    fun deleteExpense(expense: Expense, startDate: Long, endDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteExpense(expense)
+            val listExpense = expenseRepository.getAllExpense(startDate, endDate)
+            fullExpenseSum(listExpense)
         }
     }
 
@@ -279,12 +291,11 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
     }
 
     fun insertAllCategory(category: List<Category>) {
-        if (!categoriesSave){
+        if (!categoriesSave) {
             viewModelScope.launch(Dispatchers.IO) {
                 expenseRepository.insertAllCategory(category)
                 categoriesSave = true
             }
         }
-
     }
 }
