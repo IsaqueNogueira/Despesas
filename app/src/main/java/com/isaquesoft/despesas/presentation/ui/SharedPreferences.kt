@@ -10,6 +10,9 @@ class SharedPreferences(context: Context) {
         private const val KEY_USERNAME = "ordemList"
         private const val KEY_NOTIFICATION_ENABLED = "notification_enabled"
         private const val NOTIFICATION_PERMISSION_DIALOG = "notification_dialog"
+        private const val KEY_ANUNCIO_INTERSTICIAL_PRINCIPAL = "intersticial_principal"
+        private const val KEY_COMPRA_PRO_REALIZADO = "verification_signature"
+        private const val KEY_QUANTITY_USE_APP = "quantidade_de_vezes_que_entrou_no_app"
     }
 
     private val mSharedPreferences: SharedPreferences =
@@ -25,7 +28,7 @@ class SharedPreferences(context: Context) {
         return mSharedPreferences.getString(KEY_USERNAME, null)
     }
 
-    fun setNotificationDialogShow(boolean: Boolean){
+    fun setNotificationDialogShow(boolean: Boolean) {
         val editor = mSharedPreferences.edit()
         editor.putBoolean(NOTIFICATION_PERMISSION_DIALOG, boolean)
         editor.apply()
@@ -43,5 +46,34 @@ class SharedPreferences(context: Context) {
 
     fun isNotificationEnabled(): Boolean {
         return mSharedPreferences.getBoolean(KEY_NOTIFICATION_ENABLED, true)
+    }
+
+    fun setIntersticialPrincipalExecute(enabled: Boolean) {
+        val editor = mSharedPreferences.edit()
+        editor.putBoolean(KEY_ANUNCIO_INTERSTICIAL_PRINCIPAL, enabled)
+        editor.apply()
+    }
+
+    fun getIntersticialPrincipalExecute(): Boolean {
+        return mSharedPreferences.getBoolean(KEY_ANUNCIO_INTERSTICIAL_PRINCIPAL, false)
+    }
+
+    fun setVerifyCompraAssinatura(enabled: Boolean) {
+        val editor = mSharedPreferences.edit()
+        editor.putBoolean(KEY_COMPRA_PRO_REALIZADO, enabled)
+        editor.apply()
+    }
+    fun getVerifyCompraAssinatura(): Boolean {
+        return mSharedPreferences.getBoolean(KEY_COMPRA_PRO_REALIZADO, false)
+    }
+
+    fun setQuantityUseApp(quantity: Int) {
+        val editor = mSharedPreferences.edit()
+        editor.putInt(KEY_QUANTITY_USE_APP, quantity)
+        editor.apply()
+    }
+
+    fun getQuantityUseApp(): Int {
+        return mSharedPreferences.getInt(KEY_QUANTITY_USE_APP, 0)
     }
 }

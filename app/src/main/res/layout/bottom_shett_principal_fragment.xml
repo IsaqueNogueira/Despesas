@@ -250,13 +250,13 @@
         android:text="@string/expense_delete_info_it"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:visibility="gone"
+android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bottom_sheet_principal_icon_nao_pago" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bottom_sheet_principal_delete_all"
+        android:id="@+id/bottom_sheet_principal_delete_it_next"
         android:layout_width="wrap_content"
         android:layout_height="35dp"
         android:layout_marginStart="40dp"
@@ -264,16 +264,36 @@
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="25dp"
         android:background="@drawable/button_delete"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:text="@string/expense_delete_info_it_en_next"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@id/bottom_sheet_principal_delete_one"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_principal_icon_nao_pago" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/bottom_sheet_principal_delete_all"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/button_delete"
         android:paddingStart="50dp"
         android:paddingEnd="50dp"
         android:visibility="gone"
         android:text="@string/expense_delete_info_all"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@id/bottom_sheet_principal_delete_one"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_principal_icon_nao_pago" />
+        app:layout_constraintTop_toBottomOf="@id/bottom_sheet_principal_delete_one" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

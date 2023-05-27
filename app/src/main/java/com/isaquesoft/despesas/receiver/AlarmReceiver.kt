@@ -17,6 +17,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.*
 
 private const val CHANNEL_NAME = "Despesas Vencendo Hoje"
@@ -27,7 +28,8 @@ class AlarmReceiver : BroadcastReceiver() {
             val db = AppDatabase.getDatabase(context)
 
             val expensesDueToday = mutableListOf<Expense>()
-            val expenses = db.expenseDao().getExpenses()
+            val (startDate, endDate) = getFirstAndLastDayOfMonth(Calendar.getInstance())
+            val expenses = db.expenseDao().getAllExpense(startDate, endDate)
 
             expenses.forEach { expense ->
                 if (expense.isDueToday()) {
@@ -94,5 +96,15 @@ class AlarmReceiver : BroadcastReceiver() {
             .setAutoCancel(true)
             .build()
         notificationManager.notify(id, notification)
+    }
+
+    private fun getFirstAndLastDayOfMonth(calendar: Calendar): ArrayList<Long> {
+        val localDate =
+            LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1)
+        val firstDayOfMonth = localDate.toEpochDay() * 86400000
+        val lastDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+        calendar.set(Calendar.DAY_OF_MONTH, lastDayOfMonth)
+        val lastDayOfMonthMillis = calendar.timeInMillis
+        return arrayListOf(firstDayOfMonth, lastDayOfMonthMillis)
     }
 }

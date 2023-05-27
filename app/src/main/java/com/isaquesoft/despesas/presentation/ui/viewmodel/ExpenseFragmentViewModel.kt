@@ -213,6 +213,15 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         }
     }
 
+    fun getAllExpensesFilterCategory(minDate: Long, maxDate: Long, category: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val listExpensePrimary =
+                expenseRepository.getAllExpenseFilterCategory(minDate, maxDate, category)
+
+            _expenseState.postValue(ExpenseState.ShowExpenses(listExpensePrimary))
+        }
+    }
+
     fun getFirstAndLastDayOfMonth(calendar: Calendar): ArrayList<Long> {
         val localDate =
             LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, 1)
@@ -261,9 +270,11 @@ class ExpenseFragmentViewModel(private val expenseRepository: ExpenseRepository)
         )
     }
 
-    fun deleteAllExpense(expense: List<Expense>) {
+    fun deleteAllExpense(expense: List<Expense>, startDate: Long, endDate: Long) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteAllExpense(expense)
+            val listExpense = expenseRepository.getAllExpense(startDate, endDate)
+            fullExpenseSum(listExpense)
         }
     }
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
@@ -22,6 +21,7 @@ class BottomShettPrincipalFragment(
     private val expense: Expense,
     private val actionExpenseDelete: (expense: Expense) -> Unit = {},
     private val actionExpenseDeleteAll: (expense: List<Expense>) -> Unit = {},
+    private val actionDeleteItNext: (List<Expense>) -> Unit = {},
     private val actionExpenseUpdate: (expense: Expense) -> Unit = {},
 ) : BottomSheetDialogFragment() {
 
@@ -38,19 +38,7 @@ class BottomShettPrincipalFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkExpenseRepeat()
         initTxt()
-    }
-
-    private fun checkExpenseRepeat() {
-        if (expense.repeat) {
-            viewModel.getExpenseRepeat(
-                expense.dateCreated,
-                expense.value,
-                expense.repeat,
-                expense.installments,
-            )
-        }
     }
 
     private fun String.unaccent(): String {
@@ -78,7 +66,6 @@ class BottomShettPrincipalFragment(
         val iconId = listIcons[expense.iconPosition]
         itemCategoryIcon.setImageDrawable(iconId)
 
-
         val drawable = itemCategoryIcon.background as GradientDrawable
         drawable.setColor(Color.parseColor(expense.corIcon))
 
@@ -94,6 +81,7 @@ class BottomShettPrincipalFragment(
                 binding.bottomSheetPrincipalDelete.visibility = View.INVISIBLE
                 binding.bottomSheetPrincipalDeleteOne.visibility = View.VISIBLE
                 binding.bottomSheetPrincipalDeleteAll.visibility = View.VISIBLE
+                binding.bottomSheetPrincipalDeleteItNext.visibility = View.VISIBLE
                 binding.bottomSheetPrincipalDeleteInfoAll.visibility = View.VISIBLE
                 binding.bottomSheettBtnPago.visibility = View.GONE
                 binding.bottomSheettBtnNaoPago.visibility = View.GONE
@@ -109,6 +97,7 @@ class BottomShettPrincipalFragment(
             binding.bottomSheetPrincipalDeleteOne.visibility = View.GONE
             binding.bottomSheetPrincipalDeleteAll.visibility = View.GONE
             binding.bottomSheetPrincipalDeleteInfoAll.visibility = View.GONE
+            binding.bottomSheetPrincipalDeleteItNext.visibility = View.GONE
             if (expense.paidOut == true) {
                 binding.bottomSheettBtnNaoPago.visibility = View.VISIBLE
                 binding.bottomSheettBtnPago.visibility = View.GONE
@@ -189,13 +178,41 @@ class BottomShettPrincipalFragment(
             dismiss()
         }
 
+        binding.bottomSheetPrincipalDeleteItNext.setOnClickListener {
+            viewModel.getExpenseRepeatItNext(
+                expense.dateCreated,
+                expense.value,
+                expense.repeat,
+                expense.installments,
+                expense.date,
+            )
+            viewModel.expenseDetailsState.observe(viewLifecycleOwner) {
+                when (it) {
+                    is ExpenseDetailsState.ShowExpenseRepeatItNext -> {
+                        actionDeleteItNext.invoke(it.expensesRepeatItNext)
+                        dismiss()
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+
         binding.bottomSheetPrincipalDeleteAll.setOnClickListener {
+            viewModel.getExpenseRepeat(
+                expense.dateCreated,
+                expense.value,
+                expense.repeat,
+                expense.installments,
+            )
             viewModel.expenseDetailsState.observe(viewLifecycleOwner) {
                 when (it) {
                     is ExpenseDetailsState.ShowExpenseRepeat -> {
                         actionExpenseDeleteAll.invoke(it.expensesRepeat)
                         dismiss()
                     }
+
+                    else -> {}
                 }
             }
         }

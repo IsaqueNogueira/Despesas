@@ -36,10 +36,10 @@
     <string name="expense_delete_info_all">Todas</string>
     <string name="alert_delet_info">Deseja realmente excluir?</string>
     <string name="settings">Configurações</string>
-    <string name="settings_ordem_title">Lista de despesas</string>
-    <string name="settings_ordem_description">Ordenar por descrição A - Z</string>
-    <string name="settings_ordem_date_desc">Ordenar por data decrescente</string>
-    <string name="settings_ordem_date_cres">Ordenar por data crescente</string>
+    <string name="ordem_title">Ordenar</string>
+    <string name="ordem_description">Por descrição A - Z</string>
+    <string name="ordem_date_desc">Por data decrescente</string>
+    <string name="ordem_date_cres">Por data crescente</string>
     <string name="backup">Backup</string>
     <string name="backup_description">Criar e restaurar cópia de segurança</string>
     <string name="settings_pro_title">Vantagens da VERSÃO PRO</string>
@@ -81,10 +81,10 @@
     <string name="educacao">Educação</string>
     <string name="entretenimento">Entretenimento</string>
     <string name="searchcategory">Pesquisar categoria</string>
-    <string name="add">Adicionar\n</string>
+    <string name="add">Adicionar</string>
     <string name="home">Home</string>
-    <string name="category">Categorias\n</string>
-    <string name="new_category">Nova categoria\n</string>
+    <string name="category">Categorias</string>
+    <string name="new_category">Nova categoria</string>
     <string name="name">Nome</string>
     <string name="select_color">Selecione cor</string>
     <string name="select_imagem">Selecione imagem</string>
@@ -108,5 +108,23 @@
     <string name="abrir_settings_notification">Abrir as configurações de notificação do sistema</string>
     <string name="permitir">Permitir</string>
     <string name="naopermitir">Não permitir</string>
-
+    <string name="expense_delete_info_it_en_next">Esta e próximas</string>
+    <string name="version_pro_title">Selecione seu plano</string>
+    <string name="pro_month">Pro mensal</string>
+    <string name="value_month_pro">R$ 11,99\n por mês</string>
+    <string name="pro_semestral">Pro semestral</string>
+    <string name="value_semestral_pro">R$ 57,54\n 6 meses</string>
+    <string name="pro_vantagem">Vantagens de ser Pro:</string>
+    <string name="nopropaganda">Sem propagandas.</string>
+    <string name="assinar">Assinar</string>
+    <string name="economize">Economize</string>
+    <string name="confirma_assinatura">Sua assinatura foi confirmada! Reinicie o aplicativo para aproveitar os recursos premium. Agradecemos sua escolha!</string>
+    <string name="parabens">Parabéns!</string>
+    <string name="compra_em_andamento">A compra está sendo processada</string>
+    <string name="processamento_assinatura">Agradecemos por adquirir nossa assinatura premium! Seu pedido está em processamento. Em breve, você terá acesso total aos recursos premium do nosso aplicativo.</string>
+    <string name="cancelado_pelo_usuario">Cancelado pelo usuário.</string>
+    <string name="filter">Filtrar</string>
+    <string name="filter_categoria_titulo">Filtrar por categoria</string>
+    <string name="filter_categoria_limpar">Limpar filtro</string>
+    <string name="no_expense_month_filter">Sem despesas para o filtro selecionado.</string>
 </resources>

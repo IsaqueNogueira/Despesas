@@ -83,10 +83,14 @@ class CategoryFragment : Fragment() {
     private fun showCategory(category: List<Category>) {
         binding.categoryRecyclerview.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.categoryRecyclerview.adapter =
-            AdapterCategory(requireContext(), category.toMutableList(), ::clickCategory)
+            AdapterCategory(requireContext(), category.toMutableList(), ::clickCategory, ::clickLongCategory)
     }
 
     private fun clickCategory(category: Category) {
+        // FAZ NADA
+    }
+
+    private fun clickLongCategory(category: Category) {
         sutupDialogDelete(category)
     }
 

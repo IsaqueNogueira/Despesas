@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Category
@@ -28,7 +27,9 @@ import com.isaquesoft.despesas.utils.IconsCategory
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class NewExpenseFragment : Fragment() {
 
@@ -173,7 +174,7 @@ class NewExpenseFragment : Fragment() {
                 }
 
                 if (installments == 0 && repeat) {
-                    for (i in 1..420) {
+                    for (i in 1..240) {
                         val expense = Expense(
                             description = description,
                             value = value,

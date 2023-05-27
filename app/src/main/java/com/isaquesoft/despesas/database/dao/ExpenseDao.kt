@@ -13,6 +13,7 @@ interface ExpenseDao {
 
     @Insert
     suspend fun insertExpense(expense: Expense)
+
     @Insert
     suspend fun insertAllExpenses(expenses: List<Expense>)
 
@@ -33,12 +34,17 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM Expense WHERE date >= :minDate AND date <= :maxDate ORDER BY date ASC")
     suspend fun getAllExpenseDateCres(minDate: Long, maxDate: Long): List<Expense>
+    @Query("SELECT * FROM Expense WHERE date >= :minDate AND date <= :maxDate AND category = :category ORDER BY date ASC")
+    suspend fun getAllExpenseFilterCategory(minDate: Long, maxDate: Long, category: String): List<Expense>
 
     @Query("SELECT * FROM Expense")
     suspend fun getExpenses(): List<Expense>
 
     @Query("SELECT * FROM Expense WHERE dateCreated = :dateCreated AND value = :value AND repeat = :repeat AND installments = :installments")
     suspend fun getExpenseRepeat(dateCreated: Long, value: String, repeat: Boolean, installments: Int): List<Expense>
+
+    @Query("SELECT * FROM Expense WHERE dateCreated = :dateCreated AND value = :value AND repeat = :repeat AND installments = :installments AND date >= :date")
+    suspend fun getExpenseRepeatItNext(dateCreated: Long, value: String, repeat: Boolean, installments: Int, date: Long): List<Expense>
 
     @Delete
     suspend fun deleteExpense(expense: Expense)
@@ -68,5 +74,4 @@ interface ExpenseDao {
 
     @Delete
     suspend fun deleteCategory(category: Category)
-
 }

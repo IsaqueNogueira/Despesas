@@ -48,6 +48,9 @@ class ExpenseFragment : Fragment() {
     private var expenses: List<Expense> = mutableListOf()
     private var calendarUpdateValueEndBalance = Calendar.getInstance()
     private var calendarSelected: Calendar? = null
+    private lateinit var listCategory: List<Category>
+    private var categoriaSelecionadaId = ""
+    private var filtroAplicado = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -108,6 +111,10 @@ class ExpenseFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.filter -> {
+                openBottomSheetFilter()
+            }
+
             R.id.share_item -> {
                 sharePdf()
             }
@@ -130,9 +137,13 @@ class ExpenseFragment : Fragment() {
 
         binding.expensePrevbutton.setOnClickListener {
             viewModel.clickPrevButton()
+            filtroAplicado = false
+            categoriaSelecionadaId = ""
         }
         binding.expenseNextbutton.setOnClickListener {
             viewModel.clickNextButton()
+            filtroAplicado = false
+            categoriaSelecionadaId = ""
         }
     }
 
@@ -156,11 +167,11 @@ class ExpenseFragment : Fragment() {
         }
     }
 
-    private fun showCategory(category: List<Category>) {
-        if (category.isEmpty()) {
-            val listCategory = CategoryUtils().getListCategory(requireContext())
-            viewModel.insertAllCategory(listCategory)
-        }
+    private fun showCategory(category: List<Category>) = if (category.isEmpty()) {
+        listCategory = CategoryUtils().getListCategory(requireContext())
+        viewModel.insertAllCategory(listCategory)
+    } else {
+        listCategory = category
     }
 
     private fun showFullValueEndBalance(fullValue: String, fullBalance: String) {
@@ -204,18 +215,23 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun setLado() {
-        binding.expenseRecyclerview.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+        binding.expenseRecyclerview.addOnItemTouchListener(object :
+            RecyclerView.OnItemTouchListener {
             val swipeTouchListener = object : OnSwipeTouchListener() {
                 override fun onSwipeLeft() {
                     val slideOutLeft = AnimationUtils.loadAnimation(context, R.anim.slide_in_right)
                     binding.expenseRecyclerview.startAnimation(slideOutLeft)
                     viewModel.clickNextButton()
+                    filtroAplicado = false
+                    categoriaSelecionadaId = ""
                 }
 
                 override fun onSwipeRight() {
                     val slideInLeft = AnimationUtils.loadAnimation(context, R.anim.slide_in_left)
                     binding.expenseRecyclerview.startAnimation(slideInLeft)
                     viewModel.clickPrevButton()
+                    filtroAplicado = false
+                    categoriaSelecionadaId = ""
                 }
             }
 
@@ -246,12 +262,37 @@ class ExpenseFragment : Fragment() {
         }
     }
 
+    private fun openBottomSheetFilter() {
+        val bottomSheetFilterFragment = BottomSheetFilterFragment(listCategory, filtroAplicado, categoriaSelecionadaId,::ordemAplicada, ::clickCategory, ::clickLimparFilter)
+        fragmentManager?.let {
+            bottomSheetFilterFragment.show(it, bottomSheetFilterFragment.tag)
+        }
+    }
+
+    private fun clickCategory(category: Category) {
+        categoriaSelecionadaId = category.id.toString()
+        filtroAplicado = true
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendarUpdateValueEndBalance)
+        viewModel.getAllExpensesFilterCategory(startDate, endDate, category.category)
+    }
+
+    private fun clickLimparFilter() {
+        categoriaSelecionadaId = ""
+        filtroAplicado = false
+        showDateText(calendarUpdateValueEndBalance)
+    }
+
+    private fun ordemAplicada(){
+        showDateText(calendarUpdateValueEndBalance)
+    }
+
     private fun clickItem(expense: Expense) {
         val bottomSheetDialogFragment =
             BottomShettPrincipalFragment(
                 expense,
                 ::deleteExpense,
                 ::deleteAllExpense,
+                ::deleteItNext,
                 ::updateExpense,
             )
         fragmentManager?.let { it1 ->
@@ -275,17 +316,33 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun deleteAllExpense(expenses: List<Expense>) {
-        viewModel.deleteAllExpense(expenses)
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendarUpdateValueEndBalance)
+        viewModel.deleteAllExpense(expenses, startDate, endDate)
+        (binding.expenseRecyclerview.adapter as AdapterExpense).removeAll(expenses)
+    }
+
+    private fun deleteItNext(expenses: List<Expense>) {
+        val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendarUpdateValueEndBalance)
+        viewModel.deleteAllExpense(expenses, startDate, endDate)
         (binding.expenseRecyclerview.adapter as AdapterExpense).removeAll(expenses)
     }
 
     private fun checkExpenseRegister() {
-        if (expenses.isEmpty()) {
+        if (expenses.isEmpty() && !filtroAplicado) {
             binding.expenseAnimationView.visibility = View.VISIBLE
             binding.txtInfoNoExpenseRegister.visibility = View.VISIBLE
+            binding.txtInfoNoExpenseFilter.visibility = View.GONE
+            binding.expenseAnimationViewNoFilter.visibility = View.GONE
+        } else if (expenses.isEmpty() && filtroAplicado) {
+            binding.txtInfoNoExpenseFilter.visibility = View.VISIBLE
+            binding.expenseAnimationViewNoFilter.visibility = View.VISIBLE
+            binding.expenseAnimationView.visibility = View.GONE
+            binding.txtInfoNoExpenseRegister.visibility = View.GONE
         } else {
             binding.expenseAnimationView.visibility = View.GONE
             binding.txtInfoNoExpenseRegister.visibility = View.GONE
+            binding.txtInfoNoExpenseFilter.visibility = View.GONE
+            binding.expenseAnimationViewNoFilter.visibility = View.GONE
         }
     }
 }

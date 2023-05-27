@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+ <androidx.constraintlayout.widget.ConstraintLayout
+     android:id="@+id/pro_month_container"
+     android:layout_width="0dp"
+     android:layout_height="wrap_content"
+     app:layout_constraintTop_toTopOf="parent"
+     app:layout_constraintStart_toStartOf="parent"
+     app:layout_constraintEnd_toEndOf="parent"
+     android:layout_margin="20dp"
+     android:background="@drawable/circular_pro"
+     android:padding="10dp"
+     >
+
+     <androidx.appcompat.widget.AppCompatRadioButton
+         android:id="@+id/pro_radio_month"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/pro_month"
+         android:textSize="16sp"
+         android:clickable="false"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintBottom_toBottomOf="parent"
+         android:layout_margin="10dp"
+         android:textColor="#8C8C8C"/>
+
+     <androidx.appcompat.widget.AppCompatTextView
+         android:id="@+id/pro_month_value"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         app:layout_constraintEnd_toEndOf="parent"
+         android:text="@string/value_month_pro"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintBottom_toBottomOf="parent"
+         android:layout_marginEnd="20dp"
+         android:textSize="18sp"
+         android:textColor="#8C8C8C"
+         android:textAlignment="textEnd"
+         />
+
+ </androidx.constraintlayout.widget.ConstraintLayout>
+
+<androidx.appcompat.widget.AppCompatTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/economize"
+    app:layout_constraintBottom_toTopOf="@id/pro_semestral_container"
+    app:layout_constraintTop_toTopOf="@id/pro_semestral_container"
+    android:layout_marginEnd="20dp"
+    android:background="@drawable/circular_pro"
+    android:backgroundTint="@color/blue_600"
+    android:textColor="@color/white"
+    android:elevation="4dp"
+    android:paddingStart="7dp"
+    android:paddingEnd="7dp"
+    app:layout_constraintEnd_toEndOf="@id/pro_semestral_container"
+    />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/pro_semestral_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/pro_month_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/circular_pro_selected"
+        android:padding="10dp"
+        >
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/pro_radio_semestral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pro_semestral"
+            android:textSize="16sp"
+            android:clickable="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="10dp"
+            android:textColor="@color/blue_600"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/pro_semestral_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/value_semestral_pro"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="20dp"
+            android:textSize="18sp"
+            android:textColor="@color/blue_600"
+            android:textAlignment="textEnd"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/pro_vantagem_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/pro_vantagem"
+        app:layout_constraintTop_toBottomOf="@id/pro_semestral_container"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="20dp"
+        android:textSize="18sp"
+        android:textColor="@color/blue_700"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/pro_vantagem"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/nopropaganda"
+        android:drawableStart="@drawable/checkcirclepro"
+        app:layout_constraintTop_toBottomOf="@id/pro_vantagem_info"
+        app:layout_constraintStart_toStartOf="@id/pro_vantagem_info"
+        app:layout_constraintEnd_toEndOf="@id/pro_vantagem_info"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/grey_value"
+        android:drawablePadding="5dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/pro_vantagem_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/vantagens_pro_3"
+        android:drawableStart="@drawable/checkcirclepro"
+        app:layout_constraintTop_toBottomOf="@id/pro_vantagem"
+        app:layout_constraintStart_toStartOf="@id/pro_vantagem_info"
+        app:layout_constraintEnd_toEndOf="@id/pro_vantagem_info"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/grey_value"
+        android:drawablePadding="5dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/pro_btn_assinar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/assinar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/pro_vantagem_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.data.repository.ExpenseRepository
 import com.isaquesoft.despesas.presentation.state.ExpenseDetailsState
 import kotlinx.coroutines.Dispatchers
@@ -22,4 +21,10 @@ class ExpenseDetailsFramentViewModel(val expenseRepository: ExpenseRepository) :
         }
     }
 
+    fun getExpenseRepeatItNext(dateCreated: Long, value: String, repeat: Boolean, installments: Int, date: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val expensesRepeatItNext = expenseRepository.getExpenseRepeatItNext(dateCreated, value, repeat, installments, date)
+            _expenseDetailsState.postValue(ExpenseDetailsState.ShowExpenseRepeatItNext(expensesRepeatItNext))
+        }
+    }
 }

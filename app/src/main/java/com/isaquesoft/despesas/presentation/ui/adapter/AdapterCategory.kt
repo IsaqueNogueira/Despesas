@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Category
@@ -17,13 +18,17 @@ class AdapterCategory(
     context: Context,
     private val listCategory: MutableList<Category>,
     private val clickCategory: (category: Category) -> Unit = {},
+    private val clickLongCategory: (category: Category) -> Unit = {},
 ) :
     RecyclerView.Adapter<AdapterCategory.ViewHolder>() {
 
     private val listIcons = IconsCategory().listIcons(context)
+    private var categoriaSelecionada: String = ""
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
         val context = itemView.context
+        val container = itemView.findViewById<CardView>(R.id.item_category_container)
         val categoryTxt = itemView.findViewById<TextView>(R.id.item_category_txt)
         val iconCategory = itemView.findViewById<ImageView>(R.id.item_category_icon)
     }
@@ -46,8 +51,20 @@ class AdapterCategory(
         val drawable = holder.iconCategory.background as GradientDrawable
         drawable.setColor(Color.parseColor(category.cor))
 
-        holder.itemView.setOnLongClickListener{
+        if (categoriaSelecionada.isNotEmpty()) {
+            if (category.id == categoriaSelecionada.toInt()) {
+                holder.container.setBackgroundColor(Color.parseColor("#75C2FF"))
+            } else {
+                holder.container.setBackgroundColor(Color.parseColor("#FFFFFF"))
+            }
+        }
+
+        holder.itemView.setOnClickListener {
             clickCategory(category)
+        }
+
+        holder.itemView.setOnLongClickListener {
+            clickLongCategory(category)
             true
         }
     }
@@ -64,5 +81,9 @@ class AdapterCategory(
     fun remove(category: Category) {
         this.listCategory.remove(category)
         notifyDataSetChanged()
+    }
+
+    fun selected(categoriaSelecionada: String) {
+        this.categoriaSelecionada = categoriaSelecionada
     }
 }
