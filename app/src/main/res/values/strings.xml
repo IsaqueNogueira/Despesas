@@ -127,4 +127,9 @@
     <string name="filter_categoria_titulo">Filtrar por categoria</string>
     <string name="filter_categoria_limpar">Limpar filtro</string>
     <string name="no_expense_month_filter">Sem despesas para o filtro selecionado.</string>
+    <string name="classifique">Classifique-nos!</string>
+    <string name="classifique_description">Nos avalie na Play Store</string>
+    <string name="compartilhe">Compartilhe</string>
+    <string name="indigueamigos">Indique para amigos e familiares</string>
+    <string name="message_compartilhar">Descobri um ótimo aplicativo de Despesas! 📊💰 É fácil de usar e me ajuda a gerenciar minhas finanças de forma eficiente. Recomendo experimentar! Você pode baixar o app aqui: [https://play.google.com/store/apps/details?id=com.isaquesoft.despesas]. 💡📱 #AppDeDespesas #ControleFinanceiro</string>
 </resources>

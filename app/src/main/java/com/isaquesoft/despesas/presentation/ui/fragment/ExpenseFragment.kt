@@ -16,6 +16,10 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Category
 import com.isaquesoft.despesas.data.model.Expense
@@ -48,6 +52,8 @@ class ExpenseFragment : Fragment() {
     private var expenses: List<Expense> = mutableListOf()
     private var calendarUpdateValueEndBalance = Calendar.getInstance()
     private var calendarSelected: Calendar? = null
+    private var mInterstitialAd: InterstitialAd? = null
+    private var compartilhouPdf = false
     private lateinit var listCategory: List<Category>
     private var categoriaSelecionadaId = ""
     private var filtroAplicado = false
@@ -69,6 +75,7 @@ class ExpenseFragment : Fragment() {
         initViewModel()
         dateText()
         setLado()
+        carregaAnuncioIntersticial()
         binding.expenseDateText.setOnClickListener {
             buscaMes()
         }
@@ -127,8 +134,25 @@ class ExpenseFragment : Fragment() {
             val navigation =
                 ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
             controlation.navigate(navigation)
+            compartilhouPdf = true
         } else {
             CustomToast(requireContext(), getString(R.string.no_expense_share)).show()
+            compartilhouPdf = false
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        executeAnuncioInstersticialPdf()
+    }
+
+    private fun executeAnuncioInstersticialPdf() {
+        if (compartilhouPdf) {
+            if (!SharedPreferences(requireContext()).getVerifyCompraAssinatura()) {
+                mInterstitialAd?.show(requireActivity())
+                carregaAnuncioIntersticial()
+                compartilhouPdf = false
+            }
         }
     }
 
@@ -263,7 +287,7 @@ class ExpenseFragment : Fragment() {
     }
 
     private fun openBottomSheetFilter() {
-        val bottomSheetFilterFragment = BottomSheetFilterFragment(listCategory, filtroAplicado, categoriaSelecionadaId,::ordemAplicada, ::clickCategory, ::clickLimparFilter)
+        val bottomSheetFilterFragment = BottomSheetFilterFragment(listCategory, filtroAplicado, categoriaSelecionadaId, ::ordemAplicada, ::clickCategory, ::clickLimparFilter)
         fragmentManager?.let {
             bottomSheetFilterFragment.show(it, bottomSheetFilterFragment.tag)
         }
@@ -282,7 +306,7 @@ class ExpenseFragment : Fragment() {
         showDateText(calendarUpdateValueEndBalance)
     }
 
-    private fun ordemAplicada(){
+    private fun ordemAplicada() {
         showDateText(calendarUpdateValueEndBalance)
     }
 
@@ -344,5 +368,23 @@ class ExpenseFragment : Fragment() {
             binding.txtInfoNoExpenseFilter.visibility = View.GONE
             binding.expenseAnimationViewNoFilter.visibility = View.GONE
         }
+    }
+
+    private fun carregaAnuncioIntersticial() {
+        val adRequest = AdRequest.Builder().build()
+        InterstitialAd.load(
+            requireContext(),
+            "ca-app-pub-6470587668575312/5355919139",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    mInterstitialAd = interstitialAd
+                }
+            },
+        )
     }
 }

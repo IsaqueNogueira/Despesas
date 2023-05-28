@@ -1,6 +1,7 @@
 package com.isaquesoft.despesas.presentation.ui.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -40,6 +41,8 @@ class SettingsFragment : Fragment() {
         setupBackup()
         openSettingsNotificationSystem()
         goToAssinaturaActivity()
+        compartilharApp()
+        abrirPaginaClassificacao()
 
         // DESABILITADO ATÉ COLOCAR O APP EM PRODUÇÃO E CADASTRAR OS PRODUTOS DE ASSINATURA NO GOOGLE PLAY CONSOLE
         binding.settingsBtnPro.isEnabled = false
@@ -64,8 +67,6 @@ class SettingsFragment : Fragment() {
         }
     }
 
-
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
@@ -81,6 +82,23 @@ class SettingsFragment : Fragment() {
         val navigation =
             SettingsFragmentDirections.actionSettingsFragmentToExpenseFragment()
         controlation.navigate(navigation)
+    }
+
+    private fun compartilharApp() {
+        binding.settingsCardviewCompartilhe.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.message_compartilhar))
+            startActivity(Intent.createChooser(intent, "Compartilhar via"))
+        }
+    }
+    private fun abrirPaginaClassificacao() {
+        binding.settingsCardviewAvalie.setOnClickListener {
+            val uri =
+                Uri.parse("https://play.google.com/store/apps/details?id=com.isaquesoft.despesas")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
     }
 
     private fun goToBackupFragment() {
