@@ -134,25 +134,8 @@ class ExpenseFragment : Fragment() {
             val navigation =
                 ExpenseFragmentDirections.actionExpenseFragmentToViewPdfFragment(expenses.toTypedArray())
             controlation.navigate(navigation)
-            compartilhouPdf = true
         } else {
             CustomToast(requireContext(), getString(R.string.no_expense_share)).show()
-            compartilhouPdf = false
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        executeAnuncioInstersticialPdf()
-    }
-
-    private fun executeAnuncioInstersticialPdf() {
-        if (compartilhouPdf) {
-            if (!SharedPreferences(requireContext()).getVerifyCompraAssinatura()) {
-                mInterstitialAd?.show(requireActivity())
-                carregaAnuncioIntersticial()
-                compartilhouPdf = false
-            }
         }
     }
 
@@ -331,6 +314,19 @@ class ExpenseFragment : Fragment() {
         val (startDate, endDate) = viewModel.getFirstAndLastDayOfMonth(calendarUpdateValueEndBalance)
         viewModel.updateExpense(expense, startDate, endDate)
         (binding.expenseRecyclerview.adapter as AdapterExpense).atualiza(expense)
+
+        val quantidadeDeAtualizacaoAtual = SharedPreferences(requireContext()).getQuantityAtualizaDespesa()
+        if (quantidadeDeAtualizacaoAtual < 15) {
+            val insereNovaQuantidade = quantidadeDeAtualizacaoAtual + 1
+            SharedPreferences(requireContext()).setQuantityAtualizaDespesa(insereNovaQuantidade)
+        } else if (quantidadeDeAtualizacaoAtual == 15) {
+            if (!SharedPreferences(requireContext()).getVerifyCompraAssinatura()) {
+                mInterstitialAd?.show(requireActivity())
+                carregaAnuncioIntersticial()
+            }
+            val insereNovaQuantidade = 0
+            SharedPreferences(requireContext()).setQuantityAtualizaDespesa(insereNovaQuantidade)
+        }
     }
 
     private fun deleteExpense(expense: Expense) {

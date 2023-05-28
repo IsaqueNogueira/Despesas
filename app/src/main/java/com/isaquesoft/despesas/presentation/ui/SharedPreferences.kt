@@ -13,6 +13,7 @@ class SharedPreferences(context: Context) {
         private const val KEY_ANUNCIO_INTERSTICIAL_PRINCIPAL = "intersticial_principal"
         private const val KEY_COMPRA_PRO_REALIZADO = "verification_signature"
         private const val KEY_QUANTITY_USE_APP = "quantidade_de_vezes_que_entrou_no_app"
+        private const val KEY_ANUNCIO_INSTERSTICIAL_ATUALIZA_DESPESA = "quantidade_de_atualização_das_despesas"
     }
 
     private val mSharedPreferences: SharedPreferences =
@@ -75,5 +76,15 @@ class SharedPreferences(context: Context) {
 
     fun getQuantityUseApp(): Int {
         return mSharedPreferences.getInt(KEY_QUANTITY_USE_APP, 0)
+    }
+
+    fun setQuantityAtualizaDespesa(quantity: Int){
+        val editor = mSharedPreferences.edit()
+        editor.putInt(KEY_ANUNCIO_INSTERSTICIAL_ATUALIZA_DESPESA, quantity)
+        editor.apply()
+    }
+
+    fun getQuantityAtualizaDespesa(): Int {
+        return mSharedPreferences.getInt(KEY_ANUNCIO_INSTERSTICIAL_ATUALIZA_DESPESA, 0)
     }
 }

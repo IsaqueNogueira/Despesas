@@ -22,15 +22,24 @@ class AlarmService : Service() {
     }
 
     private fun startAlarm() {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 7) // define a hora do alarme
-        calendar.set(Calendar.MINUTE, 0) // define o minuto do alarme
         val intent = Intent(this, AlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
+// Defina a hora em que deseja que a notificação seja enviada (por exemplo, às 9h da manhã)
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(Calendar.HOUR_OF_DAY, 7)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+
+// Defina o intervalo de repetição diária
+        val intervalMillis = AlarmManager.INTERVAL_DAY
+
+// Agende o BroadcastReceiver para ser chamado diariamente no horário especificado
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
+            intervalMillis,
             pendingIntent,
         )
     }

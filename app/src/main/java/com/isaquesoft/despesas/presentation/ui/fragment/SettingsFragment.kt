@@ -16,6 +16,7 @@ import com.isaquesoft.despesas.presentation.ui.SharedPreferences
 import com.isaquesoft.despesas.presentation.ui.activity.AssinaturaActivity
 import com.isaquesoft.despesas.presentation.ui.viewmodel.ComponentesVisuais
 import com.isaquesoft.despesas.presentation.ui.viewmodel.EstadoAppViewModel
+import com.isaquesoft.despesas.utils.AlertDialogStandard
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class SettingsFragment : Fragment() {
@@ -43,9 +44,16 @@ class SettingsFragment : Fragment() {
         goToAssinaturaActivity()
         compartilharApp()
         abrirPaginaClassificacao()
+        setupSuporteDialog()
 
         // DESABILITADO ATÉ COLOCAR O APP EM PRODUÇÃO E CADASTRAR OS PRODUTOS DE ASSINATURA NO GOOGLE PLAY CONSOLE
         binding.settingsBtnPro.isEnabled = false
+    }
+
+    private fun setupSuporteDialog() {
+        binding.settingsCardviewSuporte.setOnClickListener {
+            AlertDialogStandard().sutupDialog(requireContext(), getString(R.string.suporte), getString(R.string.suportecontato))
+        }
     }
 
     private fun openSettingsNotificationSystem() {
