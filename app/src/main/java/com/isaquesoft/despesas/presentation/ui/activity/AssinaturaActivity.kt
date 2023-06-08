@@ -68,8 +68,8 @@ class AssinaturaActivity : AppCompatActivity() {
 
     private fun getProducDetails() {
         val productIds = arrayListOf<String>()
-        productIds.add("assinatura_teste")
-        productIds.add("sem_anuncio_teste")
+        productIds.add("assinatura_mensal")
+        productIds.add("assinatura_semestral")
 
         val getProductDetailsQuery = SkuDetailsParams.newBuilder()
             .setSkusList(productIds)
@@ -80,7 +80,12 @@ class AssinaturaActivity : AppCompatActivity() {
         ) { p0, p1 ->
             if (p0.responseCode == BillingResponseCode.OK && p1 != null) {
                 binding.proBtnAssinar.setOnClickListener {
-                    val planoEscolhido = p1[0]
+                    var planoEscolhido = p1[1]
+                    if (planoMonth) {
+                        planoEscolhido = p1[0]
+                    } else {
+                        planoEscolhido = p1[1]
+                    }
                     billingClient.launchBillingFlow(
                         this@AssinaturaActivity,
                         BillingFlowParams.newBuilder().setSkuDetails(planoEscolhido).build(),

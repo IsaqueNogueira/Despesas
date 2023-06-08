@@ -19,7 +19,6 @@ import com.isaquesoft.despesas.R
 import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ViewPdfFragmentBinding
 import com.isaquesoft.despesas.presentation.ui.adapter.AdapterPdf
-import org.koin.android.ext.android.get
 import java.io.File
 import java.io.FileOutputStream
 import java.math.BigDecimal

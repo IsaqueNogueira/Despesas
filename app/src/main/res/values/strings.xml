@@ -113,7 +113,7 @@
     <string name="pro_month">Monthly Pro</string>
     <string name="value_month_pro">R$ 11.99\n per month</string>
     <string name="pro_semestral">Semi-annual Pro</string>
-    <string name="value_semestral_pro">R$ 57.54\n 6 months</string>
+    <string name="value_semestral_pro">R$ 57.99\n 6 months</string>
     <string name="pro_vantagem">Advantages of being Pro:</string>
     <string name="nopropaganda">No advertisements.</string>
     <string name="assinar">Subscribe</string>
@@ -131,9 +131,9 @@
     <string name="classifique_description">Rate us on the Play Store</string>
     <string name="compartilhe">Share</string>
     <string name="indigueamigos">Recommend to friends and family</string>
-    <string name="message_compartilhar">I\'ve found a great Expense app! 📊💰 It\'s easy to use and helps me manage my finances efficiently. I highly recommend trying it out! You can download the app here: [https://play.google.com/store/apps/details?id=com.isaquesoft.minhasdespesas]. 💡📱 #ExpenseApp #FinancialManagement</string>
+    <string name="message_compartilhar">I\'ve found a great Expense app! 📊💰 It\'s easy to use and helps me manage my finances efficiently. I highly recommend trying it out! You can download the app here: [https://play.google.com/store/apps/details?id=com.isaquesoft.despesas]. 💡📱 #ExpenseApp #FinancialManagement</string>
     <string name="suporte">Support</string>
     <string name="suportemessage">Ask questions, report issues, or give suggestions</string>
-
     <string name="suportecontato">If you have any issues, questions, or want to leave a suggestion for our application, please send us an email at isaquesoftware@gmail.com</string>
+    <string name="settings_titulo_assinante">Make the Most of Your App Subscription!</string>
 </resources>

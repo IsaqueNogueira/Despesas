@@ -45,9 +45,25 @@ class SettingsFragment : Fragment() {
         compartilharApp()
         abrirPaginaClassificacao()
         setupSuporteDialog()
+        setupAssinante()
+    }
 
-        // DESABILITADO ATÉ COLOCAR O APP EM PRODUÇÃO E CADASTRAR OS PRODUTOS DE ASSINATURA NO GOOGLE PLAY CONSOLE
-        binding.settingsBtnPro.isEnabled = false
+    private fun setupAssinante() {
+        if (SharedPreferences(requireContext()).getVerifyCompraAssinatura()) {
+            binding.settingsProTitleAssinante.visibility = View.VISIBLE
+            binding.settingsProTitle.visibility = View.GONE
+            binding.settingsVantengesPro1.visibility = View.GONE
+            binding.settingsVantengesPro2.visibility = View.GONE
+            binding.settingsVantengesPro3.visibility = View.GONE
+            binding.settingsBtnPro.visibility = View.GONE
+        } else {
+            binding.settingsProTitleAssinante.visibility = View.GONE
+            binding.settingsProTitle.visibility = View.VISIBLE
+            binding.settingsVantengesPro1.visibility = View.VISIBLE
+            binding.settingsVantengesPro2.visibility = View.VISIBLE
+            binding.settingsVantengesPro3.visibility = View.VISIBLE
+            binding.settingsBtnPro.visibility = View.VISIBLE
+        }
     }
 
     private fun setupSuporteDialog() {

@@ -113,7 +113,7 @@
     <string name="pro_month">Pro mensal</string>
     <string name="value_month_pro">R$ 11,99\n por mês</string>
     <string name="pro_semestral">Pro semestral</string>
-    <string name="value_semestral_pro">R$ 57,54\n 6 meses</string>
+    <string name="value_semestral_pro">R$ 57,99\n 6 meses</string>
     <string name="pro_vantagem">Vantagens de ser Pro:</string>
     <string name="nopropaganda">Sem propagandas.</string>
     <string name="assinar">Assinar</string>
@@ -131,8 +131,9 @@
     <string name="classifique_description">Nos avalie na Play Store</string>
     <string name="compartilhe">Compartilhe</string>
     <string name="indigueamigos">Indique para amigos e familiares</string>
-    <string name="message_compartilhar">Descobri um ótimo aplicativo de Despesas! 📊💰 É fácil de usar e me ajuda a gerenciar minhas finanças de forma eficiente. Recomendo experimentar! Você pode baixar o app aqui: [https://play.google.com/store/apps/details?id=com.isaquesoft.minhasdespesas]. 💡📱 #AppDeDespesas #ControleFinanceiro</string>
+    <string name="message_compartilhar">Descobri um ótimo aplicativo de Despesas! 📊💰 É fácil de usar e me ajuda a gerenciar minhas finanças de forma eficiente. Recomendo experimentar! Você pode baixar o app aqui: [https://play.google.com/store/apps/details?id=com.isaquesoft.despesas]. 💡📱 #AppDeDespesas #ControleFinanceiro</string>
     <string name="suporte">Suporte</string>
     <string name="suportemessage">Tire dúvidas, relate problemas ou de sugestôes</string>
     <string name="suportecontato">Se você tem algum problema, dúvida ou quer deixar alguma sugestão para o nosso aplicativo, nos mande um e-mail isaquesoftware@gmail.com</string>
+    <string name="settings_titulo_assinante">Aproveite ao máximo sua Assinatura Premium no App!</string>
 </resources>

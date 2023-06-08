@@ -150,16 +150,14 @@ class ResumeGraphicExpenses : Fragment() {
                 colors.add(Color.parseColor(categoryExpenses[0].corIcon))
             }
         }
-
+        val pieChart = binding.pieChart
         val dataSet = PieDataSet(entries, "")
         dataSet.colors = colors
 
         val data = PieData(dataSet)
-        data.setValueFormatter(PercentFormatter())
+        data.setValueFormatter(PercentFormatter(pieChart))
         data.setValueTextSize(10f)
         data.setValueTextColor(Color.BLACK)
-
-        val pieChart = binding.pieChart
         pieChart.setUsePercentValues(true)
         pieChart.description.isEnabled = false
         pieChart.legend.isEnabled = false
