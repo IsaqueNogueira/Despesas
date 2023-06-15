@@ -32,12 +32,7 @@ class ConfirmaAssinaturaActivity : AppCompatActivity() {
         }
 
         binding.confirmaAssinaturaClose.setOnClickListener {
-            onBackPressed()
+            finish()
         }
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
     }
 }

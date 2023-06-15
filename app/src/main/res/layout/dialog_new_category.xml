@@ -44,7 +44,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="30dp"
-        android:background="#44852C"
+        android:background="@drawable/circle_color_category"
         app:layout_constraintStart_toStartOf="@id/alert_category_button_color"
         app:layout_constraintEnd_toEndOf="@id/alert_category_button_color"
         app:layout_constraintTop_toBottomOf="@id/alert_category_edit_text" />

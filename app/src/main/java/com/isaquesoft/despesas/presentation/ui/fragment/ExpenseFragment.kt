@@ -3,6 +3,7 @@ package com.isaquesoft.despesas.presentation.ui.fragment
 import OnSwipeTouchListener
 import android.app.DatePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -26,6 +27,7 @@ import com.isaquesoft.despesas.data.model.Expense
 import com.isaquesoft.despesas.databinding.ExpenseFragmentBinding
 import com.isaquesoft.despesas.presentation.state.ExpenseState
 import com.isaquesoft.despesas.presentation.ui.SharedPreferences
+import com.isaquesoft.despesas.presentation.ui.activity.AssinaturaActivity
 import com.isaquesoft.despesas.presentation.ui.adapter.AdapterExpense
 import com.isaquesoft.despesas.presentation.ui.fragment.SettingsFragment.Companion.LISTA_AZ
 import com.isaquesoft.despesas.presentation.ui.fragment.SettingsFragment.Companion.LISTA_CRES
@@ -36,6 +38,7 @@ import com.isaquesoft.despesas.presentation.ui.viewmodel.ExpenseFragmentViewMode
 import com.isaquesoft.despesas.utils.AlertDialogStandard
 import com.isaquesoft.despesas.utils.CategoryUtils
 import com.isaquesoft.despesas.utils.CustomToast
+import com.isaquesoft.despesas.utils.shareExpensesAsExcel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
@@ -125,8 +128,26 @@ class ExpenseFragment : Fragment() {
             R.id.share_item -> {
                 sharePdf()
             }
+
+            R.id.share_excel -> {
+                shareExcel()
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun shareExcel() {
+        if (expenses.isNotEmpty()) {
+            if (SharedPreferences(requireContext()).getVerifyCompraAssinatura()) {
+                shareExpensesAsExcel(requireActivity(), requireContext(), expenses)
+            } else {
+                Intent(requireActivity(), AssinaturaActivity::class.java).apply {
+                    startActivity(this)
+                }
+            }
+        } else {
+            CustomToast(requireContext(), getString(R.string.no_expense_share)).show()
+        }
     }
 
     private fun sharePdf() {

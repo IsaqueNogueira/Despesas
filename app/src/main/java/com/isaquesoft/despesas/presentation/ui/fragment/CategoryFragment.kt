@@ -38,7 +38,7 @@ class CategoryFragment : Fragment() {
     private val estadoAppViewModel: EstadoAppViewModel by sharedViewModel()
     private val viewModel: CategoryFragmentViewModel by viewModel()
     private lateinit var listColors: List<ColorString>
-    private var color: String = "#44852C"
+    private var color: String = "#299A9A"
     private lateinit var iconImage: Drawable
     private lateinit var iconColor: View
     private lateinit var iconView: View

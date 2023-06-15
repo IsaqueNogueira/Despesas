@@ -136,4 +136,11 @@
     <string name="suportemessage">Haz preguntas, informa problemas o da sugerencias</string>
     <string name="suportecontato">Si tienes algún problema, pregunta o quieres dejar alguna sugerencia para nuestra aplicación, envíanos un correo electrónico a isaquesoftware@gmail.com</string>
     <string name="settings_titulo_assinante">¡Disfruta al máximo tu suscripción Premium en la aplicación!</string>
+    <string name="categoria">Categoría</string>
+    <string name="mes">Mes:</string>
+    <string name="pago">Pagado:</string>
+    <string name="nopago">Yo no pago:</string>
+    <string name="amount">Valor total:</string>
+    <string name="share_excel">Compartir Excel</string>
+    <string name="share_excel_pro">Compartir Excel.</string>
 </resources>

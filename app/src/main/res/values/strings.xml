@@ -136,4 +136,11 @@
     <string name="suportemessage">Ask questions, report issues, or give suggestions</string>
     <string name="suportecontato">If you have any issues, questions, or want to leave a suggestion for our application, please send us an email at isaquesoftware@gmail.com</string>
     <string name="settings_titulo_assinante">Make the Most of Your App Subscription!</string>
+    <string name="categoria">Category</string>
+    <string name="mes">Month:</string>
+    <string name="pago">Paid out:</string>
+    <string name="nopago">I do not pay:</string>
+    <string name="amount">Amount:</string>
+    <string name="share_excel">Share Excel</string>
+    <string name="share_excel_pro">Share Excel.</string>
 </resources>

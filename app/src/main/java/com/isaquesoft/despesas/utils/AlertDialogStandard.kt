@@ -3,6 +3,7 @@ package com.isaquesoft.despesas.utils
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.isaquesoft.despesas.R
@@ -23,7 +24,12 @@ class AlertDialogStandard {
                 txtTitle.text = title
                 txtMessage.text = message
                 val buttonPositive = findViewById<Button>(R.id.alert_button)
+                val buttonClose = findViewById<View>(R.id.alert_close)
                 buttonPositive.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+
+                buttonClose.setOnClickListener {
                     alertDialog.dismiss()
                 }
             }
@@ -31,5 +37,4 @@ class AlertDialogStandard {
 
         alertDialog.show()
     }
-
 }

@@ -2,26 +2,24 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/confirma_assinatura_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_margin="15dp"
         android:src="@drawable/close_grey"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="15dp"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/confirma_assinatura_animation_view"
@@ -39,32 +37,30 @@
             android:id="@+id/confirma_assinatura_parabens"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_animation_view"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:text="@string/parabens"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
+            android:text="@string/parabens"
             android:textAlignment="center"
-            />
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_animation_view" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/confirma_assinatura_parabens_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/confirma_assinatura"
-            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_parabens"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
+            android:text="@string/confirma_assinatura"
             android:textAlignment="center"
-            />
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_parabens" />
 
 
         <com.airbnb.lottie.LottieAnimationView
@@ -72,46 +68,44 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            android:visibility="gone"
             app:lottie_rawRes="@raw/processamento" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/confirma_assinatura_processando"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_animation_view_processando"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:text="@string/compra_em_andamento"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
+            android:text="@string/compra_em_andamento"
             android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:visibility="gone"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_animation_view_processando" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/confirma_assinatura_processando_message"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/processamento_assinatura"
-            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_processando"
-            android:layout_marginTop="10dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:textSize="16sp"
-            android:textColor="@color/black"
+            android:text="@string/processamento_assinatura"
             android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             android:visibility="gone"
-            />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/confirma_assinatura_processando" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
