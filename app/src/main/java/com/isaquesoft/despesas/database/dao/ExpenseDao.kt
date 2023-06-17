@@ -34,6 +34,7 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM Expense WHERE date >= :minDate AND date <= :maxDate ORDER BY date ASC")
     suspend fun getAllExpenseDateCres(minDate: Long, maxDate: Long): List<Expense>
+
     @Query("SELECT * FROM Expense WHERE date >= :minDate AND date <= :maxDate AND category = :category ORDER BY date ASC")
     suspend fun getAllExpenseFilterCategory(minDate: Long, maxDate: Long, category: String): List<Expense>
 
@@ -69,9 +70,12 @@ interface ExpenseDao {
     @Query("SELECT * FROM Category WHERE id = :id")
     suspend fun getCategory(id: Int): Category
 
-    @Query("SELECT * FROM Category")
+    @Query("SELECT * FROM Category ORDER BY category ASC")
     suspend fun getAllCategory(): List<Category>
 
     @Delete
     suspend fun deleteCategory(category: Category)
+
+    @Update
+    suspend fun updateCategory(category: Category)
 }

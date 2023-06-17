@@ -143,4 +143,5 @@
     <string name="amount">Amount:</string>
     <string name="share_excel">Share Excel</string>
     <string name="share_excel_pro">Share Excel.</string>
+    <string name="editar_categoria">Edit category</string>
 </resources>

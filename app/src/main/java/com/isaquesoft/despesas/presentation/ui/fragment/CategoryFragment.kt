@@ -44,6 +44,7 @@ class CategoryFragment : Fragment() {
     private lateinit var iconView: View
     private lateinit var drawablesArray: MutableList<Drawable>
     private var positionIcon = 6
+    private var editCategory = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +69,8 @@ class CategoryFragment : Fragment() {
 
     private fun initNewCategory() {
         binding.floatingActionButton.setOnClickListener {
-            dialogNewCategory()
+            editCategory = false
+            dialogNewCategory(null)
         }
     }
 
@@ -87,7 +89,8 @@ class CategoryFragment : Fragment() {
     }
 
     private fun clickCategory(category: Category) {
-        // FAZ NADA
+        editCategory = true
+        dialogNewCategory(category)
     }
 
     private fun clickLongCategory(category: Category) {
@@ -105,7 +108,7 @@ class CategoryFragment : Fragment() {
         return true
     }
 
-    private fun dialogNewCategory() {
+    private fun dialogNewCategory(category: Category?) {
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.dialog_new_category, null)
         val alertDialog = AlertDialog.Builder(context)
@@ -117,10 +120,11 @@ class CategoryFragment : Fragment() {
                 val buttonColor = findViewById<Button>(R.id.alert_category_button_color)
                 val buttonIcon = findViewById<Button>(R.id.alert_category_button_icon)
                 val editText = findViewById<EditText>(R.id.alert_category_edit_text)
+                val txtTitle = findViewById<TextView>(R.id.alert_category_title)
                 iconView = findViewById(R.id.alert_category_view_icon)
                 iconColor = findViewById(R.id.alert_category_view_color)
-
                 iconColor.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+                editText.requestFocus()
                 buttonColor.setOnClickListener {
                     dialogColors()
                 }
@@ -129,21 +133,40 @@ class CategoryFragment : Fragment() {
                     dialogIcon()
                 }
 
+                if (editCategory) {
+                    category?.let {
+                        colorEditApply(it.cor)
+                        iconEditApply(it.iconPosition)
+                        editText.requestFocus()
+                        editText.setText(it.category)
+                        txtTitle.text = requireContext().getString(R.string.editar_categoria)
+                    }
+                }
+
                 buttonClose.setOnClickListener { alertDialog.dismiss() }
                 val buttonPositive = findViewById<Button>(R.id.alert_category_save_button)
                 buttonPositive.setOnClickListener {
                     val nomeCategory = editText.text.toString()
-
                     if (!TextUtils.isEmpty(nomeCategory)) {
-                        val newCategory = Category(
-                            category = nomeCategory,
-                            iconPosition = positionIcon,
-                            cor = color,
-                        )
-                        viewModel.newCategory(newCategory)
-                        (binding.categoryRecyclerview.adapter as AdapterCategory).atualiza(
-                            newCategory,
-                        )
+                        if (editCategory) {
+                            category?.let {
+                                val updateCategory = Category(category.id, nomeCategory, positionIcon, color)
+                                viewModel.updateCategory(updateCategory)
+                                (binding.categoryRecyclerview.adapter as AdapterCategory).updateCategory(
+                                    updateCategory,
+                                )
+                            }
+                        } else {
+                            val newCategory = Category(
+                                category = nomeCategory,
+                                iconPosition = positionIcon,
+                                cor = color,
+                            )
+                            viewModel.newCategory(newCategory)
+                            (binding.categoryRecyclerview.adapter as AdapterCategory).atualiza(
+                                newCategory,
+                            )
+                        }
                         alertDialog.dismiss()
                     } else {
                         editText.setError(getString(R.string.required))
@@ -162,11 +185,12 @@ class CategoryFragment : Fragment() {
         val alertDialog = AlertDialog.Builder(context)
             .setView(view)
             .create()
+
         alertDialog.setOnShowListener {
             view.apply {
                 val btnClose = findViewById<View>(R.id.alert_icon_close)
                 val recyclerView = findViewById<RecyclerView>(R.id.alert_icon_recyclerview)
-                recyclerView.layoutManager = GridLayoutManager(requireContext(), 5)
+                recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
                 recyclerView.adapter = AdapterIcons(drawablesArray) { icon, position ->
                     clickIcon(icon, alertDialog, position)
                 }
@@ -238,5 +262,16 @@ class CategoryFragment : Fragment() {
         positionIcon = position
         alertDialog.dismiss()
         iconView.background = iconImg
+    }
+
+    private fun colorEditApply(color: String) {
+        this.color = color
+        iconColor.backgroundTintList = ColorStateList.valueOf(Color.parseColor(color))
+    }
+
+    private fun iconEditApply(iconPosition: Int) {
+        this.iconImage = drawablesArray[iconPosition]
+        positionIcon = iconPosition
+        iconView.background = drawablesArray[iconPosition]
     }
 }

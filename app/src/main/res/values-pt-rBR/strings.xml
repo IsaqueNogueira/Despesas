@@ -143,4 +143,5 @@
     <string name="amount">Valor total:</string>
     <string name="share_excel">Compartilhar Excel</string>
     <string name="share_excel_pro">Compartilhar Excel.</string>
+    <string name="editar_categoria">Editar categoria</string>
 </resources>

@@ -78,6 +78,13 @@ class AdapterCategory(
         notifyDataSetChanged()
     }
 
+    fun updateCategory(updateCategory: Category){
+        val categoryToRemove = listCategory.firstOrNull { it.id == updateCategory.id }
+        categoryToRemove?.let { this.listCategory.remove(it) }
+        this.listCategory.add(updateCategory)
+        notifyDataSetChanged()
+    }
+
     fun remove(category: Category) {
         this.listCategory.remove(category)
         notifyDataSetChanged()

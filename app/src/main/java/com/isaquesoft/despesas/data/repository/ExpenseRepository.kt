@@ -48,4 +48,5 @@ class ExpenseRepository(private val expenseDao: ExpenseDao) {
     suspend fun deleteCategory(category: Category) = expenseDao.deleteCategory(category)
 
     suspend fun getAllCategory() = expenseDao.getAllCategory()
+    suspend fun updateCategory(category: Category) = expenseDao.updateCategory(category)
 }

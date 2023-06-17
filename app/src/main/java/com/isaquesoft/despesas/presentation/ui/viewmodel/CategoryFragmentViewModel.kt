@@ -29,6 +29,12 @@ class CategoryFragmentViewModel(private val expenseRepository: ExpenseRepository
         }
     }
 
+    fun updateCategory(category: Category) {
+        viewModelScope.launch(Dispatchers.IO) {
+            expenseRepository.updateCategory(category)
+        }
+    }
+
     fun deleteCategory(category: Category) {
         viewModelScope.launch(Dispatchers.IO) {
             expenseRepository.deleteCategory(category)
