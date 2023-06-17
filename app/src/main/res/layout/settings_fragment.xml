@@ -224,6 +224,19 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_2" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/settings_vantenges_pro_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:drawableStart="@drawable/baseline_check"
+                    android:drawablePadding="10dp"
+                    android:text="@string/share_excel_pro"
+                    android:textColor="@color/greyf"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_3" />
+
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/settings_btn_pro"
@@ -239,7 +252,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_3" />
+                    app:layout_constraintTop_toBottomOf="@id/settings_vantenges_pro_4" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
