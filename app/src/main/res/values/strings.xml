@@ -54,7 +54,7 @@
     <string name="maturity_date">04/14/2023</string>
     <string name="maturity_info">Due Date</string>
     <string name="nopaidout">Not paid</string>
-    <string name="no_expense_share">There are no expenses to generate PDF for this month.</string>
+    <string name="no_expense_share">There are no expenses to share this month</string>
     <string name="share_pdf">Share PDF</string>
     <string name="about">About</string>
     <string name="paidoutmarcar">Mark as paid</string>

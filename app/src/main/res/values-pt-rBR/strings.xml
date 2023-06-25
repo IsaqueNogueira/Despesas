@@ -54,7 +54,7 @@
     <string name="maturity_date">14/04/2023</string>
     <string name="maturity_info">Vencimento</string>
     <string name="nopaidout">Não pago</string>
-    <string name="no_expense_share">Não há despesas para gerar PDF neste mês.</string>
+    <string name="no_expense_share">Não há despesas para compartilhar neste mês.</string>
     <string name="share_pdf">Compartilhar PDF</string>
     <string name="about">Sobre</string>
     <string name="paidoutmarcar">Marcar como paga</string>

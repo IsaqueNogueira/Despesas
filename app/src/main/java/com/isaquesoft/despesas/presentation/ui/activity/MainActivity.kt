@@ -5,9 +5,12 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -46,6 +49,7 @@ class MainActivity : AppCompatActivity() {
     private var mInterstitialAd: InterstitialAd? = null
     private lateinit var billingClient: BillingClient
     private lateinit var manager: ReviewManager
+    private var loadingView: View? = null
     private val adSize: AdSize
         get() {
             val display = windowManager.defaultDisplay
@@ -66,6 +70,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        SharedPreferences(this).setIntersticialPrincipalExecute(false)
+        showLoading()
         estadoAppViewModel.componentes.observe(
             this,
             Observer {
@@ -255,10 +261,10 @@ class MainActivity : AppCompatActivity() {
             if (!mostraIntersticial) {
                 if (!SharedPreferences(this).getVerifyCompraAssinatura()) {
                     mInterstitialAd?.show(this)
+                    SharedPreferences(this).setIntersticialPrincipalExecute(true)
                     carregaAnuncioIntersticial()
                 }
             }
-            SharedPreferences(this).setIntersticialPrincipalExecute(true)
             NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
@@ -316,5 +322,22 @@ class MainActivity : AppCompatActivity() {
                 }
             },
         )
+    }
+
+    private fun showLoading() {
+        val loadingHandler = Handler()
+        val inflater = LayoutInflater.from(this)
+        loadingView = inflater.inflate(R.layout.layout_loading, null)
+
+        val parent = window.decorView.rootView as ViewGroup
+        parent.addView(loadingView)
+        loadingHandler.postDelayed({ hideLoading() }, 3000)
+    }
+
+    // Função para ocultar o loading
+    private fun hideLoading() {
+        val parent = window.decorView.rootView as ViewGroup
+        parent.removeView(loadingView)
+        loadingView = null
     }
 }

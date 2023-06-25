@@ -55,6 +55,7 @@ class SettingsFragment : Fragment() {
             binding.settingsVantengesPro1.visibility = View.GONE
             binding.settingsVantengesPro2.visibility = View.GONE
             binding.settingsVantengesPro3.visibility = View.GONE
+            binding.settingsVantengesPro4.visibility = View.GONE
             binding.settingsBtnPro.visibility = View.GONE
         } else {
             binding.settingsProTitleAssinante.visibility = View.GONE
@@ -62,6 +63,7 @@ class SettingsFragment : Fragment() {
             binding.settingsVantengesPro1.visibility = View.VISIBLE
             binding.settingsVantengesPro2.visibility = View.VISIBLE
             binding.settingsVantengesPro3.visibility = View.VISIBLE
+            binding.settingsVantengesPro4.visibility = View.VISIBLE
             binding.settingsBtnPro.visibility = View.VISIBLE
         }
     }
